@@ -1,15 +1,16 @@
 package co.edu.uniquindio;
 
 import javax.management.Notification;
+import java.util.LinkedList;
 
 public class Paciente extends Usuario{
     private HistorialMedico historialMedico;
-    private Cita citas;
+    private LinkedList<Cita> citas;
 
     public Paciente(String id, String nombre, String correo, String telefono, Notification notificacion, HistorialMedico historialMedico, Cita citas) {
         super(id, nombre, correo, telefono, notificacion);
         this.historialMedico = historialMedico;
-        this.citas = citas;
+        this.citas = new LinkedList<>();
     }
 
     public HistorialMedico getHistorialMedico() {
@@ -20,11 +21,11 @@ public class Paciente extends Usuario{
         this.historialMedico = historialMedico;
     }
 
-    public Cita getCitas() {
+    public LinkedList<Cita> getCitas() {
         return citas;
     }
 
-    public void setCitas(Cita citas) {
+    public void setCitas(LinkedList<Cita> citas) {
         this.citas = citas;
     }
 }
