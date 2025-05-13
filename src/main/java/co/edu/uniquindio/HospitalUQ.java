@@ -52,4 +52,24 @@ public class HospitalUQ {
     public LinkedList<Notificacion> getNotificaciones() {
         return notificaciones;
     }
+
+    public void setMedicos(LinkedList<Medico> medicos) {
+        this.medicos = medicos;
+    }
+
+    public void setPacientes(LinkedList<Paciente> pacientes) {
+        this.pacientes = pacientes;
+    }
+
+    public void setSalas(LinkedList<Sala> salas) {
+        this.salas = salas;
+    }
+
+    public void setCitas(LinkedList<Cita> citas) {
+        this.citas = citas;
+    }
+
+    public void setNotificaciones(LinkedList<Notificacion> notificaciones) {
+        this.notificaciones = notificaciones;
+    }
 }
