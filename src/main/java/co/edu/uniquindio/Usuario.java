@@ -9,7 +9,7 @@ abstract class Usuario {
     protected String telefono;
     protected LinkedList<Notificacion> notificaciones;
 
-    public Usuario(String nombre, String id, String correo, String telefono, LinkedList<Notificacion> notificaciones) {
+    public Usuario(String nombre, String id, String correo, String telefono) {
         this.nombre = nombre;
         this.id = id;
         this.correo = correo;

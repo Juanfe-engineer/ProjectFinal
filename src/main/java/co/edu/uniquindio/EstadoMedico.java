@@ -1,7 +1,7 @@
 package co.edu.uniquindio;
 
 public enum EstadoMedico {
-    ACTIVO,
-    INACTIVO,
+    DISPONIBLE,
+    NO_DISPONIBLE,
     EN_CONSULTA
 }

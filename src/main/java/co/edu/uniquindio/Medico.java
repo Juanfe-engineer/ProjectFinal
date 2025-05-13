@@ -12,13 +12,10 @@ public class Medico extends Usuario {
 
 
 
-    public Medico(String id, String nombre, String correo, String telefono, LinkedList<Notificacion> notificacion, Especialidad especialidad, EstadoMedico estado, LinkedList<Horario> horario, LinkedList<Cita> citaAsignadas, Paciente pacienteAsignado) {
-        super(id, nombre, correo, telefono, notificacion);
-        this.especialidad = especialidad;
-        this.estado = estado;
+    public Medico(String id, String nombre, String correo, String telefono) {
+        super(id, nombre, correo, telefono);
         this.horario = new LinkedList<>();
         this.citaAsignadas = new LinkedList<>();
-        this.pacienteAsignado = pacienteAsignado;
     }
 
     public Especialidad getEspecialidad() {

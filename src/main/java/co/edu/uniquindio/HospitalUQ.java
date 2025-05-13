@@ -150,5 +150,58 @@ public class HospitalUQ {
         return false;
     }
 
+    // Asignar medico a paciente
+
+    public boolean asignarMedicoAPaciente(String idPaciente, String idMedico) {
+        for (Paciente paciente : pacientes) {
+            if (paciente.getId().equals(idPaciente)) {
+                for (Medico medico : medicos) {
+                    if (medico.getId().equals(idMedico)) {
+                        if (medico.getEstado() == EstadoMedico.DISPONIBLE) {
+                            paciente.setMedicoAsignado(medico);
+                            medico.setEstado(EstadoMedico.NO_DISPONIBLE); // cambiar el estado
+                            return true;
+                        } else {
+                            return false; // Médico no está disponible
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+
+    // Liberar medico de paciente
+
+    public boolean liberarMedicoDePaciente(String idPaciente) {
+        for (Paciente paciente : pacientes) {
+            if (paciente.getId().equals(idPaciente)) {
+                Medico medicoAsignado = paciente.getMedicoAsignado();
+
+                if (medicoAsignado != null) {
+                    medicoAsignado.setEstado(EstadoMedico.DISPONIBLE);
+                    paciente.setMedicoAsignado(null); // quita el médico del paciente
+                    return true;
+                } else {
+                    return false; // el paciente no tiene médico asignado
+                }
+            }
+        }
+        return false; // paciente no encontrado
+    }
+
+
+    // METODO 3: "Buscar soldados por especialidad
+
+    public Especialidad obtenerEspecialidadDesdeTexto(String texto) {
+        try {
+            return Especialidad.valueOf(texto.toUpperCase());//Value0f convierte el string en valor de Enum y toUpp para que no tenga errores por mayuscula
+        } catch (IllegalArgumentException e) {
+            return null; // o lanza tu propia excepción o muestra mensaje de error
+        }
+    }
+
+
 
 }

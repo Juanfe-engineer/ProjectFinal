@@ -5,12 +5,13 @@ import java.util.LinkedList;
 
 public class Paciente extends Usuario{
     private HistorialMedico historialMedico;
+    private Medico medicoAsignado;
     private LinkedList<Cita> citas;
 
-    public Paciente(String id, String nombre, String correo, String telefono, LinkedList<Notificacion> notificacion, HistorialMedico historialMedico, LinkedList<Cita> citas) {
-        super(id, nombre, correo, telefono, notificacion);
-        this.historialMedico = historialMedico;
+    public Paciente(String id, String nombre, String correo, String telefono) {
+        super(id, nombre, correo, telefono);
         this.citas = new LinkedList<>();
+        this.historialMedico = null;
     }
 
     public HistorialMedico getHistorialMedico() {
@@ -27,6 +28,14 @@ public class Paciente extends Usuario{
 
     public void setCitas(LinkedList<Cita> citas) {
         this.citas = citas;
+    }
+
+    public Medico getMedicoAsignado() {
+        return medicoAsignado;
+    }
+
+    public void setMedicoAsignado(Medico medicoAsignado) {
+        this.medicoAsignado = medicoAsignado;
     }
 }
 
