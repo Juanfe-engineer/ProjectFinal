@@ -11,7 +11,7 @@ public class HospitalUQ {
     private LinkedList<Cita> citas;
     private LinkedList<Notificacion> notificaciones;
 
-    public HospitalUQ(String nombre, String id, LinkedList<Medico> medicos, LinkedList<Paciente> pacientes, LinkedList<Sala> salas, LinkedList<Cita> citas, LinkedList<Notificacion> notificaciones) {
+    public HospitalUQ(String nombre, String id) {
         this.nombre = nombre;
         this.id = id;
         this.medicos = new LinkedList<>();
@@ -92,6 +92,7 @@ public class HospitalUQ {
         return null;
     }
 
+    //Eliminar paciente
     public void eliminarPaciente(String idPaciente) {
         for (int i = 0; i < pacientes.size(); i++) {
             if (pacientes.get(i).getId().equals(idPaciente)) {
@@ -102,10 +103,47 @@ public class HospitalUQ {
     }
 
     //Actualizar Paciente
-    public boolean modificarMedico(Paciente pacienteModificado) {
+    public boolean modificarPaciente(Paciente pacienteModificado) {
         for (int i = 0; i < pacientes.size(); i++) {
             if (pacientes.get(i).getId().equals(pacienteModificado.getId())) {
                 pacientes.set(i, pacienteModificado);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //Agregar el Medico
+    public void registrarMedico(Medico medico) {
+        medicos.add(medico);
+
+    }
+
+    //Buscar Medico por ID
+    public Medico buscarMedicoID(String idMedico) {
+        for(Medico medico : medicos){
+            if(medico.getId().equals(idMedico)){
+                return medico;
+            }
+        }
+        return null;
+    }
+
+    //Eliminar medidco
+    public void eliminarMedico(String idMedico) {
+        for (int i = 0; i < medicos.size(); i++) {
+            if (medicos.get(i).getId().equals(idMedico)) {
+                medicos.set(i, null); // marca el elemento como null
+                return;
+            }
+        }
+    }
+
+    //Actualizar Medico
+    public boolean modificarMedico(Medico medicoModificado) {
+        for (int i = 0; i < medicos.size(); i++) {
+            if (medicos.get(i).getId().equals(medicoModificado.getId())) {
+                medicos.set(i, medicoModificado);
                 return true;
             }
         }
