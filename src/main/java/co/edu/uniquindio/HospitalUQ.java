@@ -92,18 +92,25 @@ public class HospitalUQ {
         return null;
     }
 
-    public boolean eliminarEmpleado(String idEliminar) {
-        int indiceEmpleado = buscarPacienteID(idEliminar); // debe devolver índice
-
-        if (indiceEmpleado != -1) {
-            pacientes.set(indiceEmpleado, null); // si es ArrayList
-            return true;
+    public void eliminarPaciente(String idPaciente) {
+        for (int i = 0; i < pacientes.size(); i++) {
+            if (pacientes.get(i).getId().equals(idPaciente)) {
+                pacientes.set(i, null); // marca el elemento como null
+                return;
+            }
         }
-        return false;
-
     }
 
     //Actualizar Paciente
-    public void actualizarPaciente
+    public boolean modificarMedico(Paciente pacienteModificado) {
+        for (int i = 0; i < pacientes.size(); i++) {
+            if (pacientes.get(i).getId().equals(pacienteModificado.getId())) {
+                pacientes.set(i, pacienteModificado);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }
