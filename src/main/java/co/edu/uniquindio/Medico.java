@@ -6,18 +6,18 @@ import java.util.LinkedList;
 public class Medico extends Usuario {
     private Especialidad especialidad;
     private EstadoMedico estado;
-    private Horario horario;
-    private Cita citaAsignadas;
+    private LinkedList<Horario> horario;
+    private LinkedList<Cita> citaAsignadas;
     private Paciente pacienteAsignado;
 
 
 
-    public Medico(String id, String nombre, String correo, String telefono, Notification notificacion, Especialidad especialidad, EstadoMedico estado, Horario horario, Cita citaAsignadas, Paciente pacienteAsignado) {
+    public Medico(String id, String nombre, String correo, String telefono, LinkedList<Notificacion> notificacion, Especialidad especialidad, EstadoMedico estado, LinkedList<Horario> horario, LinkedList<Cita> citaAsignadas, Paciente pacienteAsignado) {
         super(id, nombre, correo, telefono, notificacion);
         this.especialidad = especialidad;
         this.estado = estado;
-        this.horario = horario;
-        this.citaAsignadas = citaAsignadas;
+        this.horario = new LinkedList<>();
+        this.citaAsignadas = new LinkedList<>();
         this.pacienteAsignado = pacienteAsignado;
     }
 
@@ -37,19 +37,19 @@ public class Medico extends Usuario {
         this.estado = estado;
     }
 
-    public Horario getHorario() {
+    public LinkedList<Horario> getHorario() {
         return horario;
     }
 
-    public void setHorario(Horario horario) {
+    public void setHorario(LinkedList<Horario> horario) {
         this.horario = horario;
     }
 
-    public Cita getCitaAsignadas() {
+    public LinkedList<Cita> getCitaAsignadas() {
         return citaAsignadas;
     }
 
-    public void setCitaAsignadas(Cita citaAsignadas) {
+    public void setCitaAsignadas(LinkedList<Cita> citaAsignadas) {
         this.citaAsignadas = citaAsignadas;
     }
 

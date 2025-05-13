@@ -72,4 +72,38 @@ public class HospitalUQ {
     public void setNotificaciones(LinkedList<Notificacion> notificaciones) {
         this.notificaciones = notificaciones;
     }
+
+
+    //Metodos
+
+    //Agregar el paciente
+    public void registrarPaciente(Paciente paciente) {
+        pacientes.add(paciente);
+
+    }
+
+    //Buscar Paciente por ID
+    public Paciente buscarPacienteID(String idPaciente) {
+        for(Paciente paciente : pacientes){
+            if(paciente.getId().equals(idPaciente)){
+                return paciente;
+            }
+        }
+        return null;
+    }
+
+    public boolean eliminarEmpleado(String idEliminar) {
+        int indiceEmpleado = buscarPacienteID(idEliminar); // debe devolver índice
+
+        if (indiceEmpleado != -1) {
+            pacientes.set(indiceEmpleado, null); // si es ArrayList
+            return true;
+        }
+        return false;
+
+    }
+
+    //Actualizar Paciente
+    public void actualizarPaciente
+
 }

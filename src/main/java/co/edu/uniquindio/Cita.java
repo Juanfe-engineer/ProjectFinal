@@ -11,7 +11,7 @@ public class Cita {
     private EstadoCita estado;
     private DiagnosticoTratamiento diagnosticotratamiento;
 
-    public Cita(String idCita, Paciente paciente, Medico medico, Sala sala, Horario horario, EstadoCita estado, DiagnosticoTratamiento diagnostico_tratamiento) {
+    public Cita(String idCita, Paciente paciente, Medico medico, Sala sala, Horario horario, EstadoCita estado, DiagnosticoTratamiento diagnosticotratamiento) {
         this.idCita = idCita;
         this.paciente = paciente;
         this.medico = medico;

@@ -7,7 +7,7 @@ public class Paciente extends Usuario{
     private HistorialMedico historialMedico;
     private LinkedList<Cita> citas;
 
-    public Paciente(String id, String nombre, String correo, String telefono, Notification notificacion, HistorialMedico historialMedico, Cita citas) {
+    public Paciente(String id, String nombre, String correo, String telefono, LinkedList<Notificacion> notificacion, HistorialMedico historialMedico, LinkedList<Cita> citas) {
         super(id, nombre, correo, telefono, notificacion);
         this.historialMedico = historialMedico;
         this.citas = new LinkedList<>();
