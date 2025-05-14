@@ -356,7 +356,32 @@ public class HospitalUQ {
 
 
     //----------------------------------------------------------------------------------------------------------------//
-    
+
+    // Asignar Sala a Cita
+
+    public boolean asignarSalaACita(String idSala, String idCita) {
+        if (idSala == null || idCita == null)
+            return false;
+
+        Sala sala = buscarSalaPorId(idSala);
+        Cita cita = buscarCitaPorID(idCita);
+
+        if (sala == null || cita == null)
+            return false;
+
+        // Validar si ya hay sala asignada
+        if (cita.getSala() != null)
+            return false;
+
+        // Validar si la sala está disponible
+        if (sala.getEstado() != EstadoSala.DISPONIBLE)
+            return false;
+
+        // Asignar sala
+        cita.setSala(sala);
+        sala.setEstado(EstadoSala.OCUPADA);
+        return true;
+    }
 
 
 

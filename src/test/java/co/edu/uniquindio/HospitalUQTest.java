@@ -436,7 +436,7 @@ public class HospitalUQTest {
         EstadoCita estado = EstadoCita.PROGRAMADA;
 
         // Crear la cita con los objetos creados
-        Cita cita = new Cita("C01", paciente, medico, sala, horario, estado);
+        Cita cita = new Cita("C01", paciente, medico, null, horario, estado);
 
         // Agregar la cita al hospital
         HospitalUQ hospital = new HospitalUQ("UQ Salud", "123");
@@ -468,6 +468,37 @@ public class HospitalUQTest {
 
         log.info("La prueba finalizo");
     }
+
+
+    //----------------------------------------------------------------------------------------------------------------//
+
+    // pruebas para AsignarSalaACita y liberarSaladeCita
+
+
+    @Test
+    public void testAsignarSalaACita() {
+        log.info("La prueba inicio");
+
+        HospitalUQ hospital = new HospitalUQ("UQ Salud", "123");
+
+        Sala sala = new Sala("S01", TipoSala.CONSULTA, EstadoSala.DISPONIBLE, 2);
+        Paciente paciente = new Paciente("P01", "Ana", "ana@uq.edu.co", "3123456789");
+        Medico medico = new Medico("M01", "Dr. Luis", "luis@uq.edu.co", "3219876543", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
+        Horario horario = new Horario("H01", LocalDate.now(), LocalDate.now(), Jornada.MANANA);
+
+        Cita cita = new Cita("C01", paciente, medico,null, horario, EstadoCita.PROGRAMADA);
+
+        hospital.getCitas().add(cita);
+        hospital.getSalas().add(sala);
+
+        boolean resultado = hospital.asignarSalaACita("S01", "C01");
+
+        assertTrue(resultado);
+        assertEquals(EstadoSala.OCUPADA, sala.getEstado());
+
+        log.info("La prueba finalizo");
+    }
+
 
 
 
