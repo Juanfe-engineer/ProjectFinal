@@ -1,18 +1,25 @@
 package co.edu.uniquindio;
 
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+/*
+ * Clase que prueba las funcionalides de HospitalUQ
+ *
+ * @Authors Juan Felipe Ibarra - Johan Stiven Pineda - Samuel Arturo Rodriguez - Jacobo Arboleda Carvajal
+ *
+ */
 
 public class HospitalUQTest {
     private static final Logger log =
             Logger.getLogger(HospitalUQTest.class.getName());
 
+
+    // PRUEBAS UNITARIAS CRUD PACIENTE
 
     @Test
     public void registrarPaciente() {
@@ -50,9 +57,7 @@ public class HospitalUQTest {
     }
 
 
-
-
-        @Test
+    @Test
     public void buscarPacienteId() {
             log.info("La prueba Inicio");
 
@@ -65,10 +70,10 @@ public class HospitalUQTest {
             assertNotNull(resultado);
             assertEquals("Johan", resultado.getNombre());
 
-            // Caso: buscar con ID que no existe
+            // buscar con ID que no existe
             assertNull(hospitalUQ.buscarPacienteID("9999"));
 
-            // Caso: buscar con ID nulo
+            // buscar con ID nulo
             assertNull(hospitalUQ.buscarPacienteID(null));
 
             log.info("La prueba termino");
@@ -90,7 +95,7 @@ public class HospitalUQTest {
         assertNull(hospitalUQ.buscarPacienteID("0002"));
         assertEquals(0, hospitalUQ.getPacientes().size());
 
-        // Caso: eliminar con ID null
+        // eliminar con ID null
         boolean resultadoNulo = hospitalUQ.eliminarPaciente(null);
         assertFalse(resultadoNulo);
 
@@ -138,6 +143,144 @@ public class HospitalUQTest {
 
 
 
+    // PRUEBAS UNITARIAS CRUD MEDICO
 
-  
+
+    @Test
+    public void registrarMedico() {
+        log.info("La prueba Inicio");
+
+        // Crear un hospital
+        HospitalUQ hospitalUQ = new HospitalUQ("SanJuan", "900-234-462");
+
+        // Crear un medico
+        Medico medico1 = new Medico("Jacobo", "0001","Jacobo@uq.edu.co", "3023456712");
+
+        // Registrar el medico
+        boolean resultado = hospitalUQ.registrarMedico(medico1);
+
+        // Verificar que el medico fue registrado correctamente
+        assertTrue(resultado);
+        assertEquals(1, hospitalUQ.getMedicos().size());
+
+        // Intentar registrar un medico con el mismo ID (debe fallar)
+        Medico medico2 = new Medico("Juanfe", "0001", "Juanfe@uq.edu.co", "3023456562");
+
+        // El resultado debe ser falso, porque el ID ya existe
+        resultado = hospitalUQ.registrarMedico(medico2);
+        assertFalse(resultado);
+        assertEquals(1, hospitalUQ.getMedicos().size()); // No debe agregar al segundo paciente
+
+        // Intentar registrar un medico nulo (debe fallar)
+        Medico MedicoNulo = null;
+        resultado = hospitalUQ.registrarMedico(MedicoNulo);
+        assertFalse(resultado);
+        assertEquals(1, hospitalUQ.getMedicos().size()); // No debe agregar un paciente nulo
+
+        log.info("La prueba termino");
+
+    }
+
+
+
+    @Test
+    public void buscarMedicoId() {
+        log.info("La prueba Inicio");
+
+        HospitalUQ hospitalUQ = new HospitalUQ("SanJuan", "900-234-462");
+
+        Medico medico1 = new Medico("Samuel", "0001","Samuel@uq.edu.co", "3154672134");
+        hospitalUQ.registrarMedico(medico1);
+
+        Medico resultado = hospitalUQ.buscarMedicoID("0001");
+        assertNotNull(resultado);
+        assertEquals("Samuel", resultado.getNombre());
+
+        // buscar con ID que no existe
+        assertNull(hospitalUQ.buscarMedicoID("9999"));
+
+        // buscar con ID nulo
+        assertNull(hospitalUQ.buscarMedicoID(null));
+
+        log.info("La prueba termino");
+    }
+
+
+
+    @Test
+    public void eliminarMedico() {
+        log.info("La prueba Inicio");
+
+        HospitalUQ hospitalUQ = new HospitalUQ("SanJuan", "900-234-462");
+
+        Medico medico1 = new Medico("Raul", "0002", "Raul@uq.edu.co", "31567375621");
+        hospitalUQ.registrarMedico(medico1);
+
+        boolean eliminado = hospitalUQ.eliminarMedico("0002");
+        assertTrue(eliminado);
+
+        assertNull(hospitalUQ.buscarMedicoID("0002"));
+        assertEquals(0, hospitalUQ.getMedicos().size());
+
+        // eliminar con ID null
+        boolean resultadoNulo = hospitalUQ.eliminarMedico(null);
+        assertFalse(resultadoNulo);
+
+        log.info("La prueba Termino");
+    }
+
+
+
+    @Test
+    public void modificarMedico() {
+        log.info("La prueba Inicio");
+
+        HospitalUQ hospitalUQ = new HospitalUQ("SanJuan", "900-234-462");
+
+        // modificar medico existente
+        Medico medicoOriginal = new Medico("Johan", "0003", "Johan@uq.edu.co", "3004567903");
+        hospitalUQ.registrarMedico(medicoOriginal);
+
+        Medico medicoModificado = new Medico("Johan Stiven", "0003", "Stiven@uq.edu.co", "3004567904");
+        Medico resultado = hospitalUQ.modificarMedico(medicoModificado);
+
+        assertNotNull(resultado);
+        assertEquals("Johan Stiven", resultado.getNombre());
+        assertEquals("Stiven@uq.edu.co", resultado.getCorreo());
+        assertEquals("3004567904", resultado.getTelefono());
+
+        // Validar que se haya reemplazado en la lista
+        Medico enLista = hospitalUQ.getMedicos().get(0);
+        assertEquals("Johan Stiven", enLista.getNombre());
+
+        // Cuando el medico a modificar es null
+        Medico resultadoNulo = hospitalUQ.modificarMedico(null);
+        assertNull(resultadoNulo);
+
+        // Cuando el ID del medico es null
+        Medico medicoSinId = new Medico("Sin ID", null, "noid@uq.edu.co", "3114330000");
+        Medico resultadoSinId = hospitalUQ.modificarMedico(medicoSinId);
+        assertNull(resultadoSinId);
+
+        // Cuando el ID no existe en la lista
+        Medico medicoInexistente = new Medico("Falso", "9999", "falso@uq.edu.co", "3000000000");
+        Medico resultadoFalso = hospitalUQ.modificarMedico(medicoInexistente);
+        assertNull(resultadoFalso);
+
+        log.info("La prueba Termino");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
