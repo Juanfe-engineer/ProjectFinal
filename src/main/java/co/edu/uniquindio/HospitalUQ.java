@@ -294,6 +294,35 @@ public class HospitalUQ {
         return true;
     }
 
+    // Cancelar Cita
+
+    public boolean cancelarCita(String idCita) {
+        for (Cita cita : citas) {
+            if (cita.getIdCita().equals(idCita)) {
+                if (cita.getEstado() != EstadoCita.CANCELADA) {
+                    cita.setEstado(EstadoCita.CANCELADA);
+
+                    // Liberar sala y médico
+                    if (cita.getMedico() != null) {
+                        cita.getMedico().setEstado(EstadoMedico.DISPONIBLE);
+                    }
+                    if (cita.getSala() != null) {
+                        cita.getSala().setEstado(EstadoSala.DISPONIBLE);
+                    }
+
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
+
+
+    //----------------------------------------------------------------------------------------------------------------//
+
+
     
 
 

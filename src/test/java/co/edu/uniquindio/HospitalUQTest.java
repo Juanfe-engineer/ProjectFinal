@@ -276,6 +276,7 @@ public class HospitalUQTest {
 
     //----------------------------------------------------------------------------------------------------------------//
 
+    // Pruebas unitarias para asignar medico a paciente y luego liberarlo
 
     @Test
     public void asignarYLiberarMedicoAPaciente() {
@@ -308,6 +309,7 @@ public class HospitalUQTest {
 
     //----------------------------------------------------------------------------------------------------------------//
 
+    // pruebas para agregar y cancelar una cita medica
 
     @Test
     public void agregarCita() {
@@ -339,6 +341,40 @@ public class HospitalUQTest {
 
         log.info("Fin prueba agregar cita");
     }
+
+
+    @Test
+    public void cancelarCita() {
+        log.info("Inicio prueba cancelar cita");
+
+        HospitalUQ hospital = new HospitalUQ("San Juan", "900-123");
+
+        // Crear entidades necesarias
+        Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
+        Medico medico = new Medico("M002", "Dra. Grey", "grey@uq.edu.co", "3112345678", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
+        Sala sala = new Sala("S002", TipoSala.CONSULTA, EstadoSala.DISPONIBLE, 1);
+        Horario horario = new Horario("H002", LocalDate.of(2025, 5, 14), LocalDate.of(2025, 5, 14), Jornada.TARDE);
+
+        Cita cita = new Cita("C002", paciente, medico, sala, horario, EstadoCita.PROGRAMADA);
+
+        // Preparar el entorno
+        hospital.getPacientes().add(paciente);
+        hospital.getMedicos().add(medico);
+        hospital.getSalas().add(sala);
+        hospital.getCitas().add(cita);
+        medico.setEstado(EstadoMedico.NO_DISPONIBLE);
+        sala.setEstado(EstadoSala.OCUPADA);
+
+        boolean resultado = hospital.cancelarCita("C002");
+
+        assertTrue(resultado);
+        assertEquals(EstadoCita.CANCELADA, cita.getEstado());
+        assertEquals(EstadoMedico.DISPONIBLE, medico.getEstado());
+        assertEquals(EstadoSala.DISPONIBLE, sala.getEstado());
+
+        log.info("Fin prueba cancelar cita");
+    }
+
 
 
 
