@@ -323,7 +323,21 @@ public class HospitalUQ {
     //----------------------------------------------------------------------------------------------------------------//
 
 
-    
+
+    // Buscar Sala Por Id
+
+    public Sala buscarSalaPorId(String idSala) {
+        for (Sala sala : salas) {
+            if (sala.getIdSala().equals(idSala))
+                return sala;
+        }
+        return null;
+    }
+
+
+
+
+
 
 
 }

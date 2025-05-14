@@ -280,7 +280,7 @@ public class HospitalUQTest {
 
     @Test
     public void asignarYLiberarMedicoAPaciente() {
-        log.info("Inicio prueba asignar y liberar médico");
+        log.info("La prueba Inicio");
 
         HospitalUQ hospital = new HospitalUQ("SanJuan", "900-234-462");
 
@@ -302,7 +302,7 @@ public class HospitalUQTest {
         assertEquals(EstadoMedico.DISPONIBLE, medico.getEstado());
         assertNull(paciente.getMedicoAsignado());
 
-        log.info("Fin prueba asignar y liberar médico");
+        log.info("La prueba termino");
     }
 
 
@@ -313,7 +313,7 @@ public class HospitalUQTest {
 
     @Test
     public void agregarCita() {
-        log.info("Inicio prueba agregar cita");
+        log.info("La prueba inicio");
 
         HospitalUQ hospital = new HospitalUQ("San Juan", "900-123");
 
@@ -339,13 +339,13 @@ public class HospitalUQTest {
         assertEquals(EstadoSala.OCUPADA, sala.getEstado());
         assertEquals(EstadoCita.PROGRAMADA, cita.getEstado());
 
-        log.info("Fin prueba agregar cita");
+        log.info("La prueba finalizo");
     }
 
 
     @Test
     public void cancelarCita() {
-        log.info("Inicio prueba cancelar cita");
+        log.info("La prueba inicio");
 
         HospitalUQ hospital = new HospitalUQ("San Juan", "900-123");
 
@@ -372,10 +372,45 @@ public class HospitalUQTest {
         assertEquals(EstadoMedico.DISPONIBLE, medico.getEstado());
         assertEquals(EstadoSala.DISPONIBLE, sala.getEstado());
 
-        log.info("Fin prueba cancelar cita");
+        log.info("La prueba finalizo");
     }
 
 
+
+
+    //----------------------------------------------------------------------------------------------------------------//
+
+    // pruebas para buscar Sala y Cita por ID
+
+    @Test
+    public void testBuscarSalaPorIdExistente() {
+        log.info("La prueba Inicio");
+
+        HospitalUQ hospital = new HospitalUQ("UQ Salud", "123");
+
+        Sala sala = new Sala("S01", TipoSala.CONSULTA, EstadoSala.DISPONIBLE, 2);
+        hospital.getSalas().add(sala);
+
+        Sala resultado = hospital.buscarSalaPorId("S01");
+
+        assertNotNull(resultado);
+        assertEquals("S01", resultado.getIdSala());
+
+        log.info("La prueba finalizo");
+    }
+
+    @Test
+    public void testBuscarSalaPorIdInexistente() {
+        log.info("La prueba Inicio");
+
+        HospitalUQ hospital = new HospitalUQ("UQ Salud", "123");
+
+        Sala resultado = hospital.buscarSalaPorId("NO_EXISTE");
+
+        assertNull(resultado);
+
+        log.info("La prueba finalizo");
+    }
 
 
 

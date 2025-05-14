@@ -2,6 +2,7 @@ package co.edu.uniquindio;
 
 import javax.management.Notification;
 import java.util.LinkedList;
+import java.util.UUID;
 
 public class Paciente extends Usuario{
     private HistorialMedico historialMedico;
@@ -37,5 +38,7 @@ public class Paciente extends Usuario{
     public void setMedicoAsignado(Medico medicoAsignado) {
         this.medicoAsignado = medicoAsignado;
     }
+
+
 }
 
