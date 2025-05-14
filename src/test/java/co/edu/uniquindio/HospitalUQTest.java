@@ -382,35 +382,34 @@ public class HospitalUQTest {
 
     // pruebas para buscar Sala y Cita por ID
 
+
     @Test
     public void testBuscarSalaPorIdExistente() {
-        log.info("La prueba Inicio");
-
+        // Se crea el hospital y una sala
         HospitalUQ hospital = new HospitalUQ("UQ Salud", "123");
-
         Sala sala = new Sala("S01", TipoSala.CONSULTA, EstadoSala.DISPONIBLE, 2);
-        hospital.getSalas().add(sala);
+        hospital.getSalas().add(sala); // Se agrega la sala a las salas del hospital
 
+        // Se busca la sala por su ID
         Sala resultado = hospital.buscarSalaPorId("S01");
 
+        // Se comprueba que la sala sea la misma que la buscada
         assertNotNull(resultado);
-        assertEquals("S01", resultado.getIdSala());
-
-        log.info("La prueba finalizo");
+        assertEquals("S01", resultado.getIdSala()); // Verifica que el ID coincida
     }
 
     @Test
     public void testBuscarSalaPorIdInexistente() {
-        log.info("La prueba Inicio");
-
+        // Se crea el hospital (sin agregar salas aún)
         HospitalUQ hospital = new HospitalUQ("UQ Salud", "123");
 
-        Sala resultado = hospital.buscarSalaPorId("NO_EXISTE");
+        // Se busca una sala que no existe
+        Sala resultado = hospital.buscarSalaPorId("S02");
 
-        assertNull(resultado);
-
-        log.info("La prueba finalizo");
+        // Se verifica que no se encuentre la sala
+        assertNull(resultado); // La sala no debería ser encontrada
     }
+
 
 
 
