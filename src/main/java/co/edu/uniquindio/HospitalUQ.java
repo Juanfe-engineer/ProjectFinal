@@ -339,4 +339,25 @@ public class HospitalUQ {
     }
 
 
+    // Buscar Cita Por Id
+
+    public Cita buscarCitaPorID(String idCita) {
+        if (idCita == null)
+            return null;
+
+        for (Cita cita : citas) {
+            if (cita != null && idCita.equals(cita.getIdCita())) {
+                return cita;
+            }
+        }
+        return null;
+    }
+
+
+
+    //----------------------------------------------------------------------------------------------------------------//
+    
+
+
+
 }

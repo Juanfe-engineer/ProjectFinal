@@ -383,8 +383,12 @@ public class HospitalUQTest {
     // pruebas para buscar Sala y Cita por ID
 
 
+    // Sala
+
     @Test
     public void testBuscarSalaPorIdExistente() {
+        log.info("La prueba inicio");
+
         // Se crea el hospital y una sala
         HospitalUQ hospital = new HospitalUQ("UQ Salud", "123");
         Sala sala = new Sala("S01", TipoSala.CONSULTA, EstadoSala.DISPONIBLE, 2);
@@ -396,10 +400,14 @@ public class HospitalUQTest {
         // Se comprueba que la sala sea la misma que la buscada
         assertNotNull(resultado);
         assertEquals("S01", resultado.getIdSala()); // Verifica que el ID coincida
+
+        log.info("La prueba finalizo");
     }
 
     @Test
     public void testBuscarSalaPorIdInexistente() {
+        log.info("La prueba inicio");
+
         // Se crea el hospital (sin agregar salas aún)
         HospitalUQ hospital = new HospitalUQ("UQ Salud", "123");
 
@@ -408,6 +416,57 @@ public class HospitalUQTest {
 
         // Se verifica que no se encuentre la sala
         assertNull(resultado); // La sala no debería ser encontrada
+
+        log.info("La prueba finalizo");
+    }
+
+
+
+    // Cita
+
+    @Test
+    public void testBuscarCitaPorIdExistente() {
+        log.info("La prueba inicio");
+
+        // Creación de los objetos necesarios para crear una cita
+        Paciente paciente = new Paciente("P01", "Juan", "juan@uq.edu.co", "3123456789");
+        Medico medico = new Medico("M01", "Dr. Luis", "luis@uq.edu.co", "3219876543", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
+        Sala sala = new Sala("S01", TipoSala.CONSULTA, EstadoSala.DISPONIBLE, 2);
+        Horario horario = new Horario("H01", LocalDate.now(), LocalDate.now(), Jornada.MANANA);
+        EstadoCita estado = EstadoCita.PROGRAMADA;
+
+        // Crear la cita con los objetos creados
+        Cita cita = new Cita("C01", paciente, medico, sala, horario, estado);
+
+        // Agregar la cita al hospital
+        HospitalUQ hospital = new HospitalUQ("UQ Salud", "123");
+        hospital.getCitas().add(cita);
+
+        // Buscar la cita por su ID
+        Cita resultado = hospital.buscarCitaPorID("C01");
+
+        // Verificar que la cita encontrada es la correcta
+        assertNotNull(resultado);
+        assertEquals("C01", resultado.getIdCita()); // Verifica que el ID coincida
+
+        log.info("La prueba finalizo");
+    }
+
+
+    @Test
+    public void testBuscarCitaPorIdInexistente() {
+        log.info("La prueba inicio");
+
+        // Se crea el hospital (sin agregar citas aún)
+        HospitalUQ hospital = new HospitalUQ("UQ Salud", "123");
+
+        // Se busca una cita que no existe
+        Cita resultado = hospital.buscarCitaPorID("C02");
+
+        // Se verifica que no se encuentre la cita
+        assertNull(resultado); // La cita no debería ser encontrada
+
+        log.info("La prueba finalizo");
     }
 
 
