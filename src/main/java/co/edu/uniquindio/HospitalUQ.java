@@ -211,43 +211,50 @@ public class HospitalUQ {
     // Asignar medico a paciente
 
     public boolean asignarMedicoAPaciente(String idPaciente, String idMedico) {
+        if (idPaciente == null || idMedico == null) return false;
+
         for (Paciente paciente : pacientes) {
-            if (paciente.getId().equals(idPaciente)) {
+            if (paciente != null && idPaciente.equals(paciente.getId())) {
                 for (Medico medico : medicos) {
-                    if (medico.getId().equals(idMedico)) {
+                    if (medico != null && idMedico.equals(medico.getId())) {
                         if (medico.getEstado() == EstadoMedico.DISPONIBLE) {
                             paciente.setMedicoAsignado(medico);
-                            medico.setEstado(EstadoMedico.NO_DISPONIBLE); // cambiar el estado
+                            medico.setEstado(EstadoMedico.NO_DISPONIBLE);
                             return true;
                         } else {
-                            return false; // Médico no está disponible
+                            return false; // médico no disponible
                         }
                     }
                 }
             }
         }
-        return false;
+        return false; // paciente o médico no encontrado
     }
+
 
 
     // Liberar medico de paciente
 
     public boolean liberarMedicoDePaciente(String idPaciente) {
-        for (Paciente paciente : pacientes) {
-            if (paciente.getId().equals(idPaciente)) {
-                Medico medicoAsignado = paciente.getMedicoAsignado();
+        if (idPaciente == null) return false;
 
+        for (Paciente paciente : pacientes) {
+            if (paciente != null && idPaciente.equals(paciente.getId())) {
+                Medico medicoAsignado = paciente.getMedicoAsignado();
                 if (medicoAsignado != null) {
                     medicoAsignado.setEstado(EstadoMedico.DISPONIBLE);
-                    paciente.setMedicoAsignado(null); // quita el médico del paciente
+                    paciente.setMedicoAsignado(null);
                     return true;
-                } else {
-                    return false; // el paciente no tiene médico asignado
                 }
+                return false; // paciente sin médico asignado
             }
         }
         return false; // paciente no encontrado
     }
+
+
+
+    //----------------------------------------------------------------------------------------------------------------//
 
 
 

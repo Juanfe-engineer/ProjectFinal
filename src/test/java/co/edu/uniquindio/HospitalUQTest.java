@@ -154,7 +154,7 @@ public class HospitalUQTest {
         HospitalUQ hospitalUQ = new HospitalUQ("SanJuan", "900-234-462");
 
         // Crear un medico
-        Medico medico1 = new Medico("Jacobo", "0001","Jacobo@uq.edu.co", "3023456712");
+        Medico medico1 = new Medico("Jacobo", "0001","Jacobo@uq.edu.co", "3023456712",Especialidad.GENERAL,EstadoMedico.DISPONIBLE);
 
         // Registrar el medico
         boolean resultado = hospitalUQ.registrarMedico(medico1);
@@ -164,7 +164,7 @@ public class HospitalUQTest {
         assertEquals(1, hospitalUQ.getMedicos().size());
 
         // Intentar registrar un medico con el mismo ID (debe fallar)
-        Medico medico2 = new Medico("Juanfe", "0001", "Juanfe@uq.edu.co", "3023456562");
+        Medico medico2 = new Medico("Juanfe", "0001", "Juanfe@uq.edu.co", "3023456562",Especialidad.CARDIOLOGO,EstadoMedico.DISPONIBLE);
 
         // El resultado debe ser falso, porque el ID ya existe
         resultado = hospitalUQ.registrarMedico(medico2);
@@ -189,7 +189,7 @@ public class HospitalUQTest {
 
         HospitalUQ hospitalUQ = new HospitalUQ("SanJuan", "900-234-462");
 
-        Medico medico1 = new Medico("Samuel", "0001","Samuel@uq.edu.co", "3154672134");
+        Medico medico1 = new Medico("Samuel", "0001","Samuel@uq.edu.co", "3154672134", Especialidad.CIRUJANO, EstadoMedico.DISPONIBLE);
         hospitalUQ.registrarMedico(medico1);
 
         Medico resultado = hospitalUQ.buscarMedicoID("0001");
@@ -213,7 +213,7 @@ public class HospitalUQTest {
 
         HospitalUQ hospitalUQ = new HospitalUQ("SanJuan", "900-234-462");
 
-        Medico medico1 = new Medico("Raul", "0002", "Raul@uq.edu.co", "31567375621");
+        Medico medico1 = new Medico("Raul", "0002", "Raul@uq.edu.co", "31567375621", Especialidad.NEUROLOGO, EstadoMedico.DISPONIBLE);
         hospitalUQ.registrarMedico(medico1);
 
         boolean eliminado = hospitalUQ.eliminarMedico("0002");
@@ -238,10 +238,10 @@ public class HospitalUQTest {
         HospitalUQ hospitalUQ = new HospitalUQ("SanJuan", "900-234-462");
 
         // modificar medico existente
-        Medico medicoOriginal = new Medico("Johan", "0003", "Johan@uq.edu.co", "3004567903");
+        Medico medicoOriginal = new Medico("Johan", "0003", "Johan@uq.edu.co", "3004567903",Especialidad.PEDIATRIA, EstadoMedico.DISPONIBLE);
         hospitalUQ.registrarMedico(medicoOriginal);
 
-        Medico medicoModificado = new Medico("Johan Stiven", "0003", "Stiven@uq.edu.co", "3004567904");
+        Medico medicoModificado = new Medico("Johan Stiven", "0003", "Stiven@uq.edu.co", "3004567904", Especialidad.OFTAGMOLOGO, EstadoMedico.DISPONIBLE);
         Medico resultado = hospitalUQ.modificarMedico(medicoModificado);
 
         assertNotNull(resultado);
@@ -258,17 +258,51 @@ public class HospitalUQTest {
         assertNull(resultadoNulo);
 
         // Cuando el ID del medico es null
-        Medico medicoSinId = new Medico("Sin ID", null, "noid@uq.edu.co", "3114330000");
+        Medico medicoSinId = new Medico("Sin ID", null, "noid@uq.edu.co", "3114330000",Especialidad.CIRUJANO, EstadoMedico.DISPONIBLE);
         Medico resultadoSinId = hospitalUQ.modificarMedico(medicoSinId);
         assertNull(resultadoSinId);
 
         // Cuando el ID no existe en la lista
-        Medico medicoInexistente = new Medico("Falso", "9999", "falso@uq.edu.co", "3000000000");
+        Medico medicoInexistente = new Medico("Falso", "9999", "falso@uq.edu.co", "3000000000", Especialidad.GENERAL, EstadoMedico.EN_CONSULTA);
         Medico resultadoFalso = hospitalUQ.modificarMedico(medicoInexistente);
         assertNull(resultadoFalso);
 
         log.info("La prueba Termino");
     }
+
+
+
+
+    //----------------------------------------------------------------------------------------------------------------//
+
+
+    @Test
+    public void asignarYLiberarMedicoAPaciente() {
+        log.info("Inicio prueba asignar y liberar médico");
+
+        HospitalUQ hospital = new HospitalUQ("SanJuan", "900-234-462");
+
+        Medico medico = new Medico("Dr. House", "M001", "drhouse@uq.edu.co", "3171234567", Especialidad.CARDIOLOGO, EstadoMedico.DISPONIBLE);
+        Paciente paciente = new Paciente("Lucas", "P001", "lucas@uq.edu.co", "3120001111");
+
+        hospital.registrarMedico(medico);
+        hospital.registrarPaciente(paciente);
+
+        // Asignar médico
+        boolean asignado = hospital.asignarMedicoAPaciente("P001", "M001");
+        assertTrue(asignado);
+        assertEquals(EstadoMedico.NO_DISPONIBLE, medico.getEstado());
+        assertEquals(medico, paciente.getMedicoAsignado());
+
+        // Liberar médico
+        boolean liberado = hospital.liberarMedicoDePaciente("P001");
+        assertTrue(liberado);
+        assertEquals(EstadoMedico.DISPONIBLE, medico.getEstado());
+        assertNull(paciente.getMedicoAsignado());
+
+        log.info("Fin prueba asignar y liberar médico");
+    }
+
 
 
 
