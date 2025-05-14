@@ -140,7 +140,6 @@ public class HospitalUQ {
     }
 
 
-
     // CRUD Medico
 
     //Agregar el Medico
@@ -203,9 +202,7 @@ public class HospitalUQ {
     }
 
 
-
 //--------------------------------------------------------------------------------------------------------------------//
-
 
 
     // Asignar medico a paciente
@@ -232,7 +229,6 @@ public class HospitalUQ {
     }
 
 
-
     // Liberar medico de paciente
 
     public boolean liberarMedicoDePaciente(String idPaciente) {
@@ -251,7 +247,6 @@ public class HospitalUQ {
         }
         return false; // paciente no encontrado
     }
-
 
 
     //----------------------------------------------------------------------------------------------------------------//
@@ -318,10 +313,7 @@ public class HospitalUQ {
     }
 
 
-
-
     //----------------------------------------------------------------------------------------------------------------//
-
 
 
     // Buscar Sala Por Id
@@ -354,7 +346,6 @@ public class HospitalUQ {
     }
 
 
-
     //----------------------------------------------------------------------------------------------------------------//
 
     // Asignar Sala a Cita
@@ -384,5 +375,28 @@ public class HospitalUQ {
     }
 
 
+    // liberar Sala de Cita
+
+    public boolean liberarSalaDeCita(String idCita) {
+        if (idCita == null) return false;
+
+        Cita cita = buscarCitaPorID(idCita);
+        if (cita == null) return false;
+
+        Sala sala = cita.getSala();
+        if (sala == null) return false;
+
+        // Validar que la sala esté actualmente asignada a esa cita
+        if (sala.getEstado() != EstadoSala.OCUPADA) {
+            return false; // La sala no está ocupada, no tiene sentido liberarla
+        }
+
+        sala.setEstado(EstadoSala.DISPONIBLE);
+        cita.setSala(null); // Desvincular sala de la cita
+        return true;
+    }
+
+
 
 }
+

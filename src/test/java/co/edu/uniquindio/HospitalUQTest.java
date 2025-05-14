@@ -502,6 +502,29 @@ public class HospitalUQTest {
 
 
 
+    @Test
+    public void testLiberarSalaDeCita() {
+        HospitalUQ hospital = new HospitalUQ("Hospital UQ", "123");
+
+        Sala sala = new Sala("S01", TipoSala.CONSULTA, EstadoSala.OCUPADA, 2);
+        Paciente paciente = new Paciente("P01", "Ana", "ana@uq.edu.co", "3001234567");
+        Medico medico = new Medico("M01", "Dr. Juan", "juan@uq.edu.co", "3012345678", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
+        Horario horario = new Horario("H01", LocalDate.now(), LocalDate.now(), Jornada.MANANA);
+
+        Cita cita = new Cita("C01", paciente, medico, sala, horario, EstadoCita.PROGRAMADA);
+
+        hospital.getSalas().add(sala);
+        hospital.getCitas().add(cita);
+
+        boolean resultado = hospital.liberarSalaDeCita("C01");
+
+        assertTrue(resultado);
+        assertEquals(EstadoSala.DISPONIBLE, sala.getEstado());
+        assertNull(cita.getSala());
+    }
+
+
+
 
 
 
