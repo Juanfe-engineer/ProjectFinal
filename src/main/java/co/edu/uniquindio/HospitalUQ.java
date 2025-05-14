@@ -20,15 +20,19 @@ public class HospitalUQ {
         this.citas = new LinkedList<>();
         this.notificaciones = new LinkedList<>();
     }
+
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -77,41 +81,67 @@ public class HospitalUQ {
     //Metodos
 
     //Agregar el paciente
-    public void registrarPaciente(Paciente paciente) {
+    public boolean registrarPaciente(Paciente paciente) {
+        if (paciente == null) {
+            return false;
+        }
+        for (Paciente p : pacientes) {
+            if (p.getId().equals(paciente.getId())) {
+                return false;
+            }
+        }
         pacientes.add(paciente);
-
+        return true;
     }
 
     //Buscar Paciente por ID
     public Paciente buscarPacienteID(String idPaciente) {
-        for(Paciente paciente : pacientes){
-            if(paciente.getId().equals(idPaciente)){
+        if (idPaciente == null)
+            return null;
+
+        for (Paciente paciente : pacientes) {
+            if (paciente != null && idPaciente.equals(paciente.getId())) {
                 return paciente;
             }
         }
         return null;
     }
 
-    //Eliminar paciente
-    public void eliminarPaciente(String idPaciente) {
-        for (int i = 0; i < pacientes.size(); i++) {
-            if (pacientes.get(i).getId().equals(idPaciente)) {
-                pacientes.set(i, null); // marca el elemento como null
-                return;
-            }
-        }
-    }
 
-    //Actualizar Paciente
-    public boolean modificarPaciente(Paciente pacienteModificado) {
+    //Eliminar paciente
+    public boolean eliminarPaciente(String idPaciente) {
+        if (idPaciente == null)
+            return false;
+
         for (int i = 0; i < pacientes.size(); i++) {
-            if (pacientes.get(i).getId().equals(pacienteModificado.getId())) {
-                pacientes.set(i, pacienteModificado);
+            Paciente actual = pacientes.get(i);
+            if (actual != null && idPaciente.equals(actual.getId())) {
+                pacientes.remove(i);
                 return true;
             }
         }
         return false;
     }
+
+
+    //Actualizar Paciente
+    public Paciente modificarPaciente(Paciente pacienteModificado) {
+        if (pacienteModificado == null || pacienteModificado.getId() == null) {
+            return null;
+        }
+
+        for (int i = 0; i < pacientes.size(); i++) {
+            Paciente actual = pacientes.get(i);
+            if (actual != null && actual.getId() != null &&
+                    actual.getId().equals(pacienteModificado.getId())) {
+                pacientes.set(i, pacienteModificado);
+                return pacienteModificado;
+            }
+        }
+        return null;
+    }
+
+
 
     //Agregar el Medico
     public void registrarMedico(Medico medico) {
@@ -191,16 +221,6 @@ public class HospitalUQ {
         return false; // paciente no encontrado
     }
 
-
-    // METODO 3: "Buscar soldados por especialidad
-
-    public Especialidad obtenerEspecialidadDesdeTexto(String texto) {
-        try {
-            return Especialidad.valueOf(texto.toUpperCase());//Value0f convierte el string en valor de Enum y toUpp para que no tenga errores por mayuscula
-        } catch (IllegalArgumentException e) {
-            return null; // o lanza tu propia excepción o muestra mensaje de error
-        }
-    }
 
 
 

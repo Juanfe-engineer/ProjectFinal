@@ -8,8 +8,8 @@ public class Paciente extends Usuario{
     private Medico medicoAsignado;
     private LinkedList<Cita> citas;
 
-    public Paciente(String id, String nombre, String correo, String telefono) {
-        super(id, nombre, correo, telefono);
+    public Paciente(String nombre,String id, String correo, String telefono) {
+        super(nombre, id, correo, telefono);
         this.citas = new LinkedList<>();
         this.historialMedico = null;
     }

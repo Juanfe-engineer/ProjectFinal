@@ -12,8 +12,8 @@ public class Medico extends Usuario {
 
 
 
-    public Medico(String id, String nombre, String correo, String telefono) {
-        super(id, nombre, correo, telefono);
+    public Medico(String nombre, String id, String correo, String telefono) {
+        super(nombre, id, correo, telefono);
         this.horario = new LinkedList<>();
         this.citaAsignadas = new LinkedList<>();
     }
