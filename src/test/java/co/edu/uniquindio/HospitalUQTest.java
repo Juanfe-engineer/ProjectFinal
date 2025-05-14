@@ -3,6 +3,7 @@ package co.edu.uniquindio;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -302,6 +303,43 @@ public class HospitalUQTest {
 
         log.info("Fin prueba asignar y liberar médico");
     }
+
+
+
+    //----------------------------------------------------------------------------------------------------------------//
+
+
+    @Test
+    public void agregarCita() {
+        log.info("Inicio prueba agregar cita");
+
+        HospitalUQ hospital = new HospitalUQ("San Juan", "900-123");
+
+        // Crear entidades necesarias
+        Paciente paciente = new Paciente("P001", "Ana", "ana@uq.edu.co", "3216549870");
+        Medico medico = new Medico("M001", "Dr. Pineda", "Dpineda@uq.edu.co", "3201234567", Especialidad.NEUROLOGO, EstadoMedico.DISPONIBLE);
+        Sala sala = new Sala("S001", TipoSala.CONSULTA, EstadoSala.DISPONIBLE, 1);
+        Horario horario = new Horario("H001", LocalDate.of(2025, 5, 14), LocalDate.of(2025, 5, 14), Jornada.TARDE);
+
+
+        Cita cita = new Cita("C001", paciente, medico, sala, horario, null);
+
+        // Agregar entidades al hospital
+        hospital.getPacientes().add(paciente);
+        hospital.getMedicos().add(medico);
+        hospital.getSalas().add(sala);
+
+        boolean resultado = hospital.agregarCita(cita);
+
+        assertTrue(resultado);
+        assertEquals(1, hospital.getCitas().size());
+        assertEquals(EstadoMedico.NO_DISPONIBLE, medico.getEstado());
+        assertEquals(EstadoSala.OCUPADA, sala.getEstado());
+        assertEquals(EstadoCita.PROGRAMADA, cita.getEstado());
+
+        log.info("Fin prueba agregar cita");
+    }
+
 
 
 
