@@ -225,7 +225,57 @@ public class HospitalUQ {
     }
 
 
-    //
+    // buscar sala por id
+
+    public Sala buscarSalaId(String idSala) {
+        if (idSala == null)
+            return null;
+
+        for (Sala sala : salas) {
+            if (sala != null && idSala.equals(sala.getIdSala())) {
+                return sala;
+            }
+        }
+        return null;
+    }
+
+
+    // Actualizar Sala
+
+    public Sala modificarSala(Sala salaModificada) {
+        if (salaModificada == null || salaModificada.getIdSala() == null) {
+            return null;
+        }
+
+        for (int i = 0; i < salas.size(); i++) {
+            Sala actual = salas.get(i);
+            if (actual != null && actual.getIdSala() != null &&
+                    actual.getIdSala().equals(salaModificada.getIdSala())) {
+                salas.set(i, salaModificada);
+                return salaModificada;
+            }
+        }
+        return null;
+    }
+
+
+    // Eliminar Sala
+
+    public boolean eliminarSala(String idSala) {
+        if (idSala == null)
+            return false;
+
+        for (int i = 0; i < salas.size(); i++) {
+            Sala actual = salas.get(i);
+            if (actual != null && idSala.equals(actual.getIdSala())) {
+                salas.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
 
 
