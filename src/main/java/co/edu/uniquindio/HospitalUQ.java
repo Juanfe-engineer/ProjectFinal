@@ -78,6 +78,8 @@ public class HospitalUQ {
     }
 
 
+    //Gestion de Usuarios
+
     // CRUD Paciente
 
     //Agregar el paciente
@@ -205,6 +207,29 @@ public class HospitalUQ {
 //--------------------------------------------------------------------------------------------------------------------//
 
 
+    // Gestion de Salas y Horarios
+
+    //RegistrarSala
+
+    public boolean registrarSala (Sala sala) {
+        if (sala == null) {
+            return false;
+        }
+        for (Sala s : salas) {
+            if (s.getIdSala().equals(sala.getIdSala())) {
+                return false;
+            }
+        }
+        salas.add(sala);
+        return true;
+    }
+
+
+    //
+
+
+
+
     // Asignar medico a paciente
 
     public boolean asignarMedicoAPaciente(String idPaciente, String idMedico) {
@@ -232,7 +257,10 @@ public class HospitalUQ {
     // Liberar medico de paciente
 
     public boolean liberarMedicoDePaciente(String idPaciente) {
-        if (idPaciente == null) return false;
+
+        boolean disponibilidad = false;
+
+        if (idPaciente == null) disponibilidad = true;
 
         for (Paciente paciente : pacientes) {
             if (paciente != null && idPaciente.equals(paciente.getId())) {
@@ -240,12 +268,11 @@ public class HospitalUQ {
                 if (medicoAsignado != null) {
                     medicoAsignado.setEstado(EstadoMedico.DISPONIBLE);
                     paciente.setMedicoAsignado(null);
-                    return true;
                 }
-                return false; // paciente sin médico asignado
+                disponibilidad  = false; // paciente sin médico asignado
             }
         }
-        return false; // paciente no encontrado
+        return disponibilidad; // paciente no encontrado
     }
 
 

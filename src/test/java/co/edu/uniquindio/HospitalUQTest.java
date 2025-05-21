@@ -504,6 +504,8 @@ public class HospitalUQTest {
 
     @Test
     public void testLiberarSalaDeCita() {
+        log.info("La prueba inicio");
+
         HospitalUQ hospital = new HospitalUQ("Hospital UQ", "123");
 
         Sala sala = new Sala("S01", TipoSala.CONSULTA, EstadoSala.OCUPADA, 2);
@@ -521,7 +523,12 @@ public class HospitalUQTest {
         assertTrue(resultado);
         assertEquals(EstadoSala.DISPONIBLE, sala.getEstado());
         assertNull(cita.getSala());
+
+        log.info("La prueba finalizo");
     }
+
+
+    //----------------------------------------------------------------------------------------------------------------//
 
 
 

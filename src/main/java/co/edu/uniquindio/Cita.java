@@ -75,4 +75,7 @@ public class Cita {
     public void setDiagnostico_tratamiento(DiagnosticoTratamiento diagnosticotratamiento) {
         this.diagnosticotratamiento = diagnosticotratamiento;
     }
+
+
+    //
 }
