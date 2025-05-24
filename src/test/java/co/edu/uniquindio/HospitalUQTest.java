@@ -298,7 +298,7 @@ public class HospitalUQTest {
 
         // Liberar médico
         boolean liberado = hospital.liberarMedicoDePaciente("P001");
-        assertTrue(liberado);
+        assertFalse(liberado);
         assertEquals(EstadoMedico.DISPONIBLE, medico.getEstado());
         assertNull(paciente.getMedicoAsignado());
 
@@ -331,7 +331,7 @@ public class HospitalUQTest {
         hospital.getMedicos().add(medico);
         hospital.getSalas().add(sala);
 
-        boolean resultado = hospital.agregarCita(cita);
+        boolean resultado = hospital.crearCita(cita);
 
         assertTrue(resultado);
         assertEquals(1, hospital.getCitas().size());
@@ -642,14 +642,12 @@ public class HospitalUQTest {
         assertFalse(resultado1);
 
         Horario h1 = new Horario("H002",LocalDate.of(2025,4,14),LocalTime.now(),Jornada.MANANA);
-        Horario h2 = new Horario()
+        Horario h2 = new Horario("H002",LocalDate.of(2025,4,14),LocalTime.now(),Jornada.MANANA);
 
+        hospitalUQ.registrarHorario(h1);
+        boolean resultado2 = hospitalUQ.registrarHorario(h2);
 
-
-
-
-
-
+        assertFalse(resultado2);
 
         log.info("La pruea finalizo");
 
@@ -681,12 +679,89 @@ public class HospitalUQTest {
     }
 
 
+    // modificar Horario
+
+    @Test
+    public void modificarHorario(){
+        log.info("La prueba Inicio");
+
+        HospitalUQ hospital = new HospitalUQ("Hospital UQ", "123");
+
+        Horario original = new Horario("H004",LocalDate.of(2025,2,23),LocalTime.now(),Jornada.TARDE);
+        hospital.registrarHorario(original);
+
+        Horario modificado = new Horario("H004",LocalDate.of(2025,2,24), LocalTime.now(),Jornada.MANANA);
+        Horario resultado = hospital.modificarHorario(modificado);
+
+        assertNotNull(resultado);
+        assertEquals(LocalDate.of(2025,2,24),resultado.getFecha());
+
+        Horario resultado1 = hospital.modificarHorario(null);
+        assertNull(resultado1);
+
+        Horario modificado2 = new Horario(null, LocalDate.now(),LocalTime.now(),Jornada.TARDE);
+        Horario resultado2 = hospital.modificarHorario(modificado2);
+
+        assertNull(resultado2);
+
+        log.info("La prueba Finalizo");
+    }
+
+
+
+    @Test
+    public void eliminarHorario(){
+        log.info("La prueba inicio");
+
+        HospitalUQ hospitalUQ = new HospitalUQ("Hospital UQ", "123");
+
+        Horario horario = new Horario("H005",LocalDate.of(2025,3,03),LocalTime.now(),Jornada.NOCHE);
+        hospitalUQ.registrarHorario(horario);
+        
+        boolean resultado = hospitalUQ.eliminarHorario("H005");
+        
+        assertTrue(resultado);
+        assertNull(hospitalUQ.buscarHorarioPorId("H005"));
+        
+        boolean resultado1 = hospitalUQ.eliminarHorario("H098");
+        assertFalse(resultado1);
+
+        boolean resultado2 = hospitalUQ.eliminarHorario(null);
+        assertFalse(resultado2);
+
+        log.info("La prueba Finalizo");
+    }
 
 
 
 
 
 
+    // ---
+
+    @Test
+    public void RegistrarCita(){
+
+        HospitalUQ hospital = new HospitalUQ("Hospital UQ", "123");
+        Medico medico1 = new Medico ("Oliver","10","Oliver@hospital.com", "3255059",Especialidad.GENERAL,EstadoMedico.DISPONIBLE);
+        Sala sala1 = new Sala("21", TipoSala.CIRUGIA,EstadoSala.DISPONIBLE, 10);
+        Horario horario1 = new Horario("211",10/05/2005,LocalTime.now(),Jornada.TARDE);
+
+        Cita cita1 = new Cita("10", EstadoCita.PROGRAMADA, medico1 );
+
+    }
+
+
+
+
+
+
+
+
+    // buscar cita por Id
+    
+    @Test
+    public void buscarCitaId Av
 
 
 

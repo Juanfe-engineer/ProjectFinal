@@ -360,7 +360,6 @@ public class HospitalUQ {
     // Crear Cita
 
     public boolean crearCita(Cita nuevaCita) {
-        if (nuevaCita == null || nuevaCita.getIdCita() == null) return false;
 
         // Validar si ya existe una cita con ese ID
         for (Cita cita : citas) {
@@ -410,64 +409,42 @@ public class HospitalUQ {
 
     //Actualizar Cita
 
-    public Cita modificarIDCita(Cita citaIDModificado) {
-        if (citaIDModificado == null || citaIDModificado.getIdCita() == null) {
-            return null;
-        }
+    public Cita actualizarCita(String idCitaOriginal, String nuevoId, Horario nuevoHorario, Medico nuevoMedico, Sala nuevaSala) {
         for (int i = 0; i < citas.size(); i++) {
             Cita actual = citas.get(i);
-            if (actual != null && actual.getIdCita() != null &&
-                    actual.getIdCita().equals(citaIDModificado.getIdCita())) {
-                citas.set(i, citaIDModificado);
-                return citaIDModificado;
+
+            if (actual != null && actual.getIdCita().equals(idCitaOriginal)) {
+
+                // Validaciones
+                if (nuevoId == null || nuevoHorario == null || nuevoMedico == null || nuevaSala == null) {
+                    return null;
+                }
+
+                if (nuevoMedico.getEstado() != EstadoMedico.DISPONIBLE) {
+
+                    return null;
+                }
+
+                if (nuevaSala.getEstado() != EstadoSala.DISPONIBLE) {
+
+                    return null;
+                }
+
+                // Aplicar cambios
+                actual.setIdCita(nuevoId);
+                actual.setHorario(nuevoHorario);
+                actual.setMedico(nuevoMedico);
+                actual.setSala(nuevaSala);
+
+                // Actualizar la lista
+                citas.set(i, actual);
+                return actual;
             }
         }
-        return null;
-    }
 
-    public Cita modificarMedicoCita(Cita citaMedicoModificado) {
-        if (citaMedicoModificado == null || citaMedicoModificado.getMedico().getEstado() != EstadoMedico.DISPONIBLE){
-            return null;
-        }
-        for (int i = 0; i < citas.size(); i++) {
-          Cita actual = citas.get(i);
-          if (actual != null && actual.getMedico().getEstado() != EstadoMedico.DISPONIBLE &&
-                  actual.getMedico().equals(citaMedicoModificado.getMedico()) ){
-              citas.set(i, citaMedicoModificado);
-              return citaMedicoModificado;
-          }
-
-        }
         return null;
     }
-
-    public Cita modificarHorarioCita(Cita citaHorarioModificado){
-        if (citaHorarioModificado == null || citaHorarioModificado.getHorario() != null){
-            return null;
-        }
-        for (int i = 0; i < citas.size(); i++) {
-          Cita actual = citas.get(i);
-          if (actual != null && actual.getHorario().equals(citaHorarioModificado.getHorario())){
-              citas.set(i, citaHorarioModificado);
-              return citaHorarioModificado;
-          }
-        }
-        return null;
-    }
-    public Cita modificarSalaCita(Cita citaSalaModificado){
-        if (citaSalaModificado == null || citaSalaModificado.getSala().getEstado() != EstadoSala.DISPONIBLE){
-            return null;
-        }
-        for (int i = 0; i < citas.size(); i++) {
-            Cita actual = citas.get(i);
-            if (actual != null && actual.getSala().getEstado() != EstadoSala.DISPONIBLE){
-                citas.set(i, citaSalaModificado);
-                return citaSalaModificado;
-            }
-        }
-        return null;
-    }
-    // Eliminar Horario
+    // Eliminar Cita
 
     public boolean eliminarCita(String idCita) {
         if (idCita == null)
@@ -541,44 +518,9 @@ public class HospitalUQ {
     //----------------------------------------------------------------------------------------------------------------//
 
 
-    // Agregar Cita
 
-    public boolean agregarCita(Cita nuevaCita) {
-        if (nuevaCita == null || nuevaCita.getIdCita() == null) return false;
 
-        // Validar si ya existe una cita con ese ID
-        for (Cita cita : citas) {
-            if (cita.getIdCita().equals(nuevaCita.getIdCita())) {
-                return false;
-            }
-        }
-
-        // Validar estado del médico
-        if (nuevaCita.getMedico().getEstado() != EstadoMedico.DISPONIBLE) {
-            return false;
-        }
-
-        // Validar estado de la sala
-        if (nuevaCita.getSala().getEstado() != EstadoSala.DISPONIBLE) {
-            return false;
-        }
-
-        // Validar que el horario no esté ocupado
-        for (Cita cita : citas) {
-            if (cita.getHorario().getIdHorario().equals(nuevaCita.getHorario().getIdHorario())) {
-                return false;
-            }
-        }
-
-        // Registrar cita
-        citas.add(nuevaCita);
-        nuevaCita.getMedico().setEstado(EstadoMedico.NO_DISPONIBLE);
-        nuevaCita.getSala().setEstado(EstadoSala.OCUPADA);
-        nuevaCita.setEstado(EstadoCita.PROGRAMADA);
-        return true;
-    }
-
-    // Cancelar Cita
+    // INTERFACE Cancelar Cita
 
     public boolean cancelarCita(String idCita) {
         for (Cita cita : citas) {
@@ -661,7 +603,9 @@ public class HospitalUQ {
         cita.setSala(null); // Desvincular sala de la cita
         return true;
     }
+
     //Asignar horario a cita
+
     public boolean asignarHorarioACita(String idCita, Horario horario) {
         if (idCita == null || horario == null) return false;
 
@@ -705,12 +649,31 @@ public class HospitalUQ {
             medico.getHorario().removeIf(h -> h.equals(horario));
         }
 
-        // Nota: si llevas un control de horarios ocupados en la sala, aquí lo puedes liberar
-
         // Liberar horario de la cita
         cita.setHorario(null);
 
         return true;
+    }
+    //Generar reporte citas
+    public String generarReporteCitas(String idCita) {
+        if(idCita == null)
+            return "ID de cita invalido";
+        Cita cita = buscarCitaPorID(idCita);
+        if (cita == null)
+            return "cita no encontrada";
+        StringBuilder reporte = new StringBuilder();
+        reporte.append("===Reporte cita===\n");
+        reporte.append("ID cita: ").append(cita.getIdCita()).append("\n");
+        //Paciente
+        Paciente paciente = cita.getPaciente();
+        if (paciente != null){
+            reporte.append("Paciente: ").append(paciente.getNombre()).append(" (").append(paciente.getId()).append(" )\n");
+        }else{
+            reporte.append("paciente no asignado\n");
+        }
+        
+
+
     }
 
 
