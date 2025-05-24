@@ -655,6 +655,31 @@ public class HospitalUQTest {
 
     }
 
+    //buscar horario por id
+
+
+    @Test
+    public void buscarHorarioPorId(){
+        log.info("La prueba Inicio");
+
+        HospitalUQ hospitalUQ = new HospitalUQ("Hospital UQ", "123");
+
+        Horario horario = new Horario("H003",LocalDate.of(2025,4,15),LocalTime.now(),Jornada.TARDE);
+        hospitalUQ.registrarHorario(horario);
+
+        Horario resultado = hospitalUQ.buscarHorarioPorId("H003");
+        assertNotNull(resultado);
+        assertEquals("H003", resultado.getIdHorario());
+
+        Horario resultado1 = hospitalUQ.buscarHorarioPorId("H999");
+        assertNull(resultado1);
+
+        Horario resultado2 = hospitalUQ.buscarHorarioPorId(null);
+        assertNull(resultado2);
+
+        log.info("La prueba Finalizo");
+    }
+
 
 
 
