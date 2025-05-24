@@ -430,6 +430,22 @@ public class HospitalUQ {
         }
         return null;
     }
+    // Eliminar Horario
+
+    public boolean eliminarCita(String idCita) {
+        if (idCita == null)
+            return false;
+
+        for (int i = 0; i < citas.size(); i++) {
+            Cita actual = citas.get(i);
+            if (actual != null && idCita.equals(actual.getIdCita())) {
+                citas.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 
 
