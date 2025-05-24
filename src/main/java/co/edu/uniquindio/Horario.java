@@ -1,14 +1,15 @@
 package co.edu.uniquindio;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Horario {
     private String idHorario;
     private LocalDate fecha;
-    private LocalDate hora;
+    private LocalTime hora;
     private Jornada jornada;
 
-    public Horario(String idHorario, LocalDate fecha, LocalDate hora, Jornada jornada) {
+    public Horario(String idHorario, LocalDate fecha, LocalTime hora, Jornada jornada) {
         this.idHorario = idHorario;
         this.fecha = fecha;
         this.hora = hora;
@@ -31,11 +32,11 @@ public class Horario {
         this.fecha = fecha;
     }
 
-    public LocalDate getHora() {
+    public LocalTime getHora() {
         return hora;
     }
 
-    public void setHora(LocalDate hora) {
+    public void setHora(LocalTime hora) {
         this.hora = hora;
     }
 

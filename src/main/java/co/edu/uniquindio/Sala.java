@@ -22,7 +22,7 @@ public class Sala {
         this.idSala = idSala;
     }
 
-    public TipoSala getTipoSala() {
+    public TipoSala getTipoSala(TipoSala urgencias) {
         return tipoSala;
     }
 

@@ -4,6 +4,7 @@ package co.edu.uniquindio;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -19,6 +20,8 @@ public class HospitalUQTest {
     private static final Logger log =
             Logger.getLogger(HospitalUQTest.class.getName());
 
+
+    // GESTION DE USUARIOS
 
     // PRUEBAS UNITARIAS CRUD PACIENTE
 
@@ -271,9 +274,6 @@ public class HospitalUQTest {
         log.info("La prueba Termino");
     }
 
-
-
-
     //----------------------------------------------------------------------------------------------------------------//
 
     // Pruebas unitarias para asignar medico a paciente y luego liberarlo
@@ -321,7 +321,7 @@ public class HospitalUQTest {
         Paciente paciente = new Paciente("P001", "Ana", "ana@uq.edu.co", "3216549870");
         Medico medico = new Medico("M001", "Dr. Pineda", "Dpineda@uq.edu.co", "3201234567", Especialidad.NEUROLOGO, EstadoMedico.DISPONIBLE);
         Sala sala = new Sala("S001", TipoSala.CONSULTA, EstadoSala.DISPONIBLE, 1);
-        Horario horario = new Horario("H001", LocalDate.of(2025, 5, 14), LocalDate.of(2025, 5, 14), Jornada.TARDE);
+        Horario horario = new Horario("H001", LocalDate.of(2025, 5, 14), LocalTime.now(), Jornada.TARDE);
 
 
         Cita cita = new Cita("C001", paciente, medico, sala, horario, null);
@@ -353,7 +353,7 @@ public class HospitalUQTest {
         Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
         Medico medico = new Medico("M002", "Dra. Grey", "grey@uq.edu.co", "3112345678", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
         Sala sala = new Sala("S002", TipoSala.CONSULTA, EstadoSala.DISPONIBLE, 1);
-        Horario horario = new Horario("H002", LocalDate.of(2025, 5, 14), LocalDate.of(2025, 5, 14), Jornada.TARDE);
+        Horario horario = new Horario("H002", LocalDate.of(2025, 5, 14), LocalTime.now(), Jornada.TARDE);
 
         Cita cita = new Cita("C002", paciente, medico, sala, horario, EstadoCita.PROGRAMADA);
 
@@ -432,7 +432,7 @@ public class HospitalUQTest {
         Paciente paciente = new Paciente("P01", "Juan", "juan@uq.edu.co", "3123456789");
         Medico medico = new Medico("M01", "Dr. Luis", "luis@uq.edu.co", "3219876543", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
         Sala sala = new Sala("S01", TipoSala.CONSULTA, EstadoSala.DISPONIBLE, 2);
-        Horario horario = new Horario("H01", LocalDate.now(), LocalDate.now(), Jornada.MANANA);
+        Horario horario = new Horario("H01", LocalDate.now(), LocalTime.now(), Jornada.MANANA);
         EstadoCita estado = EstadoCita.PROGRAMADA;
 
         // Crear la cita con los objetos creados
@@ -484,7 +484,7 @@ public class HospitalUQTest {
         Sala sala = new Sala("S01", TipoSala.CONSULTA, EstadoSala.DISPONIBLE, 2);
         Paciente paciente = new Paciente("P01", "Ana", "ana@uq.edu.co", "3123456789");
         Medico medico = new Medico("M01", "Dr. Luis", "luis@uq.edu.co", "3219876543", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
-        Horario horario = new Horario("H01", LocalDate.now(), LocalDate.now(), Jornada.MANANA);
+        Horario horario = new Horario("H01", LocalDate.now(), LocalTime.now(), Jornada.MANANA);
 
         Cita cita = new Cita("C01", paciente, medico,null, horario, EstadoCita.PROGRAMADA);
 
@@ -511,7 +511,7 @@ public class HospitalUQTest {
         Sala sala = new Sala("S01", TipoSala.CONSULTA, EstadoSala.OCUPADA, 2);
         Paciente paciente = new Paciente("P01", "Ana", "ana@uq.edu.co", "3001234567");
         Medico medico = new Medico("M01", "Dr. Juan", "juan@uq.edu.co", "3012345678", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
-        Horario horario = new Horario("H01", LocalDate.now(), LocalDate.now(), Jornada.MANANA);
+        Horario horario = new Horario("H01", LocalDate.now(), LocalTime.now(), Jornada.MANANA);
 
         Cita cita = new Cita("C01", paciente, medico, sala, horario, EstadoCita.PROGRAMADA);
 
@@ -531,8 +531,129 @@ public class HospitalUQTest {
     //----------------------------------------------------------------------------------------------------------------//
 
 
+    // Gestion de Salas
+
+    // registrar sala
+
+    @Test
+    public void registrarSala () {
+        log.info("La prueba inicio");
+
+        HospitalUQ hospitalUQ = new HospitalUQ("Hospital UQ", "123");
+        Sala sala = new Sala("S001",TipoSala.CONSULTA,EstadoSala.DISPONIBLE, 4);
+        assertTrue(hospitalUQ.registrarSala(sala));
+        assertEquals(sala, hospitalUQ.buscarSalaPorId("S001"));
+        assertFalse(hospitalUQ.registrarSala(null));
+
+        Sala sala1 = new Sala("S002", TipoSala.URGENCIAS, EstadoSala.DISPONIBLE, 4);
+        Sala sala2 = new Sala("S002", TipoSala.URGENCIAS, EstadoSala.DISPONIBLE, 4);
+
+        hospitalUQ.registrarSala(sala1);
+        assertFalse(hospitalUQ.registrarSala(sala2));
+
+        log.info("La prueba finalizo");
+
+    }
+
+    // buscar sala por id
+
+    @Test
+    public void buscarSalaPorId() {
+        log.info("La prueba Inicio");
+
+        HospitalUQ hospitalUQ = new HospitalUQ("Hospital UQ", "123");
+        Sala sala = new Sala("S003",TipoSala.PEDIATRIA,EstadoSala.DISPONIBLE, 4);
+        hospitalUQ.registrarSala(sala);
+        Sala resultado = hospitalUQ.buscarSalaPorId("S003");
+
+        assertNotNull(resultado);
+        assertEquals("S003", resultado.getIdSala());
+        assertNull(hospitalUQ.buscarSalaPorId("S000"));
+        assertNull(hospitalUQ.buscarSalaPorId(null));
+
+        log.info("La prueba Finalizo");
+    }
 
 
+    // modificar Sala
+
+    @Test
+    public void modificarSala(){
+        log.info("La prueba Inicio");
+
+        HospitalUQ hospitalUQ = new HospitalUQ("Hospital UQ", "123");
+
+        Sala salaOriginal = new Sala("S004", TipoSala.CONSULTA, EstadoSala.OCUPADA, 4);
+        Sala salaModificada = new Sala("S004", TipoSala.URGENCIAS, EstadoSala.DISPONIBLE, 6);
+
+        hospitalUQ.registrarSala(salaOriginal);
+        Sala resultado = hospitalUQ.modificarSala(salaModificada);
+
+        assertNotNull(resultado);
+        assertEquals(TipoSala.URGENCIAS, resultado.getTipoSala(TipoSala.URGENCIAS));
+
+        Sala sala = new Sala("S005",TipoSala.CIRUGIA,EstadoSala.DISPONIBLE, 4);
+        assertNull(hospitalUQ.modificarSala(sala));
+
+        assertNull(hospitalUQ.modificarSala(null));
+
+        log.info("La prueba finalizo");
+
+    }
+
+
+    // Eliminar Sala
+
+    @Test
+    public void eliminarSala(){
+        log.info("La prueba Inicio");
+
+        HospitalUQ hospitalUQ = new HospitalUQ("Hospital UQ", "123");
+
+        Sala sala = new Sala("S006",TipoSala.HOSPITALIZACION,EstadoSala.OCUPADA,3);
+        hospitalUQ.registrarSala(sala);
+        assertTrue(hospitalUQ.eliminarSala("S006"));
+        assertNull(hospitalUQ.buscarSalaPorId("S006"));
+
+        assertFalse(hospitalUQ.eliminarSala("S007"));
+
+        assertFalse(hospitalUQ.eliminarSala(null));
+
+        log.info("La prueba finalizo");
+    }
+
+
+
+
+    // Gestion de horarios
+
+    @Test
+    public void registrarHorario(){
+        log.info("La prueba Inicio");
+
+        HospitalUQ hospitalUQ = new HospitalUQ("Hospital UQ", "123");
+
+        Horario horario = new Horario("H001",LocalDate.of(2025,5,13), LocalTime.now(),Jornada.TARDE);
+        boolean resultado = hospitalUQ.registrarHorario(horario);
+        assertTrue(resultado);
+        assertEquals(horario,hospitalUQ.buscarHorarioPorId("H001"));
+
+        boolean resultado1 = hospitalUQ.registrarHorario(null);
+        assertFalse(resultado1);
+
+        Horario h1 = new Horario("H002",LocalDate.of(2025,4,14),LocalTime.now(),Jornada.MANANA);
+        Horario h2 = new Horario()
+
+
+
+
+
+
+
+
+        log.info("La pruea finalizo");
+
+    }
 
 
 

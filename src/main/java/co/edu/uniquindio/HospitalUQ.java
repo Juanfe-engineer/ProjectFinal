@@ -10,6 +10,8 @@ public class HospitalUQ {
     private LinkedList<Sala> salas;
     private LinkedList<Cita> citas;
     private LinkedList<Notificacion> notificaciones;
+    private LinkedList<Horario> horarios;
+    private Cita cita;
 
     public HospitalUQ(String nombre, String id) {
         this.nombre = nombre;
@@ -19,6 +21,8 @@ public class HospitalUQ {
         this.salas = new LinkedList<>();
         this.citas = new LinkedList<>();
         this.notificaciones = new LinkedList<>();
+        this.horarios = new LinkedList<>();
+
     }
 
     public String getNombre() {
@@ -77,7 +81,13 @@ public class HospitalUQ {
         this.notificaciones = notificaciones;
     }
 
+    public LinkedList<Horario> getHorarios() {
+        return horarios;
+    }
 
+    public void setHorarios(LinkedList<Horario> horarios) {
+        this.horarios = horarios;
+    }
     //Gestion de Usuarios
 
     // CRUD Paciente
@@ -211,7 +221,7 @@ public class HospitalUQ {
 
     //RegistrarSala
 
-    public boolean registrarSala (Sala sala) {
+    public boolean registrarSala(Sala sala) {
         if (sala == null) {
             return false;
         }
@@ -227,7 +237,7 @@ public class HospitalUQ {
 
     // buscar sala por id
 
-    public Sala buscarSalaId(String idSala) {
+    public Sala buscarSalaPorId(String idSala) {
         if (idSala == null)
             return null;
 
@@ -238,7 +248,6 @@ public class HospitalUQ {
         }
         return null;
     }
-
 
     // Actualizar Sala
 
@@ -276,6 +285,142 @@ public class HospitalUQ {
     }
 
 
+    // Registrar Horario
+
+    public boolean registrarHorario(Horario horario) {
+        if (horario == null) {
+            return false;
+        }
+
+        for (Horario h : horarios) {
+            if (h.getIdHorario() == horario.getIdHorario()) {
+                return false;
+            }
+        }
+        horarios.add(horario);
+        return true;
+    }
+
+
+    // buscar Horario por ID
+
+    public Horario buscarHorarioPorId(String idHorario) {
+        if (idHorario == null)
+            return null;
+
+        for (Horario horario : horarios) {
+            if (horario != null && idHorario.equals(horario.getIdHorario())) {
+                return horario;
+            }
+        }
+        return null;
+    }
+
+    // Actualizar Horario
+
+    public Horario modificarHorario(Horario horariomodificado) {
+        if (horariomodificado == null || horariomodificado.getIdHorario() == null) {
+            return null;
+        }
+
+        for (int i = 0; i < horarios.size(); i++) {
+            Horario actual = horarios.get(i);
+            if (actual != null && actual.getIdHorario() != null &&
+                    actual.getIdHorario().equals(horariomodificado.getIdHorario())) {
+                horarios.set(i, horariomodificado);
+                return horariomodificado;
+            }
+        }
+        return null;
+    }
+
+
+    // Eliminar Horario
+
+    public boolean eliminarHorario(String idHorario) {
+        if (idHorario == null)
+            return false;
+
+        for (int i = 0; i < horarios.size(); i++) {
+            Horario actual = horarios.get(i);
+            if (actual != null && idHorario.equals(actual.getIdHorario())) {
+                horarios.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    //----------------------------------------------------------------------------------------------------------------//
+
+
+    // Gestion de citas
+
+    // Buscar Cita Por Id
+
+    public Cita buscarCitaPorID(String idCita) {
+        if (idCita == null)
+            return null;
+
+        for (Cita cita : citas) {
+            if (cita != null && idCita.equals(cita.getIdCita())) {
+                return cita;
+            }
+        }
+        return null;
+    }
+
+    //Actualizar Cita
+
+    public Cita modificarIDCita(Cita citaIDModificado) {
+        if (citaIDModificado == null || citaIDModificado.getIdCita() == null) {
+            return null;
+        }
+        for (int i = 0; i < citas.size(); i++) {
+            Cita actual = citas.get(i);
+            if (actual != null && actual.getIdCita() != null &&
+                    actual.getIdCita().equals(citaIDModificado.getIdCita())) {
+                citas.set(i, citaIDModificado);
+                return citaIDModificado;
+            }
+        }
+        return null;
+    }
+
+    public Cita modificarMedicoCita(Cita citaMedicoModificado) {
+        if (citaMedicoModificado == null || citaMedicoModificado.getMedico().getEstado() != EstadoMedico.DISPONIBLE){
+            return null;
+        }
+        for (int i = 0; i < citas.size(); i++) {
+          Cita actual = citas.get(i);
+          if (actual != null && actual.getMedico().getEstado() != EstadoMedico.DISPONIBLE &&
+                  actual.getMedico().equals(citaMedicoModificado.getMedico()) ){
+              citas.set(i, citaMedicoModificado);
+              return citaMedicoModificado;
+          }
+
+        }
+        return null;
+    }
+
+    public Cita modificarHorarioCita(Cita citaHorarioModificado){
+        if (citaHorarioModificado == null || citaHorarioModificado.getHorario() != null){
+            return null;
+        }
+        for (int i = 0; i < citas.size(); i++) {
+          Cita actual = citas.get(i);
+          if (actual != null && actual.getHorario().equals(citaHorarioModificado.getHorario())){
+              citas.set(i, citaHorarioModificado);
+              return citaHorarioModificado;
+          }
+        }
+        return null;
+    }
+
+
+
+
 
 
 
@@ -299,6 +444,7 @@ public class HospitalUQ {
                     }
                 }
             }
+
         }
         return false; // paciente o médico no encontrado
     }
@@ -393,34 +539,11 @@ public class HospitalUQ {
     //----------------------------------------------------------------------------------------------------------------//
 
 
-    // Buscar Sala Por Id
-
-    public Sala buscarSalaPorId(String idSala) {
-        if (idSala == null)
-            return null;
-
-        for (Sala sala : salas) {
-            if (sala != null && idSala.equals(sala.getIdSala())) {
-                return sala;
-            }
-        }
-        return null;
-    }
 
 
-    // Buscar Cita Por Id
 
-    public Cita buscarCitaPorID(String idCita) {
-        if (idCita == null)
-            return null;
 
-        for (Cita cita : citas) {
-            if (cita != null && idCita.equals(cita.getIdCita())) {
-                return cita;
-            }
-        }
-        return null;
-    }
+
 
 
     //----------------------------------------------------------------------------------------------------------------//
@@ -472,6 +595,8 @@ public class HospitalUQ {
         cita.setSala(null); // Desvincular sala de la cita
         return true;
     }
+
+
 
 
 
