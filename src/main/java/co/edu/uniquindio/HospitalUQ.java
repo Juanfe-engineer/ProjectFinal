@@ -417,6 +417,19 @@ public class HospitalUQ {
         }
         return null;
     }
+    public Cita modificarSalaCita(Cita citaSalaModificado){
+        if (citaSalaModificado == null || citaSalaModificado.getSala().getEstado() != EstadoSala.DISPONIBLE){
+            return null;
+        }
+        for (int i = 0; i < citas.size(); i++) {
+            Cita actual = citas.get(i);
+            if (actual != null && actual.getSala().getEstado() != EstadoSala.DISPONIBLE){
+                citas.set(i, citaSalaModificado);
+                return citaSalaModificado;
+            }
+        }
+        return null;
+    }
 
 
 
