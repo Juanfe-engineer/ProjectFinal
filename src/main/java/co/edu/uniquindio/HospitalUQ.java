@@ -690,6 +690,29 @@ public class HospitalUQ {
         medico.getHorario().add(horario);
         return true;
     }
+    //liberar horario de cita
+    public boolean liberarHorarioDeCita(String idCita) {
+        if (idCita == null) return false;
+
+        Cita cita = buscarCitaPorID(idCita);
+        if (cita == null || cita.getHorario() == null) return false;
+
+        Horario horario = cita.getHorario();
+        Medico medico = cita.getMedico();
+
+        // Quitar el horario de la lista del médico
+        if (medico != null) {
+            medico.getHorario().removeIf(h -> h.equals(horario));
+        }
+
+        // Nota: si llevas un control de horarios ocupados en la sala, aquí lo puedes liberar
+
+        // Liberar horario de la cita
+        cita.setHorario(null);
+
+        return true;
+    }
+
 
 
 
