@@ -661,6 +661,36 @@ public class HospitalUQ {
         cita.setSala(null); // Desvincular sala de la cita
         return true;
     }
+    //Asignar horario a cita
+    public boolean asignarHorarioACita(String idCita, Horario horario) {
+        if (idCita == null || horario == null) return false;
+
+        Cita cita = buscarCitaPorID(idCita);
+        if (cita == null) return false;
+
+        Medico medico = cita.getMedico();
+        Sala sala = cita.getSala();
+
+        if (medico == null || sala == null) return false;
+
+        // Validar disponibilidad del médico en ese horario
+        for (Horario h : medico.getHorario()) {
+            if (h.equals(horario)) return false; // El médico ya tiene algo en ese horario
+        }
+
+        // Validar disponibilidad de la sala en ese horario
+        for (Cita c : citas) {
+            if (c.getSala() != null && c.getSala().equals(sala) && horario.equals(c.getHorario())) {
+                return false; // La sala ya está ocupada en ese horario
+            }
+        }
+
+        // Asignar horario y registrar el horario al médico
+        cita.setHorario(horario);
+        medico.getHorario().add(horario);
+        return true;
+    }
+
 
 
 
