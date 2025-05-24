@@ -1,7 +1,7 @@
 package co.edu.uniquindio;
 
 import java.util.LinkedList;
-
+import java.util.ArrayList;
 public class HospitalUQ {
     private String nombre;
     private String id;
@@ -634,7 +634,10 @@ public class HospitalUQ {
         medico.getHorario().add(horario);
         return true;
     }
+
+
     //liberar horario de cita
+
     public boolean liberarHorarioDeCita(String idCita) {
         if (idCita == null) return false;
 
@@ -654,8 +657,11 @@ public class HospitalUQ {
 
         return true;
     }
+
+
     //Generar reporte citas
-    public String generarReporteCitas(String idCita) {
+
+    public String verReporteCitas (String idCita) {
         if(idCita == null)
             return "ID de cita invalido";
         Cita cita = buscarCitaPorID(idCita);
@@ -671,10 +677,105 @@ public class HospitalUQ {
         }else{
             reporte.append("paciente no asignado\n");
         }
-        
+        //Medico
+        Medico medico = cita.getMedico();
+        if (medico != null){
+            reporte.append("Medico: ").append(medico.getNombre()).append(" (").append(medico.getId()).append(" )\n");
+        }else{
+            reporte.append("medico no asignado\n");
+        }
+        //Sala
+        Sala sala = cita.getSala();
+        if (sala != null){
+            reporte.append("Sala: ").append(sala.getIdSala()).append(" (").append(" )\n");
+        }else{
+            reporte.append("Sala no asignada\n");
+        }
+        //Horario
+        Horario horario = cita.getHorario();
+        if (horario != null){
+            reporte.append("Horario: ").append(horario.toString()).append("\n");
+        }else{
+            reporte.append("Horario no asignado\n");
+        }
 
+        return reporte.toString();
 
     }
+
+
+    //
+    public String generarReporteOcupacionSalas() {
+        int totalSalas = salas.size();
+        int ocupadas = 0;
+
+        // Contadores por tipo de sala
+        int pediatria = 0;
+        int consulta = 0;
+        int urgencias = 0;
+        int cirugia = 0;
+        int hospitalizacion = 0;
+        int otra = 0;
+
+        // Arreglo auxiliar para verificar qué salas están ocupadas (por código)
+        ArrayList<String> codigosSalasOcupadas = new ArrayList<>();
+
+        for (Cita cita : citas) {
+            Sala sala = cita.getSala();
+            if (sala != null) {
+                String codigo = sala.getIdSala();
+
+                // Evitar contar dos veces una misma sala como ocupada
+                boolean yaContada = false;
+                for (String cod : codigosSalasOcupadas) {
+                    if (cod.equals(codigo)) {
+                        yaContada = true;
+                        break;
+                    }
+                }
+                if (!yaContada) {
+                    codigosSalasOcupadas.add(codigo);
+                    ocupadas++;
+                }
+
+                // Contar la cita por tipo de sala
+                TipoSala tipo = sala.getTipoSala();
+                if (tipo == TipoSala.PEDIATRIA) {
+                    pediatria++;
+                } else if (tipo == TipoSala.CONSULTA) {
+                    consulta++;
+                } else if (tipo == TipoSala.URGENCIAS) {
+                    urgencias++;
+                } else if (tipo == TipoSala.CIRUGIA) {
+                    cirugia++;
+                } else if (tipo == TipoSala.HOSPITALIZACION) {
+                    hospitalizacion++;
+                } else if (tipo == TipoSala.OTRA) {
+                    otra++;
+                }
+            }
+        }
+
+        int libres = totalSalas - ocupadas;
+
+        // Construcción del reporte
+        StringBuilder reporte = new StringBuilder();
+        reporte.append("=== REPORTE DE OCUPACIÓN DE SALAS ===\n");
+        reporte.append("Total de salas: ").append(totalSalas).append("\n");
+        reporte.append("Salas ocupadas: ").append(ocupadas).append("\n");
+        reporte.append("Salas libres: ").append(libres).append("\n\n");
+
+        reporte.append("Citas por tipo de sala:\n");
+        reporte.append(" - PEDIATRIA: ").append(pediatria).append(" cita(s)\n");
+        reporte.append(" - CONSULTA: ").append(consulta).append(" cita(s)\n");
+        reporte.append(" - URGENCIAS: ").append(urgencias).append(" cita(s)\n");
+        reporte.append(" - CIRUGIA: ").append(cirugia).append(" cita(s)\n");
+        reporte.append(" - HOSPITALIZACION: ").append(hospitalizacion).append(" cita(s)\n");
+        reporte.append(" - OTRA: ").append(otra).append(" cita(s)\n");
+
+        return reporte.toString();
+    }
+
 
 
 

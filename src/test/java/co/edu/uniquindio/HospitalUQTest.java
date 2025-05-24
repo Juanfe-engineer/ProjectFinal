@@ -743,11 +743,30 @@ public class HospitalUQTest {
     public void RegistrarCita(){
 
         HospitalUQ hospital = new HospitalUQ("Hospital UQ", "123");
-        Medico medico1 = new Medico ("Oliver","10","Oliver@hospital.com", "3255059",Especialidad.GENERAL,EstadoMedico.DISPONIBLE);
-        Sala sala1 = new Sala("21", TipoSala.CIRUGIA,EstadoSala.DISPONIBLE, 10);
-        Horario horario1 = new Horario("211",10/05/2005,LocalTime.now(),Jornada.TARDE);
 
-        Cita cita1 = new Cita("10", EstadoCita.PROGRAMADA, medico1 );
+        Medico medico1 = new Medico ("Oliver","10","Oliver@hospital.com", "3255059",Especialidad.GENERAL,EstadoMedico.DISPONIBLE);
+
+        Sala sala1 = new Sala("21", TipoSala.CIRUGIA,EstadoSala.DISPONIBLE, 10);
+
+        Horario horario = new Horario("H005",LocalDate.of(2025,3,03),LocalTime.now(),Jornada.NOCHE);
+
+        Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
+
+
+        Cita cita1 = new Cita("10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
+
+        hospital.crearCita(cita1);
+
+        EstadoMedico estadoesperado = EstadoMedico.DISPONIBLE;
+
+
+
+
+        assertEquals(estadoesperado,cita1.getMedico().getes);
+
+
+
+
 
     }
 
@@ -760,8 +779,7 @@ public class HospitalUQTest {
 
     // buscar cita por Id
     
-    @Test
-    public void buscarCitaId Av
+
 
 
 

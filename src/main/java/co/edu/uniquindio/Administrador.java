@@ -3,7 +3,7 @@ package co.edu.uniquindio;
 public class Administrador extends Usuario {
     private HospitalUQ hospitalUQ;
 
-    public Administrador(String nombre, String id, String correo, String telefono) {
+    public Administrador(String nombre, String id, String correo, String telefono, HospitalUQ hospitalUQ) {
         super(nombre, id, correo, telefono);
         this.hospitalUQ = hospitalUQ;
     }
@@ -15,6 +15,8 @@ public class Administrador extends Usuario {
     public void setHospitalUQ(HospitalUQ hospitalUQ) {
         this.hospitalUQ = hospitalUQ;
     }
+
+    // Metodos
 
     public boolean registrarSala (Sala sala) {
         return hospitalUQ.registrarSala(sala);
@@ -55,4 +57,23 @@ public class Administrador extends Usuario {
     public boolean eliminarHorario(String idHorario){
         return hospitalUQ.eliminarHorario(idHorario);
     }
+
+    public boolean asignarMedicoAPaciente(String idPaciente, String idMedico){
+        return hospitalUQ.asignarMedicoAPaciente(idPaciente, idMedico);
+    }
+
+    public boolean asignarSalaACita(String idCita, String idSala){
+        return hospitalUQ.asignarSalaACita(idCita, idSala);
+    }
+
+    public boolean asignarHorarioACita(String idCita, Horario horario){
+        return hospitalUQ.asignarHorarioACita(idCita, horario);
+    }
+
+    public String verReporte(String idCita){
+        return hospitalUQ.verReporteCitas(idCita);
+    }
+
+    public 
+
 }
