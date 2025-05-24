@@ -357,6 +357,43 @@ public class HospitalUQ {
 
     // Gestion de citas
 
+    // Crear Cita
+
+    public boolean crearCita(Cita nuevaCita) {
+        if (nuevaCita == null || nuevaCita.getIdCita() == null) return false;
+
+        // Validar si ya existe una cita con ese ID
+        for (Cita cita : citas) {
+            if (cita.getIdCita().equals(nuevaCita.getIdCita())) {
+                return false;
+            }
+        }
+
+        // Validar estado del médico
+        if (nuevaCita.getMedico().getEstado() != EstadoMedico.DISPONIBLE) {
+            return false;
+        }
+
+        // Validar estado de la sala
+        if (nuevaCita.getSala().getEstado() != EstadoSala.DISPONIBLE) {
+            return false;
+        }
+
+        // Validar que el horario no esté ocupado
+        for (Cita cita : citas) {
+            if (cita.getHorario().getIdHorario().equals(nuevaCita.getHorario().getIdHorario())) {
+                return false;
+            }
+        }
+
+        // Registrar cita
+        citas.add(nuevaCita);
+        nuevaCita.getMedico().setEstado(EstadoMedico.NO_DISPONIBLE);
+        nuevaCita.getSala().setEstado(EstadoSala.OCUPADA);
+        nuevaCita.setEstado(EstadoCita.PROGRAMADA);
+        return true;
+    }
+
     // Buscar Cita Por Id
 
     public Cita buscarCitaPorID(String idCita) {
