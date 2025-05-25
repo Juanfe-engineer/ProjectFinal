@@ -54,8 +54,11 @@ public class Paciente extends Usuario implements IGestionableCitas {
 
     public boolean solicitarCita(Especialidad especialidad) {
        Medico medico = hospital.buscarMedicoPorEspecialidad(especialidad);
+       if (medico == null) {
+           return false;
+       }
        if(medico.getEstado().equals(EstadoMedico.DISPONIBLE)){
-           return true;
+           return true ;
         }
        return false;
 

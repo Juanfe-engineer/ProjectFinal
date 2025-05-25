@@ -765,6 +765,22 @@ public class HospitalUQ {
         return null;
     }
 
+
+    //
+
+    public boolean registrarCita(Cita cita) {
+        if (cita == null) {
+            return false;
+        }
+        for (Cita c : citas) {
+            if (c.getIdCita().equals(cita.getIdCita())) {
+                return false;
+            }
+        }
+        citas.add(cita);
+        return true;
+    }
+
 }
 
 

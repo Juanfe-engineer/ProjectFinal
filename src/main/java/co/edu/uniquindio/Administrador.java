@@ -40,7 +40,7 @@ public class Administrador extends Usuario {
 
     public boolean eliminarPaciente(String idPaciente){
 
-        return hospitalUQ.eliminarSala(idPaciente);
+        return hospitalUQ.eliminarPaciente(idPaciente);
     }
 
     public boolean registrarMedico(Medico medico){
@@ -55,7 +55,7 @@ public class Administrador extends Usuario {
 
     public boolean eliminarMedico(String idMedico) {
 
-        return hospitalUQ.eliminarSala(idMedico);
+        return hospitalUQ.eliminarMedico(idMedico);
     }
 
     public boolean registrarHorario(Horario horario){

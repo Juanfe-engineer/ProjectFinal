@@ -23,6 +23,9 @@ public class Medico extends Usuario {
 
 
     }
+    public String getId(){
+        return id;
+    }
 
     public Especialidad getEspecialidad() {
         return especialidad;

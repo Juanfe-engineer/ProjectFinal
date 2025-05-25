@@ -877,7 +877,15 @@ public class HospitalUQTest {
 
         Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
 
-        paciente.solicitarCita(Especialidad.GENERAL);
+        if(paciente.solicitarCita(Especialidad.GENERAL)){
+            Medico medicob = hospital.buscarMedicoPorEspecialidad(Especialidad.GENERAL);
+        }
+        hospital.asignarMedicoAPaciente(paciente.getId(),medicob.getId());
+
+
+
+
+
 
 
 

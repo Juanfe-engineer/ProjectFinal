@@ -233,7 +233,7 @@ class AdministradorTest {
 
         Horario horario = new Horario("H001",LocalDate.of(2025,1,31),LocalTime.now(),Jornada.TARDE);
         Cita cita = new Cita("Diagnostico","Tratamiento","C001",null,null,null,null,EstadoCita.PROGRAMADA);
-        hospitalUQ.crearCita(cita);
+        hospitalUQ.registrarCita(cita);
         boolean resultado = administrador.asignarHorarioACita("C001",horario);
 
         assertTrue(resultado);
@@ -251,7 +251,7 @@ class AdministradorTest {
         Administrador administrador = new Administrador("Admin","1234","Admin@UqVirtual.edu.co","0180009654",hospitalUQ);
 
         Cita cita = new Cita("Diagnostico","Tratamiento","C001",null,null,null,null,EstadoCita.PROGRAMADA);
-        hospitalUQ.crearCita(cita);
+        hospitalUQ.registrarCita(cita);
         String reporte = administrador.verReporte("C001");
         assertTrue(reporte.contains("C001"));
 
