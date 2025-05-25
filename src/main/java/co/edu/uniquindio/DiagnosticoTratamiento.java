@@ -31,21 +31,9 @@ public class DiagnosticoTratamiento {
         return registradoPor;
 
     }
-
-    public void setDiagnostico(String diagnostico) {
-        this.diagnostico = diagnostico;
-    }
-
-    public void setTratamiento(String tratamiento) {
-        this.tratamiento = tratamiento;
-    }
-
-    public void setFechaRegistro(LocalDate fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
-    public void setRegistradoPor(Medico registradoPor) {
-        this.registradoPor = registradoPor;
+    @Override
+    public String tostring(){
+        return "Diagnostico: "+ diagnostico + "| Tra"
     }
 }
 

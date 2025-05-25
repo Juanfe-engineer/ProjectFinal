@@ -9,15 +9,17 @@ public class Cita {
     private Sala sala;
     private Horario horario;
     private EstadoCita estado;
-    private DiagnosticoTratamiento diagnosticotratamiento;
+    private String Diagnostico;
+    private String tratamiento;
 
-    public Cita(String idCita, Paciente paciente, Medico medico, Sala sala, Horario horario, EstadoCita estado) {
+    public Cita(String Diagnostico, String tratamiento, String idCita, Paciente paciente, Medico medico, Sala sala, Horario horario, EstadoCita estado) {
         this.idCita = idCita;
         this.paciente = paciente;
         this.medico = medico;
         this.sala = sala;
         this.horario = horario;
         this.estado = estado;
+        this.Diagnostico = Diagnostico;
     }
 
     public String getIdCita() {
@@ -68,12 +70,20 @@ public class Cita {
         this.estado = estado;
     }
 
-    public DiagnosticoTratamiento getDiagnosticotratamiento() {
-        return diagnosticotratamiento;
+    public String getDiagnostico() {
+        return Diagnostico;
     }
 
-    public void setDiagnostico_tratamiento(DiagnosticoTratamiento diagnosticotratamiento) {
-        this.diagnosticotratamiento = diagnosticotratamiento;
+    public String getTratamiento() {
+        return tratamiento;
+    }
+
+    public void setDiagnostico(String diagnostico) {
+        this.Diagnostico = Diagnostico;
+    }
+
+    public void setTratamiento(String tratamiento) {
+        this.tratamiento = tratamiento;
     }
 
 

@@ -704,7 +704,7 @@ public class HospitalUQ {
     }
 
 
-    //
+    //Generar reporte de ocupacion salas
     public String generarReporteOcupacionSalas() {
         int totalSalas = salas.size();
         int ocupadas = 0;
@@ -780,8 +780,9 @@ public class HospitalUQ {
 
 
 
-
-
-
 }
+
+
+
+
 

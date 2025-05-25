@@ -33,6 +33,19 @@ class AdministradorTest {
     }
 
 
+    @Test
+    public void ModificarPaciente(){
+        log.info("La prueba Inicio");
+
+        HospitalUQ hospitalUQ = new HospitalUQ("Hospital UQ", "123");
+        Administrador administrador = new Administrador("Admin","1234","Admin@UqVirtual.edu.co","0180009654",hospitalUQ);
+
+
+
+
+        log.info("La prueba Finalizo");
+    }
+
 
 
 
