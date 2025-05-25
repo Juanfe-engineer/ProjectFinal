@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.2"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="co.edu.uniquindio.viewController.PrincipalViewController">
+    <top>
+        <!-- Header con gradiente -->
+        <HBox alignment="CENTER" prefHeight="80.0" spacing="20.0" style="-fx-background-color: linear-gradient(to right, #667eea 0%, #764ba2 100%); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 3);">
+            <children>
+                <VBox alignment="CENTER_LEFT">
+                    <children>
+                        <Label text="MediCare Pro" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                        </Label>
+                        <Label fx:id="lblBienvenida" text="Bienvenido, Dr. Usuario" textFill="#E8F4FD">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button fx:id="btnPerfil" mnemonicParsing="false" onAction="#abrirPerfil" style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-background-radius: 20;" text="Mi Perfil">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Button>
+                <Button fx:id="btnCerrarSesion" mnemonicParsing="false" onAction="#cerrarSesion" style="-fx-background-color: #ff6b6b; -fx-text-fill: white; -fx-background-radius: 20;" text="Cerrar Sesión">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Button>
+            </children>
+            <padding>
+                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+            </padding>
+        </HBox>
+    </top>
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: #f8f9fa;">
+            <content>
+                <VBox spacing="30.0">
+                    <children>
+                        <!-- Estadísticas Cards -->
+                        <HBox alignment="CENTER" spacing="30.0">
+                            <children>
+                                <!-- Card Citas Hoy -->
+                                <VBox alignment="CENTER" prefHeight="120.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 0, 5);">
+                                    <children>
+
+                                        <Label fx:id="lblCitasHoy" text="8" textFill="WHITE">
+                                            <font>
+                                                <Font name="System Bold" size="28.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="Citas Hoy" textFill="#E8F4FD">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+
+                                <!-- Card Pacientes -->
+                                <VBox alignment="CENTER" prefHeight="120.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 0, 5);">
+                                    <children>
+
+                                        <Label fx:id="lblTotalPacientes" text="247" textFill="WHITE">
+                                            <font>
+                                                <Font name="System Bold" size="28.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="Total Pacientes" textFill="#FFE8F1">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+
+                                <!-- Card Urgencias -->
+                                <VBox alignment="CENTER" prefHeight="120.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 0, 5);">
+                                    <children>
+
+                                        <Label fx:id="lblUrgencias" text="3" textFill="WHITE">
+                                            <font>
+                                                <Font name="System Bold" size="28.0" />
+                                            </font>
+                                        </Label>
+                                        <Label text="Urgencias" textFill="#E8F9FF">
+                                            <font>
+                                                <Font size="14.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </VBox>
+                            </children>
+                        </HBox>
+
+                        <!-- Menú Principal -->
+                        <VBox alignment="CENTER" spacing="20.0">
+                            <children>
+                                <Label text="Panel de Control" textFill="#2c3e50">
+                                    <font>
+                                        <Font name="System Bold" size="24.0" />
+                                    </font>
+                                </Label>
+
+                                <!-- Grid de opciones -->
+                                <GridPane alignment="CENTER" hgap="30.0" vgap="30.0">
+                                    <children>
+                                        <!-- Gestión de Citas -->
+                                        <VBox fx:id="cardCitas" alignment="CENTER" onMouseClicked="#abrirGestionCitas" prefHeight="180.0" prefWidth="250.0" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 20, 0, 0, 8); -fx-cursor: hand;" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                            <children>
+                                                <Circle fill="linear-gradient(135deg, #667eea 0%, #764ba2 100%)" radius="35.0" />
+
+                                                <Label text="Gestión de Citas" textFill="#2c3e50" translateY="-25.0">
+                                                    <font>
+                                                        <Font name="System Bold" size="16.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label text="Solicitar, cancelar y ver citas programadas" textAlignment="CENTER" textFill="#7f8c8d" translateY="-25.0" wrapText="true">
+                                                    <font>
+                                                        <Font size="12.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                            <padding>
+                                                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                                            </padding>
+                                        </VBox>
+
+                                        <!-- Historial Médico -->
+                                        <VBox fx:id="cardHistorial" alignment="CENTER" onMouseClicked="#abrirHistorialMedico" prefHeight="180.0" prefWidth="250.0" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 20, 0, 0, 8); -fx-cursor: hand;" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                            <children>
+                                                <Circle fill="linear-gradient(135deg, #f093fb 0%, #f5576c 100%)" radius="35.0" />
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="entiendo"
+            prefHeight="400.0" prefWidth="600.0">
+
+</AnchorPane>
