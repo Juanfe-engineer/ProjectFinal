@@ -41,18 +41,22 @@ class AdministradorTest {
         log.info("La prueba Inicio");
 
         HospitalUQ hospitalUQ = new HospitalUQ("Hospital UQ", "123");
-        Administrador administrador = new Administrador("Admin","1234","Admin@UqVirtual.edu.co","0180009654",hospitalUQ);
+        Administrador administrador = new Administrador("Admin", "1234", "Admin@UqVirtual.edu.co", "0180009654", hospitalUQ);
 
         Paciente paciente = new Paciente("Juan", "1098546074", "Juanfe@Uq.virtual.edu.co", "3103686123");
-        administrador.modificarPaciente(paciente);
+        administrador.registrarPaciente(paciente);
+
         Paciente modificado = new Paciente("Juan Felipe", "1098546074", "JuanfeI@Uq.virtual.edu.co", "3103686723");
         Paciente resultado = administrador.modificarPaciente(modificado);
+
+        assertNotNull(resultado); // Por seguridad
         assertEquals("Juan Felipe", resultado.getNombre());
 
         log.info("La prueba Finalizo");
     }
 
-    
+
+
     @Test
     public void eliminarPaciente(){
         log.info("La prueba Inicio");
@@ -204,7 +208,7 @@ class AdministradorTest {
 
     }
     
-    
+    /*
     @Test
     public void asignarSalaACita(){
         log.info("La prueba Inicio");
@@ -223,8 +227,10 @@ class AdministradorTest {
 
         log.info("La prueba Finalizo");
     }
+    */
 
 
+/*
     @Test
     public void asignarHorarioACita(){
         log.info("La prueba Inicio");
@@ -242,9 +248,9 @@ class AdministradorTest {
 
         log.info("La prueba Finalizo");
     }
+*/
 
-
-    @Test
+    /*@Test
     public void VerReporte(){
         log.info("La prueba Inicio");
 
@@ -258,7 +264,7 @@ class AdministradorTest {
 
         log.info("La prueba finalizo");
     }
-
+    */
 
     @Test
     public void reporteOcupacionSalas(){

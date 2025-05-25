@@ -1,4 +1,4 @@
 package co.edu.uniquindio.viewController;
 
-public class HelloController {
+public class MedicoViewController {
 }

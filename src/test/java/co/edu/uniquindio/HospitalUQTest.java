@@ -2,7 +2,7 @@ package co.edu.uniquindio;
 
 
 import co.edu.uniquindio.model.*;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -731,28 +731,49 @@ public class HospitalUQTest {
         log.info("La prueba Finalizo");
 
     }
+
+
     @Test
-    public void Buscarcita(){
+    public void Buscarcita() {
         log.info("La prueba inicio");
+
         HospitalUQ hospital = new HospitalUQ("Hospital UQ", "123");
 
-        Medico medico1 = new Medico ("Oliver","10","Oliver@hospital.com", "3255059",Especialidad.GENERAL,EstadoMedico.DISPONIBLE);
+        // Paso 1: Crear objetos necesarios
+        Paciente paciente = new Paciente("Juan", "1001", "Juan@Uqvirtual", "3214567890");
+        Medico medico = new Medico("Dra. ana", "2002", "DraAna@uqvirtual", "606754321", Especialidad.GENERAL,EstadoMedico.DISPONIBLE);
+        Sala sala = new Sala("S1", TipoSala.CONSULTA,EstadoSala.DISPONIBLE,4);
+        Horario horario = new Horario("H1",LocalDate.now(),LocalTime.now(),Jornada.NOCHE);
 
-        Sala sala1 = new Sala("21", TipoSala.CIRUGIA,EstadoSala.DISPONIBLE, 10);
+        // Paso 2: Registrarlos en el sistema
+        hospital.registrarPaciente(paciente);
+        hospital.registrarMedico(medico);
+        hospital.registrarSala(sala);
 
-        Horario horario = new Horario("H005",LocalDate.of(2025,3,03),LocalTime.now(),Jornada.NOCHE);
+        // Paso 3: Registrar la cita
+        Cita cita = hospital.registrarCita(
+                "Paracetamol 500mg",
+                "Fiebre alta",
+                "10",
+                "1001",
+                "2002",
+                "S1",
+                horario
+        );
 
-        Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
-
-
-        Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
-
+        // Paso 4: Buscar la cita por ID
         Cita cita2 = hospital.buscarCitaPorID("10");
 
-        assertEquals(cita1,cita2);
-        log.info("La prueba finalizo");
+        // Paso 5: Verificar que no sea null y tenga los datos esperados
+        assertNotNull(cita2);
+        assertEquals("10", cita2.getIdCita());
+        assertEquals("Fiebre alta", cita2.getDiagnostico());
+        assertEquals("Paracetamol 500mg", cita2.getTratamiento());
 
+        log.info("La prueba finalizo");
     }
+
+
 
 
     @Test
@@ -798,7 +819,9 @@ public class HospitalUQTest {
         Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
 
 
-        Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
+        Cita cita1 = new Cita("fiebre","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
+        hospital.getCitas().add(cita1);
+
 
 
         boolean esperado = hospital.eliminarCita("10");
@@ -814,79 +837,107 @@ public class HospitalUQTest {
     @Test
     public void AsignarHorariocita(){
         log.info("La prueba inicio");
+
         HospitalUQ hospital = new HospitalUQ("Hospital UQ", "123");
 
-        Medico medico1 = new Medico ("Oliver","10","Oliver@hospital.com", "3255059",Especialidad.GENERAL,EstadoMedico.DISPONIBLE);
+        Medico medico1 = new Medico("Oliver", "10", "Oliver@hospital.com", "3255059", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
+        Sala sala1 = new Sala("21", TipoSala.CIRUGIA, EstadoSala.DISPONIBLE, 10);
 
-        Sala sala1 = new Sala("21", TipoSala.CIRUGIA,EstadoSala.DISPONIBLE, 10);
-
-        Horario horario = new Horario("H005",LocalDate.of(2025,3,03),LocalTime.now(),Jornada.NOCHE);
-        Horario horario2 = new Horario("H005",LocalDate.of(2025,3,03),LocalTime.now(),Jornada.NOCHE);
+        Horario horario = new Horario("H005", LocalDate.of(2025, 3, 3), LocalTime.now(), Jornada.NOCHE);
+        Horario horario2 = new Horario("H006", LocalDate.of(2025, 3, 4), LocalTime.now(), Jornada.TARDE); // Usa otro ID para evitar conflicto
 
         Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
 
+        // Crear y registrar la cita
+        Cita cita1 = new Cita("10", "Acetaminofen 8 horas", "10", paciente, medico1, sala1, horario, EstadoCita.PROGRAMADA);
+        hospital.getCitas().add(cita1);
 
-        Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
-
-
+        // Ejecutar y verificar
         boolean esperado = hospital.asignarHorarioACita("10", horario2);
 
-        assertEquals(true,esperado);
+        assertEquals(true, esperado); // Confirmar que se asignó correctamente
+        assertEquals(horario2, cita1.getHorario()); // Confirmar que el horario cambió
+
         log.info("La prueba finalizo");
-
-
-
-
     }
+
+
     @Test
     public void Liberarhorario(){
         log.info("La prueba inicio");
+
+
         HospitalUQ hospital = new HospitalUQ("Hospital UQ", "123");
 
-        Medico medico1 = new Medico ("Oliver","10","Oliver@hospital.com", "3255059",Especialidad.GENERAL,EstadoMedico.DISPONIBLE);
-
-        Sala sala1 = new Sala("21", TipoSala.CIRUGIA,EstadoSala.DISPONIBLE, 10);
-
-        Horario horario = new Horario("H005",LocalDate.of(2025,3,03),LocalTime.now(),Jornada.NOCHE);
-
+        Medico medico1 = new Medico("Oliver", "10", "Oliver@hospital.com", "3255059", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
+        Sala sala1 = new Sala("21", TipoSala.CIRUGIA, EstadoSala.DISPONIBLE, 10);
+        Horario horario = new Horario("H005", LocalDate.of(2025, 3, 3), LocalTime.now(), Jornada.NOCHE);
         Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
 
+        // Crear cita
+        Cita cita1 = new Cita("fiebre", "Acetaminofen 8 horas", "10", paciente, medico1, sala1, horario, EstadoCita.PROGRAMADA);
 
-        Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
+        // Registrar cita en el sistema
+        hospital.getCitas().add(cita1);
 
+        // Ejecutar el método a probar
         hospital.liberarHorarioDeCita("10");
 
-
+        // Verificar que el horario fue liberado (es decir, ahora es null)
         assertNull(cita1.getHorario());
+
         log.info("La prueba finalizo");
-
-
     }
+
+
+
     @Test
-    public void solicitarcita(){
-        log.info("La prueba inicio");
-        HospitalUQ hospital = new HospitalUQ("Hospital UQ", "123");
+    public void SolicitarCita() {
+        System.out.println("La prueba inicio");
 
-        Medico medico1 = new Medico ("Oliver","10","Oliver@hospital.com", "3255059",Especialidad.GENERAL,EstadoMedico.DISPONIBLE);
+        // Crear hospital
+        HospitalUQ hospital = new HospitalUQ("Hospital UQ","123");
 
-        Sala sala1 = new Sala("21", TipoSala.CIRUGIA,EstadoSala.DISPONIBLE, 10);
+        // Registrar paciente
+        Paciente paciente = new Paciente("Juan", "123", "j@gmail.com", "31245687293");
+        hospital.registrarPaciente(paciente);
 
-        Horario horario = new Horario("H005",LocalDate.of(2025,3,03),LocalTime.now(),Jornada.NOCHE);
+        // Registrar médico disponible
+        Medico medico = new Medico("Maria", "1", "m@gmail.com", "321456932", Especialidad.CARDIOLOGO,EstadoMedico.DISPONIBLE);
+        medico.setEstado(EstadoMedico.DISPONIBLE);
+        hospital.registrarMedico(medico);
 
-        Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
+        // Registrar sala
+        Sala sala = new Sala("s1", TipoSala.CONSULTA,EstadoSala.DISPONIBLE,4);
+        hospital.registrarSala(sala);
+
+        // Registrar horario
+        Horario horario = new Horario("h1", LocalDate.now(), LocalTime.of(10, 0),Jornada.MANANA);
+        hospital.registrarHorario(horario);
+
+        // Asociar hospital al paciente
         paciente.setHospital(hospital);
 
-        Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
-        Medico medicob = null;
+        // Solicitar cita
+        Cita citaEsperada = paciente.solicitarCita("Tratamiento X", "Diagnóstico Y",
+                Especialidad.CARDIOLOGO, "c1", "s1", horario);
 
-        if(paciente.solicitarCita(Especialidad.GENERAL) instanceof Cita){
-            hospital.registrarPaciente(paciente.solicitarCita(Especialidad.GENERAL));
-            medicob = hospital.buscarMedicoPorEspecialidad(Especialidad.GENERAL);
-        }
-        hospital.asignarMedicoAPaciente(paciente.getId(),medicob.getId());
-        
+        // Depuración
+        System.out.println("Paciente encontrado: " + hospital.buscarPacienteID("123"));
+        System.out.println("Médico encontrado: " + hospital.buscarMedicoID("1"));
+        System.out.println("Estado médico: " + hospital.buscarMedicoID("1").getEstado());
+        System.out.println("Sala encontrada: " + hospital.buscarSalaPorId("s1"));
+        System.out.println("Resultado de cita: " + citaEsperada);
 
-
+        // Verificación
+        assertNotNull(citaEsperada, "La cita no debe ser null si todo está registrado correctamente.");
+        assertEquals("c1", citaEsperada.getIdCita());
+        assertEquals(paciente, citaEsperada.getPaciente());
+        assertEquals(medico, citaEsperada.getMedico());
+        assertEquals(sala, citaEsperada.getSala());
+        assertEquals(horario, citaEsperada.getHorario());
+        assertEquals("Tratamiento X", citaEsperada.getTratamiento());
+        assertEquals("Diagnóstico Y", citaEsperada.getDiagnostico());
     }
 
 
@@ -905,7 +956,10 @@ public class HospitalUQTest {
 
 
 
-    
+
+
+
+
 
 
 

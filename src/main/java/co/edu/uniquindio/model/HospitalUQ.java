@@ -2,6 +2,7 @@ package co.edu.uniquindio.model;
 
 import java.util.LinkedList;
 import java.util.ArrayList;
+
 public class HospitalUQ {
     private String nombre;
     private String id;
@@ -739,64 +740,50 @@ public class HospitalUQ {
 
 
     //buscar medico por especialidad//
-    public Medico buscarMedicoPorEspecialidad(Especialidad especialidad){
-        for (Medico m1 : medicos ){
-            if (m1.getEspecialidad().equals(especialidad)){
-                return m1;
+    public Medico buscarMedicoPorEspecialidad(Especialidad especialidad) {
+        for (Medico m : medicos) {
+            if (m.getEspecialidad() == especialidad && m.getEstado() == EstadoMedico.DISPONIBLE) {
+                return m;
             }
-
         }
         return null;
     }
 
 
+
     //
 
-    public boolean registrarCita(Cita cita) {
-        if (cita == null) {
-            return false;
-        }
-        for (Cita c : citas) {
-            if (c.getIdCita().equals(cita.getIdCita())) {
-                return false;
-            }
-        }
-        citas.add(cita);
-        return true;
-    }
 
 
 
-    public boolean registrarCita(String idCita, String idPaciente, String idMedico, String idSala, Horario horario) {
+    public Cita registrarCita(String tratamiento,String Diagnostico, String idCita, String idPaciente, String idMedico, String idSala, Horario horario) {
         // Verificar que el paciente exista
         Paciente paciente = buscarPacienteID(idPaciente);
-        if (paciente == null) return false;
+        if (paciente == null) return null;
 
         // Verificar que el médico exista y esté disponible
         Medico medico = buscarMedicoID(idMedico);
-        if (medico == null || medico.getEstado() != EstadoMedico.DISPONIBLE) return false;
+        if (medico == null || medico.getEstado() != EstadoMedico.DISPONIBLE) return null;
 
         // Verificar que la sala exista
         Sala sala = buscarSalaPorId(idSala);
-        if (sala == null) return false;
+        if (sala == null) return null;
 
         // Verificar que no haya otra cita con esa sala y horario
         for (Cita c : citas) {
             if (c.getSala().getIdSala().equals(idSala) && c.getHorario().equals(horario)) {
-                return false; // Sala ocupada
+                return null; // Sala ocupada
             }
             if (c.getMedico().getId().equals(idMedico) && c.getHorario().equals(horario)) {
-                return false; // Médico ocupado
+                return null; // Médico ocupado
             }
         }
 
         // Crear la cita
-        Cita nuevaCita = new Cita("","",idCita,paciente,medico,sala,horario,EstadoCita.PROGRAMADA);
+        Cita nuevaCita = new Cita(Diagnostico,tratamiento,idCita,paciente,medico,sala,horario,EstadoCita.PROGRAMADA);
         citas.add(nuevaCita);
-        return true;
+        return nuevaCita;
     }
-
-
 
 
 

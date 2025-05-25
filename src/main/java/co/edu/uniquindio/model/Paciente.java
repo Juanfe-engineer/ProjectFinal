@@ -51,15 +51,21 @@ public class Paciente extends Usuario implements IGestionableCitas {
 
 
     // Solicitar cita
-    public boolean solicitarCita(){
-        for (Cita cita : citas) {
-            if (null != cita.getIdCita()){
-                return false;
-            }
+
+    public Cita solicitarCita( String tratamiento,String diagnostico,Especialidad especialidad, String idCita, String idSala, Horario horario ) {
+        Medico medico = hospital.buscarMedicoPorEspecialidad(especialidad);
+        Cita citanueva = null;
+        if (medico == null || !medico.getEstado().equals(EstadoMedico.DISPONIBLE)) {
+            return null; // No hay médico disponible
+
+        }
+        else{
+            citanueva = hospital.registrarCita(tratamiento, diagnostico, idCita, id, medico.getId(), idSala, horario);
+            return citanueva;
+
         }
 
     }
-
 
 
     //Cancelar cita
@@ -83,5 +89,9 @@ public class Paciente extends Usuario implements IGestionableCitas {
         }
         return false;
     }
+
+
+
+
 
 }
