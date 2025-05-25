@@ -1,8 +1,6 @@
-package co.edu.uniquindio;
+package co.edu.uniquindio.model;
 
-import javax.management.Notification;
 import java.util.LinkedList;
-import java.util.UUID;
 
 public class Paciente extends Usuario implements IGestionableCitas {
     private HistorialMedico historialMedico;
@@ -52,20 +50,19 @@ public class Paciente extends Usuario implements IGestionableCitas {
 
 
 
-    public boolean solicitarCita(Especialidad especialidad) {
-       Medico medico = hospital.buscarMedicoPorEspecialidad(especialidad);
-       if (medico == null) {
-           return false;
-       }
-       if(medico.getEstado().equals(EstadoMedico.DISPONIBLE)){
-           return true ;
+    // Solicitar cita
+    public boolean solicitarCita(){
+        for (Cita cita : citas) {
+            if (null != cita.getIdCita()){
+                return false;
+            }
         }
-       return false;
 
     }
 
 
-    //Cancalar cita
+
+    //Cancelar cita
     public boolean cancelarCita(String idCita) {
         for (Cita cita : citas) {
             if (cita.getIdCita().equals(idCita)) {

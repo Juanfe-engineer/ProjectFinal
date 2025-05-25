@@ -1,6 +1,4 @@
-package co.edu.uniquindio;
-
-import java.util.LinkedList;
+package co.edu.uniquindio.model;
 
 public class Cita {
     private String idCita;

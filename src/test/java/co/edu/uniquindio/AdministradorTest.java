@@ -1,5 +1,6 @@
 package co.edu.uniquindio;
 
+import co.edu.uniquindio.model.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -76,7 +77,7 @@ class AdministradorTest {
         HospitalUQ hospitalUQ = new HospitalUQ("Hospital UQ", "123");
         Administrador administrador = new Administrador("Admin","1234","Admin@UqVirtual.edu.co","0180009654",hospitalUQ);
 
-        Medico medico = new Medico("Dr. Jacobo","M001","Jacobo01@Uq.edu.co","606783214",Especialidad.CARDIOLOGO,EstadoMedico.DISPONIBLE);
+        Medico medico = new Medico("Dr. Jacobo","M001","Jacobo01@Uq.edu.co","606783214", Especialidad.CARDIOLOGO,EstadoMedico.DISPONIBLE);
         boolean resultado = administrador.registrarMedico(medico);
         assertTrue(resultado);
 
@@ -127,7 +128,7 @@ class AdministradorTest {
         HospitalUQ hospitalUQ = new HospitalUQ("Hospital UQ", "123");
         Administrador administrador = new Administrador("Admin","1234","Admin@UqVirtual.edu.co","0180009654",hospitalUQ);
 
-        Sala sala = new Sala("S001",TipoSala.CONSULTA,EstadoSala.DISPONIBLE,5);
+        Sala sala = new Sala("S001", TipoSala.CONSULTA,EstadoSala.DISPONIBLE,5);
         administrador.registrarSala(sala);
         assertEquals(1,hospitalUQ.getSalas().size());
 
@@ -214,7 +215,7 @@ class AdministradorTest {
         Sala sala = new Sala("S001",TipoSala.CONSULTA,EstadoSala.DISPONIBLE,4);
         Cita cita = new Cita("Diagnostico", "Tratamiento","C001",null,null,sala,null,EstadoCita.PROGRAMADA);
         hospitalUQ.registrarSala(sala);
-        hospitalUQ.crearCita(cita);
+        hospitalUQ.registrarCita(cita);
         
         boolean resultado = administrador.asignarSalaACita("C001","S001");
         assertTrue(resultado);

@@ -1,10 +1,8 @@
-package co.edu.uniquindio;
+package co.edu.uniquindio.model;
 
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.time.LocalDate;
 import java.util.Properties;
 
 public class Main {

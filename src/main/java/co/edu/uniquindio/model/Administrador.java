@@ -1,4 +1,4 @@
-package co.edu.uniquindio;
+package co.edu.uniquindio.model;
 
 public class Administrador extends Usuario {
     private HospitalUQ hospitalUQ;

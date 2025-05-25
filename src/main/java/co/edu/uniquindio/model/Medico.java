@@ -1,4 +1,4 @@
-package co.edu.uniquindio;
+package co.edu.uniquindio.model;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -23,9 +23,7 @@ public class Medico extends Usuario {
 
 
     }
-    public String getId(){
-        return id;
-    }
+
 
     public Especialidad getEspecialidad() {
         return especialidad;

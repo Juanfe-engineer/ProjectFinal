@@ -1,6 +1,7 @@
 package co.edu.uniquindio;
 
 
+import co.edu.uniquindio.model.*;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -158,7 +159,7 @@ public class HospitalUQTest {
         HospitalUQ hospitalUQ = new HospitalUQ("SanJuan", "900-234-462");
 
         // Crear un medico
-        Medico medico1 = new Medico("Jacobo", "0001","Jacobo@uq.edu.co", "3023456712",Especialidad.GENERAL,EstadoMedico.DISPONIBLE);
+        Medico medico1 = new Medico("Jacobo", "0001","Jacobo@uq.edu.co", "3023456712", Especialidad.GENERAL,EstadoMedico.DISPONIBLE);
 
         // Registrar el medico
         boolean resultado = hospitalUQ.registrarMedico(medico1);
@@ -324,7 +325,7 @@ public class HospitalUQTest {
         Horario horario = new Horario("H001", LocalDate.of(2025, 5, 14), LocalTime.now(), Jornada.TARDE);
 
 
-        Cita cita = new Cita("diagnostico","tratamiento", "S001",paciente,medico,sala,horario,EstadoCita.PROGRAMADA);
+        Cita cita = new Cita("diagnostico","tratamiento", "S001",paciente,medico,sala,horario, EstadoCita.PROGRAMADA);
 
         // Agregar entidades al hospital
         hospital.getPacientes().add(paciente);
@@ -876,21 +877,14 @@ public class HospitalUQTest {
         paciente.setHospital(hospital);
 
         Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
+        Medico medicob = null;
 
-        if(paciente.solicitarCita(Especialidad.GENERAL)){
-            Medico medicob = hospital.buscarMedicoPorEspecialidad(Especialidad.GENERAL);
+        if(paciente.solicitarCita(Especialidad.GENERAL) instanceof Cita){
+            hospital.registrarPaciente(paciente.solicitarCita(Especialidad.GENERAL));
+            medicob = hospital.buscarMedicoPorEspecialidad(Especialidad.GENERAL);
         }
         hospital.asignarMedicoAPaciente(paciente.getId(),medicob.getId());
-
-
-
-
-
-
-
-
-
-
+        
 
 
     }
