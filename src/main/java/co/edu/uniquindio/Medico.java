@@ -1,6 +1,6 @@
 package co.edu.uniquindio;
 
-import javax.management.Notification;
+import java.time.LocalDate;
 import java.util.LinkedList;
 
 
@@ -72,61 +72,33 @@ public class Medico extends Usuario {
         this.diagnosticoTratamiento = diagnosticoTratamiento;
     }
 
-
-    //Metodo 
-    public boolean diagnosticarPaciente(String idCita, String diagnostico) {
-        for (Cita c : citaAsignadas) {
-            if (c.getIdCita().equals(idCita)) {
-                c.setDiagnostico(diagnostico);
-                return true;
-            }
-        }
-        return false; // Cita no encontrada
+    //Diagnosticar
+    public DiagnosticoTratamiento diagnosticar(Paciente paciente, String diagnostico, String tratamiento, LocalDate fechaDeRegistro, Medico registradoPor) {
+        DiagnosticoTratamiento diagnost = new DiagnosticoTratamiento(diagnostico, tratamiento, fechaDeRegistro, registradoPor);
+        paciente.agregarDiagnostico(diagnost);
+        return diagnost;
     }
 
-    public boolean asignarTratamientoDiagnostico(String idCita, String tratamiento) {
-        for (Cita c : citaAsignadas) {
-            if (c.getIdCita().equals(idCita)) {
-                c.setTratamiento(tratamiento);
-                return true;
-            }
-        }
-        return false; // Cita no encontrada
-    }
 
-    public boolean modificarDiagnostico(String idCita, String nuevoDiagnostico) {
-        for (Cita c : citaAsignadas) {
-            if (c.getIdCita().equals(idCita)) {
-                c.setDiagnostico(nuevoDiagnostico);
-                return true;
-            }
-        }
-        return false; // Cita no encontrada
-    }
 
-    public boolean modificarTratamiento(String idCita, String nuevoTratamiento) {
-        for (Cita c : citaAsignadas) {
-            if (c.getIdCita().equals(idCita)) {
-                c.setTratamiento(nuevoTratamiento);
-                return true;
-            }
-        }
-        return false; // Cita no encontrada
-    }
+    // Metodo para consultar el historial de  un paciente
 
-    public String consultarHistorialPaciente(Paciente paciente) {
+    public String consultarHistorialPaciente (Paciente paciente) {
         StringBuilder historial = new StringBuilder();
-        for (Cita c : citaAsignadas) {
+        for (Cita c : paciente.getCitas()) {
             if (c.getPaciente().equals(paciente)) {
                 historial.append("ID Cita: ").append(c.getIdCita()).append("\n");
                 historial.append("Fecha: ").append(c.getHorario()).append("\n");
-                historial.append("Diagnóstico: ").append(c.getDiagnostico()).append("\n");
-                historial.append("Tratamiento: ").append(c.getTratamiento()).append("\n");
+                historial.append("Diagnóstico y tratamiento: ")
+                        .append(c.getDiagnostico() != null ? c.getDiagnostico() : "Sin diagnóstico")
+                        .append(" / ")
+                        .append(c.getTratamiento() != null ? c.getTratamiento() : "Sin tratamiento")
+                        .append("\n");
                 historial.append("Sala: ").append(c.getSala().getIdSala()).append("\n");
                 historial.append("-----------------------------\n");
             }
         }
-        if (historial.length() == 0) {
+        if (historial.isEmpty()) {
             return "No hay historial disponible para este paciente.";
         }
         return historial.toString();

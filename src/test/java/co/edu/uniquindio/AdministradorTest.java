@@ -2,6 +2,8 @@ package co.edu.uniquindio;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,7 +20,7 @@ class AdministradorTest {
     //Pruebas unitarias de Administrador
 
     @Test
-    public void testRegistrarNuevoPaciente(){
+    public void RegistrarPaciente(){
         log.info("La prueba Inicio");
 
         HospitalUQ hospitalUQ = new HospitalUQ("Hospital UQ", "123");
@@ -40,8 +42,11 @@ class AdministradorTest {
         HospitalUQ hospitalUQ = new HospitalUQ("Hospital UQ", "123");
         Administrador administrador = new Administrador("Admin","1234","Admin@UqVirtual.edu.co","0180009654",hospitalUQ);
 
-
-
+        Paciente paciente = new Paciente("Juan", "1098546074", "Juanfe@Uq.virtual.edu.co", "3103686123");
+        administrador.modificarPaciente(paciente);
+        Paciente modificado = new Paciente("Juan Felipe", "1098546074", "JuanfeI@Uq.virtual.edu.co", "3103686723");
+        Paciente resultado = administrador.modificarPaciente(modificado);
+        assertEquals("Juan Felipe", resultado.getNombre());
 
         log.info("La prueba Finalizo");
     }

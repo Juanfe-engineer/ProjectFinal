@@ -32,8 +32,9 @@ public class DiagnosticoTratamiento {
 
     }
     @Override
-    public String tostring(){
-        return "Diagnostico: "+ diagnostico + "| Tra"
+    public String toString(){
+        return "Diagnostico: "+ diagnostico + "| Tratamiento: "+ tratamiento;
+
     }
 }
 

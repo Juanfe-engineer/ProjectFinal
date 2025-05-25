@@ -43,7 +43,7 @@ public class Administrador extends Usuario {
         return hospitalUQ.eliminarSala(idPaciente);
     }
 
-    public boolean registrarMetodo(Medico medico){
+    public boolean registrarMedico(Medico medico){
 
         return hospitalUQ.registrarMedico(medico);
     }

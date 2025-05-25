@@ -324,7 +324,7 @@ public class HospitalUQTest {
         Horario horario = new Horario("H001", LocalDate.of(2025, 5, 14), LocalTime.now(), Jornada.TARDE);
 
 
-        Cita cita = new Cita("C001", paciente, medico, sala, horario, null);
+        Cita cita = new Cita("diagnostico","tratamiento", "S001",paciente,medico,sala,horario,EstadoCita.PROGRAMADA);
 
         // Agregar entidades al hospital
         hospital.getPacientes().add(paciente);
@@ -341,42 +341,6 @@ public class HospitalUQTest {
 
         log.info("La prueba finalizo");
     }
-
-
-    @Test
-    public void cancelarCita() {
-        log.info("La prueba inicio");
-
-        HospitalUQ hospital = new HospitalUQ("San Juan", "900-123");
-
-        // Crear entidades necesarias
-        Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
-        Medico medico = new Medico("M002", "Dra. Grey", "grey@uq.edu.co", "3112345678", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
-        Sala sala = new Sala("S002", TipoSala.CONSULTA, EstadoSala.DISPONIBLE, 1);
-        Horario horario = new Horario("H002", LocalDate.of(2025, 5, 14), LocalTime.now(), Jornada.TARDE);
-
-        Cita cita = new Cita("C002", paciente, medico, sala, horario, EstadoCita.PROGRAMADA);
-
-        // Preparar el entorno
-        hospital.getPacientes().add(paciente);
-        hospital.getMedicos().add(medico);
-        hospital.getSalas().add(sala);
-        hospital.getCitas().add(cita);
-        medico.setEstado(EstadoMedico.NO_DISPONIBLE);
-        sala.setEstado(EstadoSala.OCUPADA);
-
-        boolean resultado = hospital.cancelarCita("C002");
-
-        assertTrue(resultado);
-        assertEquals(EstadoCita.CANCELADA, cita.getEstado());
-        assertEquals(EstadoMedico.DISPONIBLE, medico.getEstado());
-        assertEquals(EstadoSala.DISPONIBLE, sala.getEstado());
-
-        log.info("La prueba finalizo");
-    }
-
-
-
 
     //----------------------------------------------------------------------------------------------------------------//
 
@@ -436,7 +400,7 @@ public class HospitalUQTest {
         EstadoCita estado = EstadoCita.PROGRAMADA;
 
         // Crear la cita con los objetos creados
-        Cita cita = new Cita("C01", paciente, medico, null, horario, estado);
+        Cita cita = new Cita("C01","Acetaminofen 8 horas","C01", paciente, medico, null, horario, estado);
 
         // Agregar la cita al hospital
         HospitalUQ hospital = new HospitalUQ("UQ Salud", "123");
@@ -486,7 +450,7 @@ public class HospitalUQTest {
         Medico medico = new Medico("M01", "Dr. Luis", "luis@uq.edu.co", "3219876543", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
         Horario horario = new Horario("H01", LocalDate.now(), LocalTime.now(), Jornada.MANANA);
 
-        Cita cita = new Cita("C01", paciente, medico,null, horario, EstadoCita.PROGRAMADA);
+        Cita cita = new Cita("C01","Acetaminofen 8 horas","C01", paciente, medico,null, horario, EstadoCita.PROGRAMADA);
 
         hospital.getCitas().add(cita);
         hospital.getSalas().add(sala);
@@ -513,7 +477,7 @@ public class HospitalUQTest {
         Medico medico = new Medico("M01", "Dr. Juan", "juan@uq.edu.co", "3012345678", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
         Horario horario = new Horario("H01", LocalDate.now(), LocalTime.now(), Jornada.MANANA);
 
-        Cita cita = new Cita("C01", paciente, medico, sala, horario, EstadoCita.PROGRAMADA);
+        Cita cita = new Cita("C01","Acetaminofen 8 horas","C01", paciente, medico, sala, horario, EstadoCita.PROGRAMADA);
 
         hospital.getSalas().add(sala);
         hospital.getCitas().add(cita);
@@ -754,7 +718,7 @@ public class HospitalUQTest {
         Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
 
 
-        Cita cita1 = new Cita("10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
+        Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
 
         hospital.crearCita(cita1);
 
@@ -780,7 +744,7 @@ public class HospitalUQTest {
         Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
 
 
-        Cita cita1 = new Cita("10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
+        Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
 
         Cita cita2 = hospital.buscarCitaPorID("10");
 
@@ -808,7 +772,7 @@ public class HospitalUQTest {
         Medico medico2 = new Medico("M01", "Dr. Juan", "juan@uq.edu.co", "3012345678", Especialidad.GENERAL, EstadoMedico.DISPONIBLE);
 
 
-        Cita cita1 = new Cita("10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
+        Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
 
 
         Cita cita2 = hospital.actualizarCita("10","12", horario2, medico2, sala2);
@@ -833,7 +797,7 @@ public class HospitalUQTest {
         Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
 
 
-        Cita cita1 = new Cita("10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
+        Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
 
 
         boolean esperado = hospital.eliminarCita("10");
@@ -861,7 +825,7 @@ public class HospitalUQTest {
         Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
 
 
-        Cita cita1 = new Cita("10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
+        Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
 
 
         boolean esperado = hospital.asignarHorarioACita("10", horario2);
@@ -887,13 +851,38 @@ public class HospitalUQTest {
         Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
 
 
-        Cita cita1 = new Cita("10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
+        Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
 
         hospital.liberarHorarioDeCita("10");
 
 
         assertNull(cita1.getHorario());
         log.info("La prueba finalizo");
+
+
+    }
+    @Test
+    public void solicitarcita(){
+        log.info("La prueba inicio");
+        HospitalUQ hospital = new HospitalUQ("Hospital UQ", "123");
+
+        Medico medico1 = new Medico ("Oliver","10","Oliver@hospital.com", "3255059",Especialidad.GENERAL,EstadoMedico.DISPONIBLE);
+
+        Sala sala1 = new Sala("21", TipoSala.CIRUGIA,EstadoSala.DISPONIBLE, 10);
+
+        Horario horario = new Horario("H005",LocalDate.of(2025,3,03),LocalTime.now(),Jornada.NOCHE);
+
+        Paciente paciente = new Paciente("P002", "Luis", "luis@uq.edu.co", "3123456789");
+        paciente.setHospital(hospital);
+
+        Cita cita1 = new Cita("10","Acetaminofen 8 horas","10", paciente, medico1,sala1, horario, EstadoCita.PROGRAMADA);
+
+        paciente.solicitarCita(Especialidad.GENERAL);
+
+
+
+
+
 
 
     }

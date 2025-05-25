@@ -520,28 +520,7 @@ public class HospitalUQ {
 
 
 
-    // INTERFACE Cancelar Cita
 
-    public boolean cancelarCita(String idCita) {
-        for (Cita cita : citas) {
-            if (cita.getIdCita().equals(idCita)) {
-                if (cita.getEstado() != EstadoCita.CANCELADA) {
-                    cita.setEstado(EstadoCita.CANCELADA);
-
-                    // Liberar sala y médico
-                    if (cita.getMedico() != null) {
-                        cita.getMedico().setEstado(EstadoMedico.DISPONIBLE);
-                    }
-                    if (cita.getSala() != null) {
-                        cita.getSala().setEstado(EstadoSala.DISPONIBLE);
-                    }
-
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
 
     //----------------------------------------------------------------------------------------------------------------//
@@ -775,10 +754,16 @@ public class HospitalUQ {
 
         return reporte.toString();
     }
+    //buscar medico por especialidad//
+    public Medico buscarMedicoPorEspecialidad(Especialidad especialidad){
+        for (Medico m1 : medicos){
+            if (m1.getEspecialidad().equals(especialidad)){
+                return m1;
+            }
 
-
-
-
+        }
+        return null;
+    }
 
 }
 

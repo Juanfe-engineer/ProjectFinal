@@ -12,7 +12,7 @@ public class Cita {
     private String Diagnostico;
     private String tratamiento;
 
-    public Cita(String Diagnostico, String tratamiento, String idCita, Paciente paciente, Medico medico, Sala sala, Horario horario, EstadoCita estado) {
+    public Cita(String Diagnostico, String tratamiento, String idCita, Paciente paciente, Medico medico, Sala sala, Horario horario, EstadoCita estado ) {
         this.idCita = idCita;
         this.paciente = paciente;
         this.medico = medico;
@@ -20,6 +20,7 @@ public class Cita {
         this.horario = horario;
         this.estado = estado;
         this.Diagnostico = Diagnostico;
+        this.tratamiento = tratamiento;
     }
 
     public String getIdCita() {
