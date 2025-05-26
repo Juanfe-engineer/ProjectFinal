@@ -34,7 +34,7 @@ public class LoginViewController {
 
         // Aquí puedes agregar tu lógica de autenticación
         // Por ahora, validación simple para pruebas
-        if (usuario.equals("admin") && password.equals("123")) {
+        if (usuario.equals("Juan") && password.equals("1234")) {
             mostrarAlerta("Éxito", "Inicio de sesión exitoso", Alert.AlertType.INFORMATION);
 
             // Aquí cargarías la siguiente ventana

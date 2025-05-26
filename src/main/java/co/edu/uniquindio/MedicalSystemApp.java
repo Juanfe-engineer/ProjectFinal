@@ -1,6 +1,7 @@
 package co.edu.uniquindio;
 
 import co.edu.uniquindio.viewController.PrincipalViewController;
+import co.edu.uniquindio.model.Paciente;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -14,6 +15,9 @@ public class MedicalSystemApp extends Application {
     // Variable estática para manejar la ventana principal
     private static Stage primaryStage;
 
+    // Variable estática para manejar el paciente actual
+    private static Paciente pacienteActual;
+
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
@@ -21,7 +25,7 @@ public class MedicalSystemApp extends Application {
         try {
             // Cargar el archivo FXML del login
             FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/co.edu.uniquindio.javafx/login-view.fxml")
+                    getClass().getResource("/co/edu/uniquindio/javafx/login-view.fxml")
             );
 
             Scene scene = new Scene(loader.load());
@@ -59,20 +63,23 @@ public class MedicalSystemApp extends Application {
 
     /**
      * Método estático para cambiar a la vista principal después del login
-     * @param nombrePaciente Nombre del paciente que se logueó
+     * @param paciente Paciente que se logueó
      */
-    public static void abrirMenuPrincipal(String nombrePaciente) {
+    public static void abrirMenuPrincipal(Paciente paciente) {
         try {
+            // Guardar referencia del paciente
+            pacienteActual = paciente;
+
             // Cargar la vista principal
             FXMLLoader loader = new FXMLLoader(
-                    MedicalSystemApp.class.getResource("/co.edu.uniquindio.javafx/principal-view.fxml")
+                    MedicalSystemApp.class.getResource("/co/edu/uniquindio/javafx/principal-view.fxml")
             );
 
             Scene principalScene = new Scene(loader.load());
 
-            // Obtener el controlador y establecer el nombre del paciente
+            // Obtener el controlador y establecer el paciente
             PrincipalViewController controller = loader.getController();
-            controller.setPacienteNombre(nombrePaciente);
+            controller.setPacienteActual(pacienteActual);
 
             // Cambiar la escena
             primaryStage.setScene(principalScene);
@@ -80,7 +87,7 @@ public class MedicalSystemApp extends Application {
             primaryStage.setMaximized(true); // Maximizar para mejor experiencia
             primaryStage.centerOnScreen();
 
-            System.out.println("✅ Menu principal cargado para: " + nombrePaciente);
+            System.out.println("✅ Menu principal cargado para: " + paciente.getNombre());
 
         } catch (IOException e) {
             System.err.println("❌ Error al cargar el menu principal: " + e.getMessage());
@@ -89,12 +96,28 @@ public class MedicalSystemApp extends Application {
     }
 
     /**
+     * Método alternativo para abrir menu principal con datos del paciente
+     * @param nombrePaciente Nombre del paciente
+     * @param idPaciente ID del paciente
+     * @param correo Correo del paciente
+     * @param telefono Teléfono del paciente
+     */
+    public static void abrirMenuPrincipal(String nombrePaciente, String idPaciente, String correo, String telefono) {
+        // Crear paciente con los datos proporcionados
+        Paciente paciente = new Paciente(nombrePaciente, idPaciente, correo, telefono);
+        abrirMenuPrincipal(paciente);
+    }
+
+    /**
      * Método estático para volver al login
      */
     public static void volverAlLogin() {
         try {
+            // Limpiar paciente actual
+            pacienteActual = null;
+
             FXMLLoader loader = new FXMLLoader(
-                    MedicalSystemApp.class.getResource("/co.edu.uniquindio.javafx/login-view.fxml")
+                    MedicalSystemApp.class.getResource("/co/edu/uniquindio/javafx/login-view.fxml")
             );
 
             Scene loginScene = new Scene(loader.load());
@@ -118,6 +141,20 @@ public class MedicalSystemApp extends Application {
      */
     public static Stage getPrimaryStage() {
         return primaryStage;
+    }
+
+    /**
+     * Obtiene el paciente actual
+     */
+    public static Paciente getPacienteActual() {
+        return pacienteActual;
+    }
+
+    /**
+     * Establece el paciente actual
+     */
+    public static void setPacienteActual(Paciente paciente) {
+        pacienteActual = paciente;
     }
 
     public static void main(String[] args) {

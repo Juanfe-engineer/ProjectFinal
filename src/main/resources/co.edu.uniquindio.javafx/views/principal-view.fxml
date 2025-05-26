@@ -8,7 +8,9 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.viewController.PrincipalViewController">
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="co.edu.uniquindio.viewController.PrincipalViewController">
     <!-- HEADER PRINCIPAL -->
     <top>
         <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
@@ -245,8 +247,8 @@
             </effect>
 
             <Label text="© 2024 Sistema Hospitalario UQ - Desarrollado por JAC, JFI JSP, SAR " textFill="WHITE">
-                <Font size="12.0" /><![CDATA[]
-            </Label>
+                <Font size="12.0" /><![CDATA[
+            ]]></Label>
 
             <Circle fill="#4CAF50" radius="4.0" stroke="WHITE" strokeWidth="1.0">
                 <effect>
