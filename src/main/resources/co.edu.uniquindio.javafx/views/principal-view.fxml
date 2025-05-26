@@ -36,28 +36,72 @@
                         <Font size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnCerrarSesion" mnemonicParsing="false" onAction="#cerrarSesion" style="-fx-background-color: #ff6b6b; -fx-text-fill: white; -fx-background-radius: 20;" text="Cerrar Sesión">
-                    <font>
-                        <Font size="12.0" />
-                    </font>
-                </Button>
-            </children>
-            <padding>
-                <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-            </padding>
-        </HBox>
+            </HBox>
+        </VBox>
     </top>
+
+    <!-- CONTENIDO PRINCIPAL -->
     <center>
-        <ScrollPane fitToWidth="true" style="-fx-background-color: #f8f9fa;">
-            <content>
-                <VBox spacing="30.0">
-                    <children>
-                        <!-- Estadísticas Cards -->
-                        <HBox alignment="CENTER" spacing="30.0">
-                            <children>
-                                <!-- Card Citas Hoy -->
-                                <VBox alignment="CENTER" prefHeight="120.0" prefWidth="200.0" spacing="10.0" style="-fx-background-color: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 0, 5);">
-                                    <children>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent;">
+            <VBox alignment="TOP_CENTER" spacing="30.0" style="-fx-background: linear-gradient(180deg, #f8f9ff 0%, #e8efff 100%); -fx-padding: 30;">
+
+                <!-- TARJETAS DE OPCIONES PRINCIPALES -->
+                <HBox alignment="CENTER" spacing="40.0">
+
+                    <!-- TARJETA HISTORIAL -->
+                    <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 5);">
+                        <ImageView fitHeight="80.0" fitWidth="80.0" preserveRatio="true">
+                            <image>
+                                <Image url="@../assets/historial-icon.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="MI HISTORIAL" textFill="#4A5568">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Label>
+                        <Label text="Consulta tu historial médico completo" textAlignment="CENTER" textFill="#718096" wrapText="true">
+                            <font>
+                                <Font size="12.0" />
+                            </font>
+                        </Label>
+                        <Button fx:id="historialButton" mnemonicParsing="false" onAction="#handleVerHistorial" style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-background-radius: 25; -fx-padding: 12 25;" text="Ver Historial">
+                            <effect>
+                                <DropShadow blurType="GAUSSIAN" color="#667eea50" radius="10.0" />
+                            </effect>
+                        </Button>
+                    </VBox>
+
+                    <!-- TARJETA CITAS -->
+                    <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 5);">
+                        <ImageView fitHeight="80.0" fitWidth="80.0" preserveRatio="true">
+                            <image>
+                                <Image url="@../assets/citas-icon.png" />
+                            </image>
+                        </ImageView>
+                        <Label text="MIS CITAS" textFill="#4A5568">
+                            <font>
+                                <Font name="System Bold" size="16.0" />
+                            </font>
+                        </Label>
+                        <Label text="Solicita, consulta y cancela tus citas médicas" textAlignment="CENTER" textFill="#718096" wrapText="true">
+                            <font>
+                                <Font size="12.0" />
+                            </font>
+                        </Label>
+                        <HBox alignment="CENTER" spacing="10.0">
+                            <Button fx:id="solicitarCitaButton" mnemonicParsing="false" onAction="#handleSolicitarCita" style="-fx-background-color: #48BB78; -fx-text-fill: white; -fx-background-radius: 25; -fx-padding: 10 20;" text="Solicitar">
+                                <effect>
+                                    <DropShadow blurType="GAUSSIAN" color="#48BB7850" radius="10.0" />
+                                </effect>
+                            </Button>
+                            <Button fx:id="gestionarCitasButton" mnemonicParsing="false" onAction="#handleGestionarCitas" style="-fx-background-color: #ED8936; -fx-text-fill: white; -fx-background-radius: 25; -fx-padding: 10 20;" text="Gestionar">
+                                <effect>
+                                    <DropShadow blurType="GAUSSIAN" color="#ED893650" radius="10.0" />
+                                </effect>
+                            </Button>
+                        </HBox>
+                    </VBox>
 
                                         <Label fx:id="lblCitasHoy" text="8" textFill="WHITE">
                                             <font>
