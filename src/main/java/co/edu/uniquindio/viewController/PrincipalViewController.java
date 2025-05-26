@@ -1,355 +1,320 @@
 package co.edu.uniquindio.viewController;
 
-import javafx.animation.*;
+import co.edu.uniquindio.Controller.HospitalController;
+import co.edu.uniquindio.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
+import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class PrincipalViewController implements Initializable {
 
-    // Elementos del Header
+    // Referencias a elementos del FXML
     @FXML private ImageView logoImageView;
     @FXML private Label welcomeLabel;
     @FXML private Circle statusIndicator;
     @FXML private Button logoutButton;
-
-    // Botones principales
     @FXML private Button historialButton;
     @FXML private Button solicitarCitaButton;
     @FXML private Button gestionarCitasButton;
     @FXML private Button perfilButton;
-
-    // Sección de notificaciones
     @FXML private ListView<String> notificacionesListView;
-
-    // Labels de estadísticas
     @FXML private Label proximaCitaLabel;
     @FXML private Label totalCitasLabel;
     @FXML private Label ultimoAccesoLabel;
 
-    // Variables de estado
-    private String nombrePaciente = "Juan Pérez"; // Se actualizará desde el login
-    private ObservableList<String> notificaciones = FXCollections.observableArrayList();
+    // Referencias al controller y modelo
+    private HospitalController hospitalController;
+    private Paciente pacienteActual;
+    private HospitalUQ hospital;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        configurarInterfaz();
-        inicializarAnimaciones();
-        cargarDatosIniciales();
-        configurarNotificaciones();
+        // Inicializar controller y hospital
+        hospital = new HospitalUQ("Hospital UQ", "HOSP001");
+        hospitalController = new HospitalController(hospital);
+
+        // Configurar interfaz inicial
+        configurarInterfazInicial();
+        actualizarEstadisticas();
+        cargarNotificaciones();
     }
 
     /**
-     * Configura la interfaz inicial
+     * Establece el paciente actual que está usando la interfaz
      */
-    private void configurarInterfaz() {
-        // Configurar label de bienvenida
-        welcomeLabel.setText("Bienvenido, " + nombrePaciente);
-
-        // Configurar fecha actual
-        ultimoAccesoLabel.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-
-        // Efectos visuales para botones
-        configurarEfectosBotones();
-
-        // Configurar indicador de estado
-        configurarIndicadorEstado();
+    public void setPacienteActual(Paciente paciente) {
+        this.pacienteActual = paciente;
+        paciente.setHospital(hospital); // Importante: conectar paciente con hospital
+        actualizarInformacionPaciente();
+        actualizarEstadisticas();
     }
 
-    /**
-     * Configura efectos visuales para los botones
-     */
-    private void configurarEfectosBotones() {
-        Button[] botones = {historialButton, solicitarCitaButton, gestionarCitasButton, perfilButton, logoutButton};
+    private void configurarInterfazInicial() {
+        // Configurar último acceso
+        ultimoAccesoLabel.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+    }
 
-        for (Button boton : botones) {
-            // Efecto hover
-            boton.setOnMouseEntered(e -> {
-                ScaleTransition scale = new ScaleTransition(Duration.millis(200), boton);
-                scale.setToX(1.1);
-                scale.setToY(1.1);
-                scale.play();
-
-                // Aumentar sombra
-                DropShadow shadow = new DropShadow();
-                shadow.setColor(Color.rgb(0, 0, 0, 0.3));
-                shadow.setRadius(20);
-                shadow.setOffsetY(8);
-                boton.setEffect(shadow);
-            });
-
-            boton.setOnMouseExited(e -> {
-                ScaleTransition scale = new ScaleTransition(Duration.millis(200), boton);
-                scale.setToX(1.0);
-                scale.setToY(1.0);
-                scale.play();
-
-                // Restaurar sombra original
-                DropShadow shadow = new DropShadow();
-                shadow.setColor(Color.rgb(0, 0, 0, 0.1));
-                shadow.setRadius(10);
-                shadow.setOffsetY(5);
-                boton.setEffect(shadow);
-            });
+    private void actualizarInformacionPaciente() {
+        if (pacienteActual != null) {
+            welcomeLabel.setText("Bienvenido, " + pacienteActual.getNombre());
         }
     }
 
-    /**
-     * Configura el indicador de estado con animación
-     */
-    private void configurarIndicadorEstado() {
-        // Animación pulsante para el indicador
-        ScaleTransition pulso = new ScaleTransition(Duration.seconds(1), statusIndicator);
-        pulso.setFromX(1.0);
-        pulso.setFromY(1.0);
-        pulso.setToX(1.3);
-        pulso.setToY(1.3);
-        pulso.setAutoReverse(true);
-        pulso.setCycleCount(Timeline.INDEFINITE);
-        pulso.play();
-    }
+    private void actualizarEstadisticas() {
+        if (pacienteActual != null) {
+            // Actualizar total de citas
+            int totalCitas = pacienteActual.getCitas().size();
+            totalCitasLabel.setText(String.valueOf(totalCitas));
 
-    /**
-     * Inicializa animaciones de entrada
-     */
-    private void inicializarAnimaciones() {
-        // Animación de entrada fade-in
-        FadeTransition fadeIn = new FadeTransition(Duration.seconds(1.5));
-        fadeIn.setFromValue(0.0);
-        fadeIn.setToValue(1.0);
-        fadeIn.setNode(logoImageView.getParent());
-        fadeIn.play();
-    }
-
-    /**
-     * Carga datos iniciales simulados
-     */
-    private void cargarDatosIniciales() {
-        // Simular datos de citas
-        proximaCitaLabel.setText("15/06/2024 - 10:30 AM");
-        totalCitasLabel.setText("12");
-
-        // Agregar notificaciones de ejemplo
-        agregarNotificacion("💊 Recordatorio: Tomar medicamento a las 8:00 PM");
-        agregarNotificacion("📅 Su cita del 15/06 ha sido confirmada");
-        agregarNotificacion("✅ Resultados de laboratorio disponibles");
-    }
-
-    /**
-     * Configura el sistema de notificaciones
-     */
-    private void configurarNotificaciones() {
-        notificacionesListView.setItems(notificaciones);
-
-        // Personalizar celdas de notificaciones
-        notificacionesListView.setCellFactory(listView -> new ListCell<String>() {
-            @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                    setStyle("");
-                } else {
-                    setText(item);
-                    setStyle("-fx-padding: 10; -fx-border-color: #E2E8F0; -fx-border-width: 0 0 1 0;");
-                }
+            // Buscar próxima cita
+            Cita proximaCita = buscarProximaCita();
+            if (proximaCita != null) {
+                proximaCitaLabel.setText(proximaCita.getHorario().toString());
+            } else {
+                proximaCitaLabel.setText("No programada");
             }
-        });
-    }
-
-    /**
-     * Agrega una nueva notificación
-     */
-    private void agregarNotificacion(String mensaje) {
-        notificaciones.add(0, mensaje); // Agregar al principio
-        if (notificaciones.size() > 5) {
-            notificaciones.remove(notificaciones.size() - 1); // Mantener solo 5
-        }
-
-        // Animación para nueva notificación
-        if (!notificaciones.isEmpty()) {
-            Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.seconds(0.5), e -> {
-                        notificacionesListView.getSelectionModel().select(0);
-                        notificacionesListView.scrollTo(0);
-                    })
-            );
-            timeline.play();
         }
     }
 
-    // ================================
-    // MÉTODOS DE MANEJO DE EVENTOS
-    // ================================
+    private Cita buscarProximaCita() {
+        if (pacienteActual == null || pacienteActual.getCitas().isEmpty()) {
+            return null;
+        }
 
-    /**
-     * Maneja la acción de ver historial
-     */
+        // Buscar la primera cita con estado PROGRAMADA
+        for (Cita cita : pacienteActual.getCitas()) {
+            if (cita.getEstado() == EstadoCita.PROGRAMADA) {
+                return cita;
+            }
+        }
+        return null;
+    }
+
+    private void cargarNotificaciones() {
+        ObservableList<String> notificaciones = FXCollections.observableArrayList();
+
+        if (pacienteActual != null && !pacienteActual.getCitas().isEmpty()) {
+            notificaciones.add("✅ Tiene " + pacienteActual.getCitas().size() + " cita(s) registrada(s)");
+
+            Cita proximaCita = buscarProximaCita();
+            if (proximaCita != null) {
+                notificaciones.add("📅 Próxima cita: " + proximaCita.getHorario().toString());
+            }
+        } else {
+            notificaciones.add("ℹ️ No tiene citas programadas");
+        }
+
+        notificacionesListView.setItems(notificaciones);
+    }
+
+    // MANEJADORES DE EVENTOS DE LA INTERFAZ
+
     @FXML
     private void handleVerHistorial() {
-        mostrarMensaje("Historial Médico", "Abriendo historial médico completo...", Alert.AlertType.INFORMATION);
-        // Aquí cargarías la vista del historial
-        System.out.println("🏥 Abriendo historial médico del paciente: " + nombrePaciente);
+        try {
+            if (pacienteActual == null) {
+                mostrarAlerta("Error", "No hay paciente activo", Alert.AlertType.ERROR);
+                return;
+            }
+
+            // Aquí podrías abrir una nueva ventana para mostrar el historial
+            mostrarInformacion("Historial Médico",
+                    "Paciente: " + pacienteActual.getNombre() +
+                            "\nID: " + pacienteActual.getId() +
+                            "\nMédico Asignado: " +
+                            (pacienteActual.getMedicoAsignado() != null ?
+                                    pacienteActual.getMedicoAsignado().getNombre() : "No asignado"));
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "Error al cargar historial: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
-    /**
-     * Maneja la acción de solicitar cita
-     */
     @FXML
     private void handleSolicitarCita() {
-        mostrarMensaje("Solicitar Cita", "Abriendo formulario para solicitar nueva cita médica...", Alert.AlertType.INFORMATION);
-        // Aquí cargarías la vista de solicitud de citas
-        System.out.println("📅 Solicitando nueva cita para: " + nombrePaciente);
-        agregarNotificacion("📝 Nueva solicitud de cita en proceso...");
+        try {
+            if (pacienteActual == null) {
+                mostrarAlerta("Error", "No hay paciente activo", Alert.AlertType.ERROR);
+                return;
+            }
+
+            // Crear diálogo para solicitar cita
+            Dialog<Cita> dialog = crearDialogoSolicitarCita();
+            dialog.showAndWait().ifPresent(cita -> {
+                // Agregar la cita a la lista del paciente
+                pacienteActual.getCitas().add(cita);
+                actualizarEstadisticas();
+                cargarNotificaciones();
+                mostrarAlerta("Éxito", "Cita solicitada correctamente", Alert.AlertType.INFORMATION);
+            });
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "Error al solicitar cita: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
-    /**
-     * Maneja la gestión de citas existentes
-     */
     @FXML
     private void handleGestionarCitas() {
-        mostrarMensaje("Gestionar Citas", "Abriendo panel de gestión de citas...", Alert.AlertType.INFORMATION);
-        // Aquí cargarías la vista de gestión de citas
-        System.out.println("⚙️ Gestionando citas de: " + nombrePaciente);
+        try {
+            if (pacienteActual == null || pacienteActual.getCitas().isEmpty()) {
+                mostrarAlerta("Información", "No tiene citas para gestionar", Alert.AlertType.INFORMATION);
+                return;
+            }
+
+            // Mostrar lista de citas para gestionar
+            StringBuilder citasInfo = new StringBuilder("Sus citas:\n\n");
+            for (int i = 0; i < pacienteActual.getCitas().size(); i++) {
+                Cita cita = pacienteActual.getCitas().get(i);
+                citasInfo.append((i + 1)).append(". ID: ").append(cita.getIdCita())
+                        .append(" - Estado: ").append(cita.getEstado())
+                        .append(" - Horario: ").append(cita.getHorario().toString())
+                        .append("\n");
+            }
+
+            mostrarInformacion("Gestión de Citas", citasInfo.toString());
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "Error al gestionar citas: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
-    /**
-     * Maneja la edición del perfil
-     */
     @FXML
     private void handleEditarPerfil() {
-        mostrarMensaje("Editar Perfil", "Abriendo configuración del perfil de usuario...", Alert.AlertType.INFORMATION);
-        // Aquí cargarías la vista de edición de perfil
-        System.out.println("👤 Editando perfil de: " + nombrePaciente);
+        try {
+            if (pacienteActual == null) {
+                mostrarAlerta("Error", "No hay paciente activo", Alert.AlertType.ERROR);
+                return;
+            }
+
+            // Mostrar información del perfil actual
+            String perfilInfo = "Información del Perfil:\n\n" +
+                    "Nombre: " + pacienteActual.getNombre() + "\n" +
+                    "ID: " + pacienteActual.getId() + "\n" +
+                    "Correo: " + pacienteActual.getCorreo() + "\n" +
+                    "Teléfono: " + pacienteActual.getTelefono() + "\n" +
+                    "Médico Asignado: " +
+                    (pacienteActual.getMedicoAsignado() != null ?
+                            pacienteActual.getMedicoAsignado().getNombre() : "No asignado");
+
+            mostrarInformacion("Mi Perfil", perfilInfo);
+
+        } catch (Exception e) {
+            mostrarAlerta("Error", "Error al cargar perfil: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
-    /**
-     * Maneja el cierre de sesión
-     */
     @FXML
     private void handleLogout() {
         Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-        confirmacion.setTitle("Confirmar Cierre de Sesión");
-        confirmacion.setHeaderText("¿Estás seguro de que deseas cerrar sesión?");
-        confirmacion.setContentText("Se perderán los datos no guardados.");
-
-        // Personalizar botones
-        ButtonType btnSi = new ButtonType("Sí, cerrar sesión");
-        ButtonType btnNo = new ButtonType("Cancelar");
-        confirmacion.getButtonTypes().setAll(btnSi, btnNo);
+        confirmacion.setTitle("Cerrar Sesión");
+        confirmacion.setHeaderText("¿Está seguro que desea cerrar sesión?");
+        confirmacion.setContentText("Se cerrará la aplicación");
 
         confirmacion.showAndWait().ifPresent(response -> {
-            if (response == btnSi) {
-                cerrarSesionYVolverAlLogin();
+            if (response == ButtonType.OK) {
+                // Cerrar la aplicación
+                Stage stage = (Stage) logoutButton.getScene().getWindow();
+                stage.close();
             }
         });
     }
 
-    /**
-     * Cierra la sesión actual y vuelve al login
-     */
-    private void cerrarSesionYVolverAlLogin() {
-        try {
-            // Animación de salida
-            FadeTransition fadeOut = new FadeTransition(Duration.seconds(0.8));
-            fadeOut.setFromValue(1.0);
-            fadeOut.setToValue(0.0);
-            fadeOut.setNode(logoImageView.getScene().getRoot());
+    // MÉTODOS AUXILIARES
 
-            fadeOut.setOnFinished(e -> {
+    private Dialog<Cita> crearDialogoSolicitarCita() {
+        Dialog<Cita> dialog = new Dialog<>();
+        dialog.setTitle("Solicitar Nueva Cita");
+        dialog.setHeaderText("Complete la información para solicitar una cita");
+
+        // Crear campos del formulario
+        TextField idCitaField = new TextField();
+        idCitaField.setPromptText("ID de la cita");
+
+        TextField tratamientoField = new TextField();
+        tratamientoField.setPromptText("Tratamiento solicitado");
+
+        TextField diagnosticoField = new TextField();
+        diagnosticoField.setPromptText("Diagnóstico inicial");
+
+        ComboBox<Especialidad> especialidadCombo = new ComboBox<>();
+        especialidadCombo.getItems().addAll(Especialidad.values());
+        especialidadCombo.setPromptText("Seleccione especialidad");
+
+        TextField salaField = new TextField();
+        salaField.setPromptText("ID de sala preferida");
+
+        // Layout del formulario
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.add(new Label("ID Cita:"), 0, 0);
+        grid.add(idCitaField, 1, 0);
+        grid.add(new Label("Tratamiento:"), 0, 1);
+        grid.add(tratamientoField, 1, 1);
+        grid.add(new Label("Diagnóstico:"), 0, 2);
+        grid.add(diagnosticoField, 1, 2);
+        grid.add(new Label("Especialidad:"), 0, 3);
+        grid.add(especialidadCombo, 1, 3);
+        grid.add(new Label("Sala:"), 0, 4);
+        grid.add(salaField, 1, 4);
+
+        dialog.getDialogPane().setContent(grid);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        // Convertir resultado a Cita
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
                 try {
-                    // Cargar la vista de login
-                    FXMLLoader loader = new FXMLLoader(
-                            getClass().getResource("/co.edu.uniquindio.javafx/login-view.fxml")
+                    // Crear horario básico (podrías mejorarlo con DatePicker)
+                    Horario horario = new Horario("H001", LocalDate.now(), LocalTime.now(), Jornada.TARDE);
+
+                    Cita cita = pacienteActual.solicitarCita(
+                            tratamientoField.getText(),
+                            diagnosticoField.getText(),
+                            especialidadCombo.getValue(),
+                            idCitaField.getText(),
+                            salaField.getText(),
+                            horario
                     );
-                    Scene loginScene = new Scene(loader.load());
 
-                    // Obtener la ventana actual
-                    Stage currentStage = (Stage) logoutButton.getScene().getWindow();
-
-                    // Configurar nueva escena
-                    currentStage.setScene(loginScene);
-                    currentStage.setTitle("Sistema Hospitalario UQ - Login");
-                    currentStage.centerOnScreen();
-
-                    System.out.println("✅ Sesión cerrada correctamente");
-
-                } catch (IOException ex) {
-                    System.err.println("❌ Error al cargar el login: " + ex.getMessage());
-                    mostrarMensaje("Error", "No se pudo cargar la pantalla de login", Alert.AlertType.ERROR);
+                    return cita;
+                } catch (Exception e) {
+                    mostrarAlerta("Error", "Error al crear cita: " + e.getMessage(), Alert.AlertType.ERROR);
+                    return null;
                 }
-            });
+            }
+            return null;
+        });
 
-            fadeOut.play();
-
-        } catch (Exception e) {
-            System.err.println("❌ Error al cerrar sesión: " + e.getMessage());
-            mostrarMensaje("Error", "Error al cerrar sesión", Alert.AlertType.ERROR);
-        }
+        return dialog;
     }
 
-    /**
-     * Muestra un mensaje al usuario
-     */
-    private void mostrarMensaje(String titulo, String mensaje, Alert.AlertType tipo) {
-        Alert alert = new Alert(tipo);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-
-        // Personalizar el diseño del alert
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.setStyle("-fx-background-color: white; -fx-border-color: #E2E8F0; -fx-border-radius: 10;");
-
-        alert.showAndWait();
+    private void mostrarAlerta(String titulo, String mensaje, Alert.AlertType tipo) {
+        Alert alerta = new Alert(tipo);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
     }
 
-    // ================================
-    // MÉTODOS PÚBLICOS PARA COMUNICACIÓN
-    // ================================
-
-    /**
-     * Establece el nombre del paciente logueado
-     */
-    public void setPacienteNombre(String nombre) {
-        this.nombrePaciente = nombre;
-        if (welcomeLabel != null) {
-            welcomeLabel.setText("Bienvenido, " + nombre);
-        }
-    }
-
-    /**
-     * Actualiza las estadísticas del dashboard
-     */
-    public void actualizarEstadisticas(String proximaCita, int totalCitas) {
-        if (proximaCitaLabel != null) {
-            proximaCitaLabel.setText(proximaCita);
-        }
-        if (totalCitasLabel != null) {
-            totalCitasLabel.setText(String.valueOf(totalCitas));
-        }
-    }
-
-    /**
-     * Agrega una notificación desde el exterior
-     */
-    public void agregarNotificacionExterna(String mensaje) {
-        agregarNotificacion(mensaje);
+    private void mostrarInformacion(String titulo, String contenido) {
+        Alert info = new Alert(Alert.AlertType.INFORMATION);
+        info.setTitle(titulo);
+        info.setHeaderText(null);
+        info.setContentText(contenido);
+        info.showAndWait();
     }
 }

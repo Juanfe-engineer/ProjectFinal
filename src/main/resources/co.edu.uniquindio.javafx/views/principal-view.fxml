@@ -245,8 +245,8 @@
             </effect>
 
             <Label text="© 2024 Sistema Hospitalario UQ - Desarrollado por JAC, JFI JSP, SAR " textFill="WHITE">
-                <Font size="12.0" /><![CDATA[
-            ]]></Label>
+                <Font size="12.0" /><![CDATA[]
+            </Label>
 
             <Circle fill="#4CAF50" radius="4.0" stroke="WHITE" strokeWidth="1.0">
                 <effect>
