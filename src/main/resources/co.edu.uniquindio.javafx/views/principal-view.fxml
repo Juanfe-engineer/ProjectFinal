@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
@@ -8,10 +9,9 @@
 <?import javafx.scene.text.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.viewController.PrincipalViewController">
-
     <!-- HEADER PRINCIPAL -->
     <top>
-        <VBox alignment="CENTER" prefHeight="120.0" style="-fx-background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -fx-background-radius: 0 0 25 25;">
+        <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
             <effect>
                 <DropShadow blurType="GAUSSIAN" color="#00000050" offsetY="5.0" radius="15.0" />
             </effect>
@@ -25,15 +25,15 @@
                 </ImageView>
 
                 <VBox alignment="CENTER">
-                    <Label text="SISTEMA HOSPITALARIO UQ" textFill="#0000008b">
+                    <Label text="SISTEMA HOSPITALARIO UQ" textFill="WHITE">
                         <font>
-                            <Font name="System Bold" size="25.0" />
+                            <Font name="System Bold" size="24.0" />
                         </font>
                         <effect>
                             <DropShadow blurType="GAUSSIAN" color="#00000080" radius="5.0" />
                         </effect>
                     </Label>
-                    <Label fx:id="welcomeLabel" text="Bienvenido, Paciente">
+                    <Label fx:id="welcomeLabel" text="Bienvenido, Paciente" textFill="#E8E8FF">
                         <font>
                             <Font size="14.0" />
                         </font>
@@ -48,12 +48,14 @@
                         <DropShadow blurType="GAUSSIAN" color="#00000050" radius="3.0" />
                     </effect>
                 </Circle>
-                <Label text="En línea" textFill="#b2acac">
+                <Label text="En línea" textFill="WHITE">
                     <font>
                         <Font size="12.0" />
                     </font>
                 </Label>
-                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #FF6B6B; -fx-text-fill: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-padding: 8 15;" text="Cerrar Sesión">
+                <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout"
+                        style="-fx-background-color: #FF6B6B; -fx-text-fill: white; -fx-background-radius: 20; -fx-border-radius: 20; -fx-padding: 8 15;"
+                        text="Cerrar Sesión">
                     <effect>
                         <DropShadow blurType="GAUSSIAN" color="#00000030" radius="5.0" />
                     </effect>
@@ -87,7 +89,9 @@
                                 <Font size="12.0" />
                             </font>
                         </Label>
-                        <Button fx:id="historialButton" mnemonicParsing="false" onAction="#handleVerHistorial" style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-background-radius: 25; -fx-padding: 12 25;" text="Ver Historial">
+                        <Button fx:id="historialButton" mnemonicParsing="false" onAction="#handleVerHistorial"
+                                style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-background-radius: 25; -fx-padding: 12 25;"
+                                text="Ver Historial">
                             <effect>
                                 <DropShadow blurType="GAUSSIAN" color="#667eea50" radius="10.0" />
                             </effect>
@@ -112,12 +116,16 @@
                             </font>
                         </Label>
                         <HBox alignment="CENTER" spacing="10.0">
-                            <Button fx:id="solicitarCitaButton" mnemonicParsing="false" onAction="#handleSolicitarCita" style="-fx-background-color: #48BB78; -fx-text-fill: white; -fx-background-radius: 25; -fx-padding: 10 20;" text="Solicitar">
+                            <Button fx:id="solicitarCitaButton" mnemonicParsing="false" onAction="#handleSolicitarCita"
+                                    style="-fx-background-color: #48BB78; -fx-text-fill: white; -fx-background-radius: 25; -fx-padding: 10 20;"
+                                    text="Solicitar">
                                 <effect>
                                     <DropShadow blurType="GAUSSIAN" color="#48BB7850" radius="10.0" />
                                 </effect>
                             </Button>
-                            <Button fx:id="gestionarCitasButton" mnemonicParsing="false" onAction="#handleGestionarCitas" style="-fx-background-color: #ED8936; -fx-text-fill: white; -fx-background-radius: 25; -fx-padding: 10 20;" text="Gestionar">
+                            <Button fx:id="gestionarCitasButton" mnemonicParsing="false" onAction="#handleGestionarCitas"
+                                    style="-fx-background-color: #ED8936; -fx-text-fill: white; -fx-background-radius: 25; -fx-padding: 10 20;"
+                                    text="Gestionar">
                                 <effect>
                                     <DropShadow blurType="GAUSSIAN" color="#ED893650" radius="10.0" />
                                 </effect>
@@ -142,7 +150,9 @@
                                 <Font size="12.0" />
                             </font>
                         </Label>
-                        <Button fx:id="perfilButton" mnemonicParsing="false" onAction="#handleEditarPerfil" style="-fx-background-color: #9F7AEA; -fx-text-fill: white; -fx-background-radius: 25; -fx-padding: 12 25;" text="Editar Perfil">
+                        <Button fx:id="perfilButton" mnemonicParsing="false" onAction="#handleEditarPerfil"
+                                style="-fx-background-color: #9F7AEA; -fx-text-fill: white; -fx-background-radius: 25; -fx-padding: 12 25;"
+                                text="Editar Perfil">
                             <effect>
                                 <DropShadow blurType="GAUSSIAN" color="#9F7AEA50" radius="10.0" />
                             </effect>
@@ -155,7 +165,7 @@
                     <HBox alignment="CENTER" spacing="15.0">
                         <ImageView fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                             <image>
-                                <Image url="@../assets/notification-icon.png" />
+                                <Image url="@../assets/notificacion-icon.png" />
                             </image>
                         </ImageView>
                         <Label text="NOTIFICACIONES RECIENTES" textFill="#4A5568">
@@ -227,16 +237,16 @@
 
     <!-- FOOTER -->
     <bottom>
-        <HBox alignment="CENTER" prefHeight="60.0" spacing="20.0" style="-fx-background: linear-gradient(135deg, #4A5568 0%, #2D3748 100%); -fx-background-radius: 25 25 0 0;">
+        <HBox alignment="CENTER" prefHeight="60.0" spacing="20.0"
+              style="-fx-background-color: linear-gradient(to bottom right, #4A5568, #2D3748);
+             -fx-background-radius: 25 25 0 0;">
             <effect>
                 <DropShadow blurType="GAUSSIAN" color="#00000030" offsetY="-3.0" radius="10.0" />
             </effect>
 
-            <Label text="© 2024 Sistema Hospitalario UQ - Desarrollado por  ">
-                <font>
-                    <Font size="12.0" />
-                </font>
-            </Label>
+            <Label text="© 2024 Sistema Hospitalario UQ - Desarrollado por JAC, JFI JSP, SAR " textFill="WHITE">
+                <Font size="12.0" /><![CDATA[
+            ]]></Label>
 
             <Circle fill="#4CAF50" radius="4.0" stroke="WHITE" strokeWidth="1.0">
                 <effect>
@@ -244,7 +254,7 @@
                 </effect>
             </Circle>
 
-            <Label text="Sistema Activo">
+            <Label text="Sistema Activo" textFill="#E2E8F0">
                 <font>
                     <Font size="10.0" />
                 </font>
