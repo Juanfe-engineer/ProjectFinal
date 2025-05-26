@@ -455,7 +455,7 @@ public class HospitalController {
             }
 
             // Crear la cita
-            Cita nuevaCita = new Cita(diagnostico,tratamiento,idCita,paciente,medico,sala,horario);
+            Cita nuevaCita = new Cita(diagnostico,tratamiento,idCita,paciente,medico,sala,horario,EstadoCita.PROGRAMADA);
             nuevaCita.setEstado(EstadoCita.PROGRAMADA);
 
             // Agregar al hospital
