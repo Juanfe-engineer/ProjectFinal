@@ -1,4 +1,15 @@
 package co.edu.uniquindio.viewController;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class LoginViewController {
     @FXML
@@ -46,12 +57,11 @@ public class LoginViewController {
     }
 
     private void cargarVentanaPrincipal() throws IOException {
-        // Por ahora solo mostrar mensaje de éxito
-        // Más adelante puedes cargar otra ventana aquí
+
         System.out.println("¡Login exitoso! Aquí cargarías la ventana principal.");
 
-        // Opcional: cerrar la ventana actual
-        // Stage currentStage = (Stage) btnLogin.getScene().getWindow();
-        // currentStage.close();
+
+        Stage currentStage = (Stage) btnLogin.getScene().getWindow();
+        currentStage.close();
     }
 }

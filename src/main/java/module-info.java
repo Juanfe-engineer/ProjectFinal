@@ -3,6 +3,9 @@ module ProjectFinal {
     requires javafx.fxml;
     requires javafx.web;
     requires java.logging;
+    requires javafx.controls;
+    requires javafx.graphics;
+
 
 
     requires org.controlsfx.controls;
@@ -21,4 +24,7 @@ module ProjectFinal {
     opens co.edu.uniquindio.model to javafx.fxml;
     exports co.edu.uniquindio.model;
     exports co.edu.uniquindio.Controller;
+
+    opens co.edu.uniquindio.viewController to javafx.fxml;
+
 }
