@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12"
+<BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="co.edu.uniquindio.viewController.PrincipalViewController">
     <!-- HEADER PRINCIPAL -->

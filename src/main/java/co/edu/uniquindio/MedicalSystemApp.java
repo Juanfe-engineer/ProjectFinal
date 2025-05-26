@@ -4,12 +4,14 @@ import co.edu.uniquindio.viewController.PrincipalViewController;
 import co.edu.uniquindio.model.Paciente;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.scene.control.Alert;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Clase principal de la aplicación del Sistema Hospitalario
@@ -28,12 +30,15 @@ public class MedicalSystemApp extends Application {
         primaryStage = stage;
 
         try {
-            // Cargar el archivo FXML del login
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getResource("/co/edu/uniquindio/javafx/login-view.fxml")
-            );
+            InputStream fxmlStream = getClass().getClassLoader().getResourceAsStream("login-view.fxml");
 
-            Scene scene = new Scene(loader.load());
+            if (fxmlStream == null) {
+                throw new RuntimeException("No se encontró el archivo FXML");
+            }
+
+            FXMLLoader loader = new FXMLLoader();
+            Parent root = loader.load(fxmlStream);
+            Scene scene = new Scene(root);
 
             // Cargar CSS si existe
             try {
@@ -92,7 +97,7 @@ public class MedicalSystemApp extends Application {
 
             // Cargar la vista principal
             FXMLLoader loader = new FXMLLoader(
-                    MedicalSystemApp.class.getResource("/co/edu/uniquindio/javafx/principal-view.fxml")
+                    MedicalSystemApp.class.getResource("/co/edu/uniquindio/javafx/views/principal-view.fxml")
             );
 
             Scene principalScene = new Scene(loader.load());

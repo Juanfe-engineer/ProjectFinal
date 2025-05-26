@@ -668,4 +668,52 @@ public class PrincipalViewController implements Initializable {
     public HospitalController getHospitalController() {
         return hospitalController;
     }
+
+    public Button getGestionarCitasButton() {
+        return gestionarCitasButton;
+    }
+
+    public void setGestionarCitasButton(Button gestionarCitasButton) {
+        this.gestionarCitasButton = gestionarCitasButton;
+    }
+
+    public Button getPerfilButton() {
+        return perfilButton;
+    }
+
+    public void setPerfilButton(Button perfilButton) {
+        this.perfilButton = perfilButton;
+    }
+
+    public Button getSolicitarCitaButton() {
+        return solicitarCitaButton;
+    }
+
+    public void setSolicitarCitaButton(Button solicitarCitaButton) {
+        this.solicitarCitaButton = solicitarCitaButton;
+    }
+
+    public Button getHistorialButton() {
+        return historialButton;
+    }
+
+    public void setHistorialButton(Button historialButton) {
+        this.historialButton = historialButton;
+    }
+
+    public ImageView getLogoImageView() {
+        return logoImageView;
+    }
+
+    public void setLogoImageView(ImageView logoImageView) {
+        this.logoImageView = logoImageView;
+    }
+
+    public Button getLogoutButton() {
+        return logoutButton;
+    }
+
+    public void setLogoutButton(Button logoutButton) {
+        this.logoutButton = logoutButton;
+    }
 }
