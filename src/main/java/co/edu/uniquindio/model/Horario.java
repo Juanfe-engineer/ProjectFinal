@@ -1,7 +1,7 @@
 package co.edu.uniquindio.model;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class Horario {
     private String idHorario;
@@ -14,6 +14,25 @@ public class Horario {
         this.fecha = fecha;
         this.hora = hora;
         this.jornada = jornada;
+    }
+
+    // Método toString() implementado
+    @Override
+    public String toString() {
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+
+        return fecha.format(formatoFecha) + " a las " + hora.format(formatoHora);
+    }
+
+    // Método alternativo más completo
+    public String toStringCompleto() {
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
+
+        return "Fecha: " + fecha.format(formatoFecha) +
+                ", Hora: " + hora.format(formatoHora) +
+                ", Jornada: " + jornada;
     }
 
     public String getIdHorario() {
@@ -48,4 +67,6 @@ public class Horario {
         this.jornada = jornada;
     }
 }
+
+
 

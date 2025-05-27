@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<AnchorPane prefHeight="500" prefWidth="800" styleClass="root-pane"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="co.edu.uniquindio.viewController.LoginViewController">
+
+    <!-- Fondo con gradiente -->
+    <Rectangle height="500" style="-fx-fill: linear-gradient(to right, #2c3e50, #3498db);" width="800" />
+
+    <!-- Contenedor principal (tarjeta blanca) -->
+    <StackPane layoutX="200" layoutY="100" prefHeight="300" prefWidth="400" style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);">
+        <VBox alignment="CENTER" prefWidth="350" spacing="20">
+            <!-- Logo del hospital -->
+            <ImageView fx:id="logo" fitHeight="100" fitWidth="100">
+                <image>
+                    <Image url="assets/hospital-logo.png" />
+                </image>
+            </ImageView>
+
+
+            <!-- Título -->
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="Hospital UQ" />
+
+            <!-- Formulario -->
+            <VBox alignment="CENTER_LEFT" prefWidth="300" spacing="10">
+                <!-- Campo Usuario -->
+                <Label style="-fx-text-fill: #7f8c8d; -fx-font-weight: bold;" text="Usuario:" />
+                <TextField fx:id="txtUsuario" promptText="Ingrese su usuario" style="-fx-background-radius: 5; -fx-border-color: #bdc3c7; -fx-border-radius: 5;" />
+
+                <!-- Campo Contraseña -->
+                <Label style="-fx-text-fill: #7f8c8d; -fx-font-weight: bold;" text="Contraseña:" />
+                <PasswordField fx:id="txtPassword" promptText="Ingrese su contraseña" style="-fx-background-radius: 5; -fx-border-color: #bdc3c7; -fx-border-radius: 5;" />
+
+                <!-- Checkbox "Recordarme" -->
+                <CheckBox style="-fx-text-fill: #7f8c8d;" text="Recordar usuario" />
+
+                <!-- Botón Iniciar Sesión -->
+                <Button fx:id="btnLogin" onAction="#handleLogin" prefHeight="25.0" prefWidth="404.0" style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;" text="Iniciar Sesión" />
+            </VBox>
+
+            <!-- Enlace "Olvidé mi contraseña" -->
+            <Hyperlink style="-fx-text-fill: #3498db; -fx-border-color: transparent;" text="¿Olvidaste tu contraseña?" />
+        </VBox>
+    </StackPane>
+
+    <!-- Pie de página -->
+    <Label layoutX="250" layoutY="470" style="-fx-text-fill: white; -fx-font-size: 10px;" text="© 2023 Hospital UQ - Todos los derechos reservados" />
+</AnchorPane>
