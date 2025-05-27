@@ -57,11 +57,11 @@ public class LoginViewController {
     }
 
     private void cargarVentanaPrincipal() throws IOException {
+        System.out.println("¡Login exitoso! Cargando ventana principal...");
 
-        System.out.println("¡Login exitoso! Aquí cargarías la ventana principal.");
+        // Importar la clase necesaria
+        co.edu.uniquindio.MedicalSystemApp.abrirMenuPrincipal("Juan", "12345", "juan@email.com", "300123456");
 
-
-        Stage currentStage = (Stage) btnLogin.getScene().getWindow();
-        currentStage.close();
+        System.out.println("✅ Ventana principal cargada correctamente");
     }
 }

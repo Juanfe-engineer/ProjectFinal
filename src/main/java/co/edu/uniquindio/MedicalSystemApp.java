@@ -12,6 +12,7 @@ import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 /**
  * Clase principal de la aplicación del Sistema Hospitalario
@@ -180,7 +181,7 @@ public class MedicalSystemApp extends Application {
             System.out.println("✅ Sesión de paciente limpiada");
 
             FXMLLoader loader = new FXMLLoader(
-                    MedicalSystemApp.class.getResource("/co/edu/uniquindio/javafx/login-view.fxml")
+                    MedicalSystemApp.class.getResource("login-view.fxml")
             );
 
             Scene loginScene = new Scene(loader.load());

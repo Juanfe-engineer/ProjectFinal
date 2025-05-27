@@ -16,12 +16,6 @@
     <!-- Contenedor principal (tarjeta blanca) -->
     <StackPane layoutX="200" layoutY="100" prefHeight="300" prefWidth="400" style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);">
         <VBox alignment="CENTER" prefWidth="350" spacing="20">
-            <!-- Logo del hospital -->
-            <ImageView fx:id="logo" fitHeight="100" fitWidth="100">
-                <image>
-                    <Image url="assets/hospital-logo.png" />
-                </image>
-            </ImageView>
 
 
             <!-- Título -->
