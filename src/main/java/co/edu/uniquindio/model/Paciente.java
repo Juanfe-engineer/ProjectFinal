@@ -3,11 +3,11 @@ package co.edu.uniquindio.model;
 import java.util.LinkedList;
 
 public class Paciente extends Usuario implements IGestionableCitas {
-    private HistorialMedico historialMedico;
-    private Medico medicoAsignado;
-    private LinkedList<Cita> citas;
-    private LinkedList<DiagnosticoTratamiento> diagnosticos;
-    private HospitalUQ hospital;
+    public HistorialMedico historialMedico;
+    public Medico medicoAsignado;
+    public LinkedList<Cita> citas;
+    public LinkedList<DiagnosticoTratamiento> diagnosticos;
+    public HospitalUQ hospital;
 
     public Paciente(String nombre, String id, String correo, String telefono) {
         super(nombre, id, correo, telefono);

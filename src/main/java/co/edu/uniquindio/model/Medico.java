@@ -5,12 +5,12 @@ import java.util.LinkedList;
 
 
 public class Medico extends Usuario {
-    private Especialidad especialidad;
-    private EstadoMedico estado;
-    private LinkedList<Horario> horario;
-    private LinkedList<Cita> citaAsignadas;
-    private Paciente pacienteAsignado;
-    private LinkedList<DiagnosticoTratamiento>  diagnosticoTratamiento;
+    public Especialidad especialidad;
+    public EstadoMedico estado;
+    public LinkedList<Horario> horario;
+    public LinkedList<Cita> citaAsignadas;
+    public Paciente pacienteAsignado;
+    public LinkedList<DiagnosticoTratamiento>  diagnosticoTratamiento;
 
 
 

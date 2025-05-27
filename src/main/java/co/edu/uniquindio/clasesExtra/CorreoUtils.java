@@ -1,4 +1,6 @@
-package co.edu.uniquindio.model;
+package co.edu.uniquindio.clasesExtra;
+
+import co.edu.uniquindio.model.Cita;
 
 public class CorreoUtils {
     public static String generarMensajeCorreo(Cita cita) {

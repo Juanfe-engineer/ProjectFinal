@@ -26,5 +26,7 @@ module ProjectFinal {
     exports co.edu.uniquindio.Controller;
 
     opens co.edu.uniquindio.viewController to javafx.fxml;
+    exports co.edu.uniquindio.clasesExtra;
+    opens co.edu.uniquindio.clasesExtra to javafx.fxml;
 
 }

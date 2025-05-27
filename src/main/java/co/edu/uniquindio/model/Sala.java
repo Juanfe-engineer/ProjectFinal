@@ -1,10 +1,10 @@
 package co.edu.uniquindio.model;
 
 public class Sala {
-    private String idSala;
-    private TipoSala tipoSala;
-    private EstadoSala estado;
-    private int capacidad;
+    public String idSala;
+    public TipoSala tipoSala;
+    public EstadoSala estado;
+    public int capacidad;
 
     public Sala(String idSala, TipoSala tipoSala, EstadoSala estado, int capacidad) {
         this.idSala = idSala;

@@ -1,14 +1,14 @@
 package co.edu.uniquindio.model;
 
 public class Cita {
-    private String idCita;
-    private Paciente paciente;
-    private Medico medico;
-    private Sala sala;
-    private Horario horario;
-    private EstadoCita estado;
-    private String Diagnostico;
-    private String tratamiento;
+    public String idCita;
+    public Paciente paciente;
+    public Medico medico;
+    public Sala sala;
+    public Horario horario;
+    public EstadoCita estado;
+    public String Diagnostico;
+    public String tratamiento;
 
     public Cita(String Diagnostico, String tratamiento, String idCita, Paciente paciente, Medico medico, Sala sala, Horario horario, EstadoCita estado ) {
         this.idCita = idCita;

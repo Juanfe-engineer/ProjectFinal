@@ -1,5 +1,7 @@
 package co.edu.uniquindio.model;
 
+import co.edu.uniquindio.clasesExtra.CorreoUtils;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;

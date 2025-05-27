@@ -4,10 +4,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Horario {
-    private String idHorario;
-    private LocalDate fecha;
-    private LocalTime hora;
-    private Jornada jornada;
+    public String idHorario;
+    public LocalDate fecha;
+    public LocalTime hora;
+    public Jornada jornada;
 
     public Horario(String idHorario, LocalDate fecha, LocalTime hora, Jornada jornada) {
         this.idHorario = idHorario;

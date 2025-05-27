@@ -1,5 +1,8 @@
 package co.edu.uniquindio;
 
+import co.edu.uniquindio.Controller.HospitalController;
+import co.edu.uniquindio.model.DatosHospital;
+import co.edu.uniquindio.persistencia.PersistenciaHospital;
 import co.edu.uniquindio.viewController.PrincipalViewController;
 import co.edu.uniquindio.model.Paciente;
 import javafx.application.Application;
@@ -13,8 +16,6 @@ import javafx.scene.control.Alert;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-
-import static jdk.xml.internal.SecuritySupport.getClassLoader;
 
 /**
  * Clase principal de la aplicación del Sistema Hospitalario
@@ -31,6 +32,21 @@ public class MedicalSystemApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
+
+        try {
+            DatosHospital datoscargados = PersistenciaHospital.cargarDatos();
+            if (datoscargados != null) {
+                HospitalController.getInstance().cargarDesdeDatos(datoscargados);
+                System.out.println("✅ Datos del hospital cargados desde JSON");
+            } else {
+                System.out.println("⚠️ No se encontraron datos previos, iniciando con datos básicos");
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Error al cargar datos: " + e.getMessage());
+            System.out.println("⚠️ Iniciando con datos básicos");
+        }
+
+
 
         try {
             InputStream fxmlStream = getClass().getClassLoader().getResourceAsStream("login-view.fxml");
@@ -71,7 +87,13 @@ public class MedicalSystemApp extends Application {
 
             // Configurar evento de cierre
             stage.setOnCloseRequest(event -> {
-                System.out.println("✅ Aplicación cerrada por el usuario");
+                try {
+                    DatosHospital datos = HospitalController.getInstance().exportarDatos();
+                    PersistenciaHospital.guardarDatos(datos); // CAMBIO: guardarDatos en lugar de cargarDatos
+                    System.out.println("✅ Datos guardados correctamente al cerrar la app");
+                } catch (Exception e) {
+                    System.err.println("❌ Error al guardar datos al cerrar la app: " + e.getMessage());
+                }
                 System.exit(0);
             });
 
@@ -230,6 +252,18 @@ public class MedicalSystemApp extends Application {
      * Método estático para volver al login
      */
     public static void volverAlLogin() {
+
+        try {
+            // CORRECCIÓN: Guardar datos antes de cerrar sesión
+            DatosHospital datos = HospitalController.getInstance().exportarDatos();
+            PersistenciaHospital.guardarDatos(datos);
+            System.out.println("✅ Datos guardados al cerrar sesión");
+        } catch (Exception e) {
+            System.err.println("❌ Error al guardar datos: " + e.getMessage());
+        }
+
+
+
         try {
             // Limpiar paciente actual
             pacienteActual = null;

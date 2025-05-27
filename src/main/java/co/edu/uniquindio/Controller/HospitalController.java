@@ -12,7 +12,21 @@ import java.util.stream.Collectors;
  */
 public class HospitalController {
 
-    private HospitalUQ hospital;
+    private static HospitalController instance;
+
+
+    private static HospitalUQ hospital;
+
+    private HospitalController() {
+        hospital = new HospitalUQ("Hospital Uq","1234");
+    }
+
+    public static HospitalController getInstance(){
+        if(instance == null){
+            instance = new HospitalController();
+        }
+        return instance;
+    }
 
     /**
      * Constructor del controlador
@@ -22,6 +36,7 @@ public class HospitalController {
         this.hospital = hospital;
         inicializarDatosBasicos();
     }
+
 
     /**
      * Inicializa datos básicos del hospital para pruebas
@@ -689,6 +704,92 @@ public class HospitalController {
             return false;
         }
     }
+
+    // Exportar Datos
+    public static DatosHospital exportarDatos() {
+        try {
+            DatosHospital datos = new DatosHospital();
+
+            if (hospital != null) {
+                // Exportar información básica del hospital
+                datos.setNombreHospital(hospital.getNombre());
+                datos.setIdHospital(hospital.getId());
+
+                // Exportar listas
+                datos.setPacientes(hospital.getPacientes());
+                datos.setMedicos(hospital.getMedicos());
+                datos.setSalas(hospital.getSalas());
+                datos.setHorarios(hospital.getHorarios());
+                datos.setCitas(hospital.getCitas());
+
+                System.out.println("✅ Datos exportados correctamente");
+            }
+
+            return datos;
+
+        } catch (Exception e) {
+            System.err.println("❌ Error al exportar datos: " + e.getMessage());
+            e.printStackTrace();
+            return new DatosHospital(); // Retornar datos vacíos si hay error
+        }
+    }
+
+    public HospitalUQ cargarDesdeDatos(DatosHospital datos) {
+        try {
+            if (datos == null) {
+                System.out.println("⚠️ Datos nulos, manteniendo datos actuales");
+                return hospital;
+            }
+
+            // Cargar datos del hospital principal
+            if (datos.getNombreHospital() != null) {
+                hospital.setNombre(datos.getNombreHospital());
+            }
+            if (datos.getIdHospital() != null) {
+                hospital.setId(datos.getIdHospital());
+            }
+
+            // Cargar pacientes si existen
+            if (datos.getPacientes() != null && !datos.getPacientes().isEmpty()) {
+                hospital.setPacientes(new LinkedList<>(datos.getPacientes()));
+                System.out.println("✅ Cargados " + datos.getPacientes().size() + " pacientes");
+            }
+
+            // Cargar médicos si existen
+            if (datos.getMedicos() != null && !datos.getMedicos().isEmpty()) {
+                hospital.setMedicos(new LinkedList<>(datos.getMedicos()));
+                System.out.println("✅ Cargados " + datos.getMedicos().size() + " médicos");
+            }
+
+            // Cargar salas si existen
+            if (datos.getSalas() != null && !datos.getSalas().isEmpty()) {
+                hospital.setSalas(new LinkedList<>(datos.getSalas()));
+                System.out.println("✅ Cargadas " + datos.getSalas().size() + " salas");
+            }
+
+            // Cargar horarios si existen
+            if (datos.getHorarios() != null && !datos.getHorarios().isEmpty()) {
+                hospital.setHorarios(new LinkedList<>(datos.getHorarios()));
+                System.out.println("✅ Cargados " + datos.getHorarios().size() + " horarios");
+            }
+
+            // Cargar citas si existen
+            if (datos.getCitas() != null && !datos.getCitas().isEmpty()) {
+                hospital.setCitas(new LinkedList<>(datos.getCitas()));
+                System.out.println("✅ Cargadas " + datos.getCitas().size() + " citas");
+            }
+
+            System.out.println("✅ Datos del hospital cargados correctamente");
+            return hospital;
+
+        } catch (Exception e) {
+            System.err.println("❌ Error al cargar datos: " + e.getMessage());
+            e.printStackTrace();
+            return hospital; // Retornar hospital actual si hay error
+        }
+    }
+
+
 
     // ===== GETTERS =====
 

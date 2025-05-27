@@ -3,6 +3,7 @@ package co.edu.uniquindio.viewController;
 import co.edu.uniquindio.MedicalSystemApp;
 import co.edu.uniquindio.Controller.HospitalController;
 import co.edu.uniquindio.model.*;
+import co.edu.uniquindio.persistencia.PersistenciaHospital;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -687,8 +688,12 @@ public class PrincipalViewController implements Initializable {
         confirmacion.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
+                    // Guardar Datos
+                    DatosHospital datos = HospitalController.exportarDatos();
+                    PersistenciaHospital.guardarDatos(datos);
+
                     // Limpiar datos del paciente actual
-                    pacienteActual = null;
+                    MedicalSystemApp.setPacienteActual(null);
 
                     // Volver al login
                     MedicalSystemApp.volverAlLogin();

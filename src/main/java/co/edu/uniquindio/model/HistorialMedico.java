@@ -3,8 +3,8 @@ package co.edu.uniquindio.model;
 import java.util.LinkedList;
 
 public class HistorialMedico {
-    private Paciente paciente;
-    private LinkedList<DiagnosticoTratamiento> registros;
+    public Paciente paciente;
+    public LinkedList<DiagnosticoTratamiento> registros;
 
     public HistorialMedico(Paciente paciente, LinkedList<DiagnosticoTratamiento> registros) {
         this.paciente = paciente;
