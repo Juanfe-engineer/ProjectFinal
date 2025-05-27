@@ -97,11 +97,67 @@ public class MedicalSystemApp extends Application {
             pacienteActual = paciente;
 
             // Cargar la vista principal
-            FXMLLoader loader = new FXMLLoader(
-                    MedicalSystemApp.class.getResource("/co/edu/uniquindio/javafx/views/principal-view.fxml")
-            );
+            FXMLLoader loader;
+            try {
+                // Verificar que el archivo existe
+                URL fxmlLocation = MedicalSystemApp.class.getResource("/principal-view.fxml");
 
-            Scene principalScene = new Scene(loader.load());
+                if (fxmlLocation == null) {
+                    System.err.println("❌ Archivo no encontrado. Probando rutas alternativas...");
+
+                    // Probar rutas alternativas
+                    String[] rutasAlternativas = {
+                            "/principal-view.fxml",
+                            "/views/principal-view.fxml",
+                            "/co/edu/uniquindio/views/principal-view.fxml",
+                            "principal-view.fxml",
+                            "src/main/resources/co.edu.uniquindio.javafx/views/principal-view.fxml",
+                            "co/edu/uniquindio/views/principal-view.fxml",
+                            "co/edu/uniquindio/javafx/views/principal-view.fxml",
+                            "/fxml/principal-view.fxml",
+                            "principal-view.fxml",
+                            "src/main/resources/principal-view.fxml"
+                    };
+
+                    for (String ruta : rutasAlternativas) {
+                        fxmlLocation = MedicalSystemApp.class.getResource(ruta);
+                        if (fxmlLocation != null) {
+                            System.out.println("✅ Archivo encontrado en: " + ruta);
+                            break;
+                        }
+                    }
+
+                    if (fxmlLocation == null) {
+                        throw new IOException("No se pudo encontrar principal-view.fxml en ninguna ubicación");
+                    }
+                }
+
+                System.out.println("🔍 Cargando FXML desde: " + fxmlLocation);
+
+                // Crear FXMLLoader
+                loader = new FXMLLoader(fxmlLocation);
+
+                // Cargar el FXML con manejo de errores detallado
+                Parent root = loader.load();
+                Scene principalScene = new Scene(root);
+
+                System.out.println("✅ FXML cargado correctamente");
+
+            } catch (IOException e) {
+                System.err.println("❌ Error detallado al cargar FXML:");
+                System.err.println("Mensaje: " + e.getMessage());
+                System.err.println("Causa: " + (e.getCause() != null ? e.getCause().getMessage() : "Desconocida"));
+                e.printStackTrace();
+
+                // Mostrar error específico al usuario
+                mostrarErrorCritico("Error de Carga",
+                        "No se pudo cargar la interfaz principal.\n" +
+                                "Detalles: " + e.getMessage(), e);
+                return; // Salir del método si hay error
+            }
+
+            Parent root = loader.load();
+            Scene principalScene = new Scene(root);
 
             // Cargar CSS para la vista principal si existe
             try {
