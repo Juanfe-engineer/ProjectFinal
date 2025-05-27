@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /**
  * Controlador para la vista principal del sistema hospitalario
@@ -194,6 +195,11 @@ public class PrincipalViewController implements Initializable {
 
         if (pacienteActual != null) {
             LinkedList<Cita> citas = hospitalController.obtenerCitasPaciente(pacienteActual.getId());
+
+            // elimino las citas canceladas de notificacion
+            citas.removeIf(cita -> cita.getEstado() == EstadoCita.CANCELADA);
+
+
             if (!citas.isEmpty()) {
                 notificaciones.add("📅 Tienes " + citas.size() + " cita(s) registrada(s)");
             }
@@ -217,6 +223,10 @@ public class PrincipalViewController implements Initializable {
         try {
             // Obtener citas del paciente
             LinkedList<Cita> citasPaciente = hospitalController.obtenerCitasPaciente(pacienteActual.getId());
+
+            // filtro para que al cancelarse se elimine la cita del historial
+            citasPaciente.removeIf(cita -> cita.getEstado() == EstadoCita.CANCELADA);
+
 
             StringBuilder historial = new StringBuilder();
             historial.append("=== HISTORIAL MÉDICO ===\n");
