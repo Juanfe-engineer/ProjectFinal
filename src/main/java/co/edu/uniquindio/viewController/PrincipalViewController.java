@@ -452,9 +452,7 @@ public class PrincipalViewController implements Initializable {
                     ButtonType.CLOSE
             );
 
-            dialog.setResultConverter(dialogButton -> {
-                return dialogButton.getText();
-            });
+            dialog.setResultConverter(ButtonType::getText);
 
             dialog.showAndWait().ifPresent(result -> {
                 Cita citaSeleccionada = citasListView.getSelectionModel().getSelectedItem();
@@ -663,6 +661,66 @@ public class PrincipalViewController implements Initializable {
 
     public Paciente getPacienteActual() {
         return pacienteActual;
+    }
+
+    public Label getWelcomeLabel() {
+        return welcomeLabel;
+    }
+
+    public void setWelcomeLabel(Label welcomeLabel) {
+        this.welcomeLabel = welcomeLabel;
+    }
+
+    public Circle getStatusIndicator() {
+        return statusIndicator;
+    }
+
+    public void setStatusIndicator(Circle statusIndicator) {
+        this.statusIndicator = statusIndicator;
+    }
+
+    public ListView<String> getNotificacionesListView() {
+        return notificacionesListView;
+    }
+
+    public void setNotificacionesListView(ListView<String> notificacionesListView) {
+        this.notificacionesListView = notificacionesListView;
+    }
+
+    public Label getProximaCitaLabel() {
+        return proximaCitaLabel;
+    }
+
+    public void setProximaCitaLabel(Label proximaCitaLabel) {
+        this.proximaCitaLabel = proximaCitaLabel;
+    }
+
+    public Label getTotalCitasLabel() {
+        return totalCitasLabel;
+    }
+
+    public void setTotalCitasLabel(Label totalCitasLabel) {
+        this.totalCitasLabel = totalCitasLabel;
+    }
+
+    public Label getUltimoAccesoLabel() {
+        return ultimoAccesoLabel;
+    }
+
+    public void setUltimoAccesoLabel(Label ultimoAccesoLabel) {
+        this.ultimoAccesoLabel = ultimoAccesoLabel;
+    }
+
+    public void setHospitalController(HospitalController hospitalController) {
+        this.hospitalController = hospitalController;
+    }
+
+    public HospitalUQ getHospital() {
+        return hospital;
+    }
+
+    public void setHospital(HospitalUQ hospital) {
+        this.hospital = hospital;
     }
 
     public HospitalController getHospitalController() {
