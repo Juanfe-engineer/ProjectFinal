@@ -91,6 +91,16 @@
             <version>12.3.1</version>
         </dependency>
 
+        <!-- Gson para base de datos -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+
+        </dependency>
+
+
+
         <!-- BootstrapFX -->
         <dependency>
             <groupId>org.kordamp.bootstrapfx</groupId>
