@@ -397,7 +397,7 @@ public class PrincipalViewController implements Initializable {
     }
 
     /**
-     * Maneja el clic en "Gestionar Citas"
+     * Maneja el clic en "Gestionar Citas" - VERSIÓN MEJORADA
      */
     @FXML
     private void handleGestionarCitas(ActionEvent event) {
@@ -428,11 +428,22 @@ public class PrincipalViewController implements Initializable {
                     if (empty || cita == null) {
                         setText(null);
                     } else {
+                        String fechaTexto = "N/A";
+                        String medicoTexto = "N/A";
+
+                        if (cita.getHorario() != null && cita.getHorario().getFecha() != null) {
+                            fechaTexto = cita.getHorario().getFecha().toString();
+                        }
+
+                        if (cita.getMedico() != null && cita.getMedico().getNombre() != null) {
+                            medicoTexto = cita.getMedico().getNombre();
+                        }
+
                         String texto = String.format("ID: %s | Fecha: %s | Estado: %s | Médico: %s",
                                 cita.getIdCita(),
-                                cita.getHorario() != null ? cita.getHorario().getFecha() : "N/A",
+                                fechaTexto,
                                 cita.getEstado(),
-                                cita.getMedico() != null ? cita.getMedico().getNombre() : "N/A"
+                                medicoTexto
                         );
                         setText(texto);
                     }
@@ -452,39 +463,95 @@ public class PrincipalViewController implements Initializable {
                     ButtonType.CLOSE
             );
 
-            dialog.setResultConverter(ButtonType::getText);
+            dialog.setResultConverter(buttonType -> buttonType.getText());
 
             dialog.showAndWait().ifPresent(result -> {
                 Cita citaSeleccionada = citasListView.getSelectionModel().getSelectedItem();
 
-                if ("Ver Detalles".equals(result) && citaSeleccionada != null) {
-                    mostrarDetallesCita(citaSeleccionada);
-                } else if ("Cancelar Cita".equals(result) && citaSeleccionada != null) {
-                    if (citaSeleccionada.getEstado() == EstadoCita.PROGRAMADA) {
-                        Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
-                        confirmacion.setTitle("Confirmar Cancelación");
-                        confirmacion.setHeaderText("¿Está seguro de cancelar esta cita?");
-                        confirmacion.setContentText("Esta acción no se puede deshacer.");
+                if (citaSeleccionada == null) {
+                    mostrarAlerta("Error", "Por favor selecciona una cita", Alert.AlertType.WARNING);
+                    return;
+                }
 
-                        confirmacion.showAndWait().ifPresent(response -> {
-                            if (response == ButtonType.OK) {
-                                if (hospitalController.cancelarCita(citaSeleccionada.getIdCita())) {
-                                    mostrarAlerta("Éxito", "Cita cancelada correctamente", Alert.AlertType.INFORMATION);
-                                    actualizarEstadisticasPaciente();
-                                } else {
-                                    mostrarAlerta("Error", "No se pudo cancelar la cita", Alert.AlertType.ERROR);
-                                }
-                            }
-                        });
-                    } else {
-                        mostrarAlerta("Error", "Solo se pueden cancelar citas programadas", Alert.AlertType.WARNING);
-                    }
+                if ("Ver Detalles".equals(result)) {
+                    mostrarDetallesCita(citaSeleccionada);
+                } else if ("Cancelar Cita".equals(result)) {
+                    cancelarCitaSeleccionada(citaSeleccionada);
                 }
             });
 
         } catch (Exception e) {
             System.err.println("❌ Error al gestionar citas: " + e.getMessage());
-            mostrarAlerta("Error", "Error al cargar las citas", Alert.AlertType.ERROR);
+            e.printStackTrace();
+            mostrarAlerta("Error", "Error al cargar las citas: " + e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    /**
+     * Método auxiliar para cancelar una cita seleccionada
+     */
+    private void cancelarCitaSeleccionada(Cita citaSeleccionada) {
+        try {
+            // Verificar que la cita se puede cancelar
+            if (citaSeleccionada.getEstado() != EstadoCita.PROGRAMADA) {
+                mostrarAlerta("Error",
+                        "Solo se pueden cancelar citas con estado PROGRAMADA.\n" +
+                                "Estado actual: " + citaSeleccionada.getEstado(),
+                        Alert.AlertType.WARNING);
+                return;
+            }
+
+            // Confirmar cancelación
+            Alert confirmacion = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmacion.setTitle("Confirmar Cancelación");
+            confirmacion.setHeaderText("¿Está seguro de cancelar esta cita?");
+            confirmacion.setContentText(
+                    "Cita ID: " + citaSeleccionada.getIdCita() + "\n" +
+                            "Fecha: " + (citaSeleccionada.getHorario() != null ?
+                            citaSeleccionada.getHorario().getFecha() : "N/A") + "\n" +
+                            "Esta acción no se puede deshacer."
+            );
+
+            confirmacion.showAndWait().ifPresent(response -> {
+                if (response == ButtonType.OK) {
+                    try {
+                        // Intentar cancelar la cita
+                        boolean cancelada = hospitalController.cancelarCita(citaSeleccionada.getIdCita());
+
+                        if (cancelada) {
+                            mostrarAlerta("Éxito",
+                                    "Cita cancelada correctamente\nID: " + citaSeleccionada.getIdCita(),
+                                    Alert.AlertType.INFORMATION);
+
+                            // Actualizar estadísticas y notificaciones
+                            actualizarEstadisticasPaciente();
+                            cargarNotificaciones();
+
+                            System.out.println("✅ Cita cancelada: " + citaSeleccionada.getIdCita());
+
+                        } else {
+                            mostrarAlerta("Error",
+                                    "No se pudo cancelar la cita.\n" +
+                                            "Verifique que la cita existe y está en estado PROGRAMADA.",
+                                    Alert.AlertType.ERROR);
+
+                            System.err.println("❌ No se pudo cancelar la cita: " + citaSeleccionada.getIdCita());
+                        }
+
+                    } catch (Exception e) {
+                        System.err.println("❌ Error al cancelar cita: " + e.getMessage());
+                        e.printStackTrace();
+                        mostrarAlerta("Error",
+                                "Error interno al cancelar la cita: " + e.getMessage(),
+                                Alert.AlertType.ERROR);
+                    }
+                }
+            });
+
+        } catch (Exception e) {
+            System.err.println("❌ Error en cancelarCitaSeleccionada: " + e.getMessage());
+            e.printStackTrace();
+            mostrarAlerta("Error", "Error al procesar la cancelación: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
