@@ -137,9 +137,6 @@ public class MedicalSystemApp extends Application {
                 // Crear FXMLLoader
                 loader = new FXMLLoader(fxmlLocation);
 
-                // Cargar el FXML con manejo de errores detallado
-                Parent root = loader.load();
-                Scene principalScene = new Scene(root);
 
                 System.out.println("✅ FXML cargado correctamente");
 
