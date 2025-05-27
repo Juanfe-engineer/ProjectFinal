@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+import static jdk.xml.internal.SecuritySupport.getClassLoader;
+
 /**
  * Clase principal de la aplicación del Sistema Hospitalario
  * Maneja la navegación entre ventanas y el estado global de la aplicación
@@ -233,11 +235,34 @@ public class MedicalSystemApp extends Application {
             pacienteActual = null;
             System.out.println("✅ Sesión de paciente limpiada");
 
-            FXMLLoader loader = new FXMLLoader(
-                    MedicalSystemApp.class.getResource("login-view.fxml")
-            );
+            // CAMBIO AQUÍ: Usar getClass().getClassLoader() en lugar de la clase interna
+            InputStream fxmlStream = MedicalSystemApp.class.getClassLoader().getResourceAsStream("login-view.fxml");
 
-            Scene loginScene = new Scene(loader.load());
+            if (fxmlStream == null) {
+                // Probar rutas alternativas
+                String[] rutasAlternativas = {
+                        "login-view.fxml",
+                        "/login-view.fxml",
+                        "views/login-view.fxml",
+                        "/views/login-view.fxml"
+                };
+
+                for (String ruta : rutasAlternativas) {
+                    fxmlStream = MedicalSystemApp.class.getClassLoader().getResourceAsStream(ruta);
+                    if (fxmlStream != null) {
+                        System.out.println("✅ Archivo login encontrado en: " + ruta);
+                        break;
+                    }
+                }
+
+                if (fxmlStream == null) {
+                    throw new RuntimeException("No se encontró el archivo login-view.fxml en ninguna ubicación");
+                }
+            }
+
+            FXMLLoader loader = new FXMLLoader();
+            Parent root = loader.load(fxmlStream);
+            Scene loginScene = new Scene(root);
 
             // Cargar CSS para login si existe
             try {
