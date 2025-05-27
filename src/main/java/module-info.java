@@ -2,7 +2,6 @@ module ProjectFinal {
     requires javax.mail;
     requires javafx.fxml;
     requires javafx.web;
-    requires java.logging;
     requires javafx.controls;
     requires javafx.graphics;
 
@@ -16,6 +15,7 @@ module ProjectFinal {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.desktop;
+    requires com.google.gson;
 
     opens co.edu.uniquindio to javafx.fxml;
     exports co.edu.uniquindio;
